@@ -3,7 +3,7 @@ import Intermediary from "../defs/Intermediary.ts";
 let lastRain: number | undefined = undefined;
 let lastRainDate: Date | undefined = undefined
 
-let dataTransform: Intermediary = function (opts, data, keypoints, pipeline): void {
+let dataTransform: Intermediary = async function (opts, data, keypoints, pipeline) {
     if (lastRain != undefined && lastRainDate != undefined) {
         let date = new Date(data.date);
         let rDiff = data.totalrainin - lastRain;

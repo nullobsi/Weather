@@ -3,8 +3,7 @@ import Intermediary from "../defs/Intermediary.ts";
 let dataTransform: Intermediary = async function (opts, data, keypoints, pipeline) {
     let found = pipeline.datafields.find(v => {
         let thing = v.perConfig?.image
-        if (thing && thing.transform == "wind") return true;
-        return false;
+        return thing && thing.transform == "wind";
     })
     if (found) {
         let deg = data[found.fieldName];
