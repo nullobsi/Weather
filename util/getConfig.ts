@@ -4,6 +4,11 @@ import * as Colors from "https://deno.land/std@0.76.0/fmt/colors.ts"
 
 async function getConfig<T>(subdir: string, moduleName: string, def: T): Promise<T> {
     let configPath = path.join(Deno.cwd(), subdir, "config", moduleName + ".json");
+    let configFolder = path.join(Deno.cwd(), subdir, "config")
+    let pathExists = await fs.exists(configFolder);
+    if (!pathExists) {
+        await Deno.mkdir(configFolder)
+    }
     let configExists = await fs.exists(configPath);
     if (configExists) {
         try {
