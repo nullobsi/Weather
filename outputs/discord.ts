@@ -29,7 +29,7 @@ const output: DataOutput = async function output(data: WeatherData, opt, datafie
     let options = opt as DiscordOpt;
     let msg = "Weather report for " + getDateString(new Date(data.date)) + "\n";
     let maxlen = datafields.reduce<number>((p, c) => c.displayName.length > p ? c.displayName.length : p, 0);
-    let roles = await Discord.getRoles(options.server) as DiscordRole[];
+    //let roles = await Discord.getRoles(options.server) as DiscordRole[];
     for (let field of datafields) {
         if (!field.perConfig["discord"]) return;
         let gradient = gradients[field.gradient];
@@ -39,7 +39,7 @@ const output: DataOutput = async function output(data: WeatherData, opt, datafie
             let str = value ? value : "No Data";
             msg += field.displayName + ": " + str + "\n";
         }
-        if (perconf.updateRoleColor) {
+        /*if (perconf.updateRoleColor) {
             let color = value ? hexToNumber(tempToColor(value, gradient)) : undefined;
             let role = roles.find(v => v.name == field.displayName);
             if (role) {
@@ -55,7 +55,7 @@ const output: DataOutput = async function output(data: WeatherData, opt, datafie
                     permissions: undefined
                 })
             }
-        }
+        }*/
     }
     await Discord.sendMessage(options.channel,{
         content: msg,
