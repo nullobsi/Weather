@@ -31,8 +31,8 @@ const ne = Math.PI*2 + Math.PI/4;
 //sensor numbers
 const indoor = "temp1f"
 const water = "temp2f"
-const soil = "temp3f"
-const soilHumidity = "humidity3"
+const soil = "soiltemp3"
+const soilHumidity = "soilhum3"
 
 //discord conf
 const channelId = "HERE"

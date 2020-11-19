@@ -7,7 +7,7 @@
 
 **/config/*
 util/Canvas/go_build_Canvas_js
-
+archive/**
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml

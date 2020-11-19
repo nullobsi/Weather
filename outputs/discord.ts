@@ -25,6 +25,7 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
     let options = opt as DiscordOpt;
     let msg = "Weather report for " + getDateString(new Date(data.date)) + "\n";
     //let maxlen = datafields.reduce<number>((p, c) => c.displayName.length > p ? c.displayName.length : p, 0);
+    console.log("[discord] Getting roles...")
     let roles = await Discord.getRoles(options.server) as DiscordRole[];
     for (let field of datafields) {
         if (!field.perConfig["discord"]) return;
@@ -36,13 +37,16 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
             msg += field.displayName + ": " + str + "\n";
         }
         if (perconf.updateRoleColor) {
+
             let color = value ? hexToNumber(tempToColor(value, gradient)) : undefined;
             let role = roles.find(v => v.name == field.displayName);
             if (role) {
+                console.log(`[discord] Editing role ${field.displayName}...`)
                 await Discord.editRole(options.server, role.id, {
                     color: color,
                 })
             } else {
+                console.log(`[discord] Creating role ${field.displayName}...`)
                 await Discord.createGuildRole(options.server, {
                     color: color,
                     name: field.displayName,
@@ -53,6 +57,7 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
             }
         }
     }
+    console.log("[discord] Sending message...")
     await Discord.sendMessage(options.channel,{
         content: msg,
         file: options.attachment ? {
@@ -60,6 +65,7 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
             name: options.attachment.fileName
         } : undefined
     })
+    console.log(`[discord] Done!`)
 }
 
 function hexToNumber(hex: string) {
