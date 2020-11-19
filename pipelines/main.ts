@@ -4,11 +4,15 @@ import {ImageOptions, ImagePerconf} from "../processors/image.ts";
 import getConfig from "../util/getConfig.ts";
 import {DiscordOpt, DiscordPerconf} from "../outputs/discord.ts";
 import {wundergroundOpts} from "../inputs/wunderground.ts";
+import {AqiOpts} from "../inputs/aqi.ts";
+import {SoilOpts} from "../intermediaries/soil.ts";
 
 const config = await getConfig("outputs","main", {
     discordChannelId: "HERE",
     discordServerId: "HERE",
     wundergroundStationId: "HERE",
+    aqiLat: 0,
+    aqiLng: 0,
 })
 //image
 const imgWidth = 1440
@@ -33,10 +37,6 @@ const indoor = "temp1f"
 const water = "temp2f"
 const soil = "soiltemp3"
 const soilHumidity = "soilhum3"
-
-//discord conf
-const channelId = "HERE"
-const serverId = "HERE"
 
 let pipeline: Pipeline = {
     datafields: [
@@ -571,12 +571,26 @@ let pipeline: Pipeline = {
             name: "ambientweather",
             opts: {
             }
+        },
+        {
+            name: "aqi",
+            opts: <AqiOpts>{
+                lng: config.aqiLng,
+                lat: config.aqiLat,
+            }
+
         }
         ],
     intermediaries: [
         {
             name: "cardinal",
             opts:{}
+        },
+        {
+            name: "soil",
+            opts: <SoilOpts>{
+                fieldName: soilHumidity
+            }
         }
     ],
     interval: 120000,

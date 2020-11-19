@@ -13,7 +13,20 @@ async function getConfig<T>(subdir: string, moduleName: string, def: T): Promise
     if (configExists) {
         try {
             let readConfig = await Deno.readTextFile(configPath);
-            return JSON.parse(readConfig) as T;
+            let parsed = JSON.parse(readConfig) as T;
+
+            let keys: (keyof T)[] = Object.keys(def) as any
+            for (let i = 0; i < keys.length; i++) {
+                let key = keys[i];
+                if (parsed[key] === undefined) {
+                    let combo = {...def, ...parsed}
+                    let stringed = JSON.stringify(def, undefined, 4);
+                    await Deno.writeTextFile(configPath, stringed);
+                    console.error(Colors.red(Colors.bold(`Config for module ${subdir}/${moduleName} is missing parameters, check file written to disk!`)))
+                    Deno.exit(1);
+                }
+            }
+            return parsed;
         } catch (e) {
             console.error("Could not read config for " + moduleName + "!")
             throw(e);
