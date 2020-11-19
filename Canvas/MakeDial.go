@@ -174,7 +174,7 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 	if transform != 1 {
 		c.DrawStringAnchored(dial.Get("displayName").String(), x+ox, y+oy-outerRadius/3, 0.5, 0.5)
 	} else if transform == 1 {
-		c.DrawStringAnchored(dial.Get("displayName").String(), x+ox, y+oy-radius*mult, 0.5, 0.9)
+		c.DrawStringAnchored(dial.Get("displayName").String(), x+ox, y+oy-radius*mult, 0.5, 1.2)
 	}
 	if transform != 1 {
 		font2 := truetype.NewFace(parsed, &truetype.Options{Size: sfSize})
