@@ -174,7 +174,7 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 	if transform != 1 {
 		c.DrawStringAnchored(dial.Get("displayName").String(), x+ox, y+oy-outerRadius/3, 0.5, 0.5)
 	} else if transform == 1 {
-		c.DrawStringAnchored(dial.Get("displayName").String(), x+ox, y+oy-radius*mult, 0.5, -0.2)
+		c.DrawStringAnchored(dial.Get("displayName").String(), x+ox, y+oy-radius*mult, 0.5, 0.8)
 	}
 	if transform != 1 {
 		font2 := truetype.NewFace(parsed, &truetype.Options{Size: sfSize})
@@ -191,6 +191,11 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 	if !dial.Get("value").IsNull() {
 		temp := dial.Get("value").Float()
 		tempAdj := (temp - startV) / (endV - startV)
+		if tempAdj < 0 {
+			tempAdj = 0
+		} else if tempAdj > 1 {
+			tempAdj = 1
+		}
 		valueAngle := startAngle + (endAngle-startAngle)*tempAdj
 		valueColor := grad.GetColor(tempAdj)
 		c.SetColor(valueColor)
