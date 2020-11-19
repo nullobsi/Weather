@@ -28,7 +28,7 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
     console.log("[discord] Getting roles...")
     let roles = await Discord.getRoles(options.server) as DiscordRole[];
     for (let field of datafields) {
-        if (!field.perConfig["discord"]) return;
+        if (!field.perConfig["discord"]) continue;
         let gradient = gradients[field.gradient];
         let perconf = field.perConfig["discord"] as DiscordPerconf;
         let value = data[field.fieldName];
