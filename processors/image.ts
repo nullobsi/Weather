@@ -1,8 +1,4 @@
 import { createRequire } from "https://deno.land/std@0.76.0/node/module.ts";
-import Gradients from "../defs/Gradients.ts";
-import Indexed from "../defs/Indexed.ts";
-import WeatherData from "../defs/WeatherData.ts";
-import Datafields from "../defs/Datafields.ts";
 import DataProcessor from "../defs/DataProcessor.ts";
 
 const require = createRequire(import.meta.url);

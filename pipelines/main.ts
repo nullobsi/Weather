@@ -573,7 +573,12 @@ let pipeline: Pipeline = {
             }
         }
         ],
-    intermediaries: [],
+    intermediaries: [
+        {
+            name: "cardinal",
+            opts:{}
+        }
+    ],
     interval: 120000,
     outputs: [
         {
