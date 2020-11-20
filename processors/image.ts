@@ -2,7 +2,7 @@
 import DataProcessor from "../defs/DataProcessor.ts";
 
 ///const require = createRequire(import.meta.url);
-import Go from "../util/Canvas/mod.ts"
+import Go from "https://x.nest.land/GoDeno@0.2.0/mod.ts"
 // @ts-ignore
 
 
@@ -91,9 +91,9 @@ let process: DataProcessor = async function(options, gradients, datafields, data
     let go = new Go()
     let wa = await WebAssembly.instantiate(Deno.readFileSync("util/Canvas/go_build_Canvas_js"), go.importObject);
     let p = go.run(wa.instance);
-    let size = await go.exports.renderDials(finalOpt, gradients);
+    let size = await go.exports?.renderDials(finalOpt, gradients);
     let buffer = new Uint8Array(size);
-    await go.exports.copyDials(buffer);
+    await go.exports?.copyDials(buffer);
     outputs.image = buffer;
     await p;
 }
