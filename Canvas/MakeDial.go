@@ -67,14 +67,6 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 	sfSize := dial.Get("smallFontSize").Float()
 	//lfSize := dial.Get("smallFontSize").Float()
 
-	transform := 0
-	if !dial.Get("transform").IsUndefined() {
-		transformStr := dial.Get("transform").String()
-		if transformStr == "wind" {
-			transform = 1
-		}
-	}
-
 	outerRadius := dial.Get("r").Float()
 	innerRadius := outerRadius - (outerRadius * 0.5)
 	thickness := (outerRadius - innerRadius) / 2
@@ -83,7 +75,22 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 	startAngle := dial.Get("start").Float()
 	endAngle := dial.Get("end").Float()
 
-	grad := NewArcGradient(x+ox, y+oy, startAngle, endAngle, radius, thickness)
+	grad := NewTransArcGradient(x+ox, y+oy, startAngle, endAngle, radius, thickness, func(a float64) float64 { return a })
+	transform := 0
+	if !dial.Get("transform").IsUndefined() {
+		transformStr := dial.Get("transform").String()
+		if transformStr == "wind" {
+			transform = 1
+		} else if transformStr == "rainrate" {
+			grad.transform = func(a float64) float64 {
+				if a <= 0.0253 {
+					return rainRate(a) / 4
+				} else {
+					return rainRate(a) - 15
+				}
+			}
+		}
+	}
 
 	numPoints := gradient.Length()
 
@@ -190,14 +197,14 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 	//fmt.Println(dial.Get("unit").String())
 	if !dial.Get("value").IsNull() {
 		temp := dial.Get("value").Float()
-		tempAdj := (temp - startV) / (endV - startV)
+		tempAdj := (grad.transform(temp) - grad.min) / (grad.max - grad.min)
 		if tempAdj < 0 {
 			tempAdj = 0
 		} else if tempAdj > 1 {
 			tempAdj = 1
 		}
 		valueAngle := startAngle + (endAngle-startAngle)*tempAdj
-		valueColor := grad.GetColor(tempAdj)
+		valueColor := grad.GetColor(temp)
 		c.SetColor(valueColor)
 		valueStr := strconv.FormatFloat(math.Abs(temp), 'f', dial.Get("presc").Int(), 64)
 		if temp < 0 {
@@ -301,4 +308,16 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 
 	c.Pop()
 
+}
+
+func rainRate(a float64) float64 {
+	if a <= 0 {
+		return a
+	}
+	a = math.Log(a * 25.4)
+	a *= 8
+	a += 5 * math.Log(200)
+	a *= 2
+	a /= math.Log(10)
+	return a
 }

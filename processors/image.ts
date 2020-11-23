@@ -2,7 +2,7 @@
 import DataProcessor from "../defs/DataProcessor.ts";
 
 ///const require = createRequire(import.meta.url);
-import Go from "https://x.nest.land/GoDeno@0.2.0/mod.ts"
+import Go from "https://x.nest.land/GoDeno@0.3.0/mod.ts"
 // @ts-ignore
 
 

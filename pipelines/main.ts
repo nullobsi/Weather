@@ -6,6 +6,7 @@ import {DiscordOpt, DiscordPerconf} from "../outputs/discord.ts";
 import {wundergroundOpts} from "../inputs/wunderground.ts";
 import {AqiOpts} from "../inputs/aqi.ts";
 import {SoilOpts} from "../intermediaries/soil.ts";
+import {ConsolePerconf} from "../outputs/console.ts";
 
 const config = await getConfig("outputs","main", {
     discordChannelId: "HERE",
@@ -58,8 +59,11 @@ let pipeline: Pipeline = {
                     presc: 1
                 },
                 "discord": <DiscordPerconf>{
-                    updateRoleColor: false,
+                    updateRoleColor: true,
                     sendToDiscord: true
+                },
+                "console": <ConsolePerconf>{
+                    print: true
                 }
             },
             gradient: "wu_temp",
@@ -87,6 +91,9 @@ let pipeline: Pipeline = {
                 "discord": <DiscordPerconf>{
                     updateRoleColor: false,
                     sendToDiscord: true
+                },
+                "console": <ConsolePerconf>{
+                    print: true
                 }
             },
             gradient: "wu_temp",
@@ -114,6 +121,9 @@ let pipeline: Pipeline = {
                 "discord": <DiscordPerconf>{
                     updateRoleColor: false,
                     sendToDiscord: true
+                },
+                "console": <ConsolePerconf>{
+                    print: true
                 }
             },
             gradient: "wu_temp",
@@ -139,12 +149,15 @@ let pipeline: Pipeline = {
                     r: 150,
                     x: Math.floor(width/2),
                     y: 150+smallSpacing,
-                    transform: undefined,
+                    transform: "rainrate",
                     presc: 2
                 },
                 "discord": <DiscordPerconf>{
                     updateRoleColor: false,
                     sendToDiscord: true
+                },
+                "console": <ConsolePerconf>{
+                    print: true
                 }
             },
             gradient: "rainrate",
@@ -168,14 +181,26 @@ let pipeline: Pipeline = {
                     y: 150+150+75,
                     transform: undefined,
                     presc: 2
-                },
-                "discord": <DiscordPerconf>{
-                    updateRoleColor: false,
-                    sendToDiscord: true
                 }
             },
             gradient: "rainaccum",
             displayName: "Day",
+            fieldName: "precipTotal",
+            transform: undefined,
+            unit: "in"
+        },
+        {
+            perConfig: {
+                "discord": <DiscordPerconf>{
+                    updateRoleColor: false,
+                    sendToDiscord: true
+                },
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "rainaccum",
+            displayName: "Daily Rain",
             fieldName: "precipTotal",
             transform: undefined,
             unit: "in"
@@ -195,10 +220,6 @@ let pipeline: Pipeline = {
                     y: 150+150+75,
                     transform: undefined,
                     presc: 2
-                },
-                "discord": <DiscordPerconf>{
-                    updateRoleColor: false,
-                    sendToDiscord: true
                 }
             },
             gradient: "rainaccum",
@@ -228,6 +249,9 @@ let pipeline: Pipeline = {
                 "discord": <DiscordPerconf>{
                     updateRoleColor: false,
                     sendToDiscord: true
+                },
+                "console": <ConsolePerconf>{
+                    print: true
                 }
             },
             gradient: "wind",
@@ -255,6 +279,9 @@ let pipeline: Pipeline = {
                 "discord": <DiscordPerconf>{
                     updateRoleColor: false,
                     sendToDiscord: true
+                },
+                "console": <ConsolePerconf>{
+                    print: true
                 }
             },
             gradient: "wind",
@@ -287,22 +314,6 @@ let pipeline: Pipeline = {
             unit: "°"
         },
 
-
-        {
-            perConfig: {
-                "discord": <DiscordPerconf>{
-                    updateRoleColor: false,
-                    sendToDiscord: true
-                }
-            },
-            gradient: "winddir",
-            displayName: "Wind Direction",
-            fieldName: "winddir",
-            transform: undefined,
-            unit: "°"
-        },
-
-
         // Water & Soil
         {
             perConfig: {
@@ -323,6 +334,9 @@ let pipeline: Pipeline = {
                 "discord": <DiscordPerconf>{
                     updateRoleColor: false,
                     sendToDiscord: true
+                },
+                "console": <ConsolePerconf>{
+                    print: true
                 }
             },
             gradient: "wu_temp",
@@ -346,10 +360,6 @@ let pipeline: Pipeline = {
                     y: 150+150+75,
                     transform: undefined,
                     presc: 1
-                },
-                "discord": <DiscordPerconf>{
-                    updateRoleColor: false,
-                    sendToDiscord: true
                 }
             },
             gradient: "wu_temp",
@@ -373,10 +383,6 @@ let pipeline: Pipeline = {
                     y: 150+150+75,
                     transform: undefined,
                     presc: 0
-                },
-                "discord": <DiscordPerconf>{
-                    updateRoleColor: false,
-                    sendToDiscord: true
                 }
             },
             gradient: "soil",
@@ -406,6 +412,9 @@ let pipeline: Pipeline = {
                 "discord": <DiscordPerconf>{
                     updateRoleColor: false,
                     sendToDiscord: true
+                },
+                "console": <ConsolePerconf>{
+                    print: true
                 }
             },
             gradient: "humidity",
@@ -435,6 +444,9 @@ let pipeline: Pipeline = {
                 "discord": <DiscordPerconf>{
                     updateRoleColor: false,
                     sendToDiscord: true
+                },
+                "console": <ConsolePerconf>{
+                    print: true
                 }
             },
             gradient: "uv",
@@ -460,10 +472,6 @@ let pipeline: Pipeline = {
                     y: 150+smallSpacing,
                     transform: undefined,
                     presc: 0
-                },
-                "discord": <DiscordPerconf>{
-                    updateRoleColor: false,
-                    sendToDiscord: true
                 }
             },
             gradient: "aqi",
@@ -493,6 +501,9 @@ let pipeline: Pipeline = {
                 "discord": <DiscordPerconf>{
                     updateRoleColor: false,
                     sendToDiscord: true
+                },
+                "console": <ConsolePerconf>{
+                    print: true
                 }
             },
             gradient: "pressure",
@@ -522,6 +533,9 @@ let pipeline: Pipeline = {
                 "discord": <DiscordPerconf>{
                     updateRoleColor: false,
                     sendToDiscord: true
+                },
+                "console": <ConsolePerconf>{
+                    print: true
                 }
             },
             gradient: "solar",
@@ -545,12 +559,15 @@ let pipeline: Pipeline = {
                     r: 150,
                     x: Math.floor(width/2),
                     y: 150+smallSpacing,
-                    transform: undefined,
+                    transform: "logarithm",
                     presc: 0
                 },
                 "discord": <DiscordPerconf>{
                     updateRoleColor: false,
                     sendToDiscord: true
+                },
+                "console": <ConsolePerconf>{
+                    print: true
                 }
             },
             gradient: "pm25",
