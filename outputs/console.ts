@@ -24,7 +24,6 @@ const output: DataOutput = async function output(data: WeatherData, opt, datafie
             let temp = data[v.fieldName];
             let grad = gradients[v.gradient];
             let color = hexToRGB(tempToColor(temp, grad));
-            Colors.rgb
             str = Colors.rgb24(str.toString(), {
                 r: color[0],
                 g: color[1],
