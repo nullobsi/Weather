@@ -164,7 +164,7 @@ let pipeline: Pipeline = {
             displayName: "Rain Rate",
             fieldName: "precipRate",
             transform: undefined,
-            unit: "in/hr"
+            unit: " in/hr"
         },
         {
             perConfig: {
@@ -187,7 +187,7 @@ let pipeline: Pipeline = {
             displayName: "Day",
             fieldName: "precipTotal",
             transform: undefined,
-            unit: "in"
+            unit: " in"
         },
         {
             perConfig: {
@@ -203,7 +203,7 @@ let pipeline: Pipeline = {
             displayName: "Daily Rain",
             fieldName: "precipTotal",
             transform: undefined,
-            unit: "in"
+            unit: " in"
         },
         {
             perConfig: {
@@ -226,7 +226,7 @@ let pipeline: Pipeline = {
             displayName: "Week",
             fieldName: "weeklyrainin",
             transform: undefined,
-            unit: "in"
+            unit: " in"
         },
 
         // Wind
@@ -258,7 +258,7 @@ let pipeline: Pipeline = {
             displayName: "Wind Speed",
             fieldName: "windSpeed",
             transform: undefined,
-            unit: "mph"
+            unit: " mph"
         },
         {
             perConfig: {
@@ -288,7 +288,7 @@ let pipeline: Pipeline = {
             displayName: "Gust",
             fieldName: "windGust",
             transform: undefined,
-            unit: "mph"
+            unit: " mph"
         },
         {
             perConfig: {
@@ -510,7 +510,7 @@ let pipeline: Pipeline = {
             displayName: "Pressure",
             fieldName: "pressure",
             transform: undefined,
-            unit: "inHg"
+            unit: " inHg"
         },
 
         //Solar Radiation
@@ -542,7 +542,7 @@ let pipeline: Pipeline = {
             displayName: "Solar Radiation",
             fieldName: "solarradiation",
             transform: undefined,
-            unit: "W/m²"
+            unit: " W/m²"
         },
 
         //PM2.5
@@ -574,7 +574,7 @@ let pipeline: Pipeline = {
             displayName: "PM2.5",
             fieldName: "pm25",
             transform: undefined,
-            unit: "µg/m³"
+            unit: " µg/m³"
         },
     ],
     inputs: [

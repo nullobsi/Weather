@@ -7,6 +7,7 @@ import (
 	"image/color"
 	"math"
 	"strconv"
+	"strings"
 	"syscall/js"
 )
 
@@ -145,7 +146,7 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 
 		c.SetColor(color.White)
 		c.SetFontFace(font2)
-		c.DrawStringAnchored(dial.Get("unit").String(), x+ox, y+oy+radius/2, 0.5, -0.2)
+		c.DrawStringAnchored(strings.TrimSpace(dial.Get("unit").String()), x+ox, y+oy+radius/2, 0.5, -0.2)
 
 		font2.Close()
 	}

@@ -34,7 +34,7 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
         let value = data[field.fieldName];
         if (perconf.sendToDiscord) {
             let str = value ? value : "No Data";
-            msg += field.displayName + ": " + str + "\n";
+            msg += field.displayName + ": " + str + field.unit + "\n";
         }
         if (perconf.updateRoleColor) {
 
