@@ -559,7 +559,7 @@ let pipeline: Pipeline = {
                     r: 150,
                     x: Math.floor(width/2),
                     y: 150+smallSpacing,
-                    transform: "logarithm",
+                    transform: "pm25",
                     presc: 0
                 },
                 "discord": <DiscordPerconf>{
