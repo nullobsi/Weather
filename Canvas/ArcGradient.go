@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/icza/gox/imagex/colorx"
 	"image/color"
 	"math"
@@ -96,7 +95,7 @@ func (a *arcGradient) AddColorStop(value float64, color color.Color) {
 }
 
 func (a *arcGradient) GetColor(adj float64) color.Color {
-	fmt.Println(adj)
+	//fmt.Println(adj)
 	l := len(a.keypoints)
 	foundI := 0
 	for ; foundI < l && a.keypoints[foundI].value <= adj; foundI += 1 {
