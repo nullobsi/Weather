@@ -40,7 +40,7 @@ function interpolate(color1: string, color2: string, weight: number) {
     ]);
 }
 
-function hexToRGB(hex: string) {
+export function hexToRGB(hex: string) {
     let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     if (result == null) {
         throw new Error("Provided string was not a hex color!");
@@ -51,6 +51,7 @@ function hexToRGB(hex: string) {
         parseInt(result[3], 16)
     ];
 }
+
 
 function RGBToHex(RGB: [number, number, number]) {
     function componentToHex(c: number) {

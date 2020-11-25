@@ -8,7 +8,7 @@ import {AqiOpts} from "../inputs/aqi.ts";
 import {SoilOpts} from "../intermediaries/soil.ts";
 import {ConsolePerconf} from "../outputs/console.ts";
 
-const config = await getConfig("outputs","main", {
+const config = await getConfig("outputs", "main", {
     discordChannelId: "HERE",
     discordServerId: "HERE",
     wundergroundStationId: "HERE",
@@ -27,11 +27,11 @@ const width = 335
 const spacing = 20
 const smallSpacing = 10
 
-const titleFontSize = 520/12
+const titleFontSize = 520 / 12
 
 //angles for normal dials
-const ns = Math.PI- Math.PI/4;
-const ne = Math.PI*2 + Math.PI/4;
+const ns = Math.PI - Math.PI / 4;
+const ne = Math.PI * 2 + Math.PI / 4;
 
 //sensor numbers
 const indoor = "temp1f"
@@ -44,7 +44,7 @@ let pipeline: Pipeline = {
         //Temperature
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -53,8 +53,8 @@ let pipeline: Pipeline = {
                     endV: 122,
                     panel: 0,
                     r: 150,
-                    x: Math.floor(width/2),
-                    y: 150+smallSpacing,
+                    x: Math.floor(width / 2),
+                    y: 150 + smallSpacing,
                     transform: undefined,
                     presc: 1
                 },
@@ -62,9 +62,6 @@ let pipeline: Pipeline = {
                     updateRoleColor: true,
                     sendToDiscord: true
                 },
-                "console": <ConsolePerconf>{
-                    print: true
-                }
             },
             gradient: "wu_temp",
             displayName: "Temperature",
@@ -74,7 +71,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -83,8 +80,8 @@ let pipeline: Pipeline = {
                     endV: 122,
                     panel: 0,
                     r: 75,
-                    x: Math.floor(width/4),
-                    y: 150+150+75,
+                    x: Math.floor(width / 4),
+                    y: 150 + 150 + 75,
                     transform: undefined,
                     presc: 1
                 },
@@ -92,9 +89,6 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                "console": <ConsolePerconf>{
-                    print: true
-                }
             },
             gradient: "wu_temp",
             displayName: "Feels",
@@ -104,7 +98,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -113,8 +107,8 @@ let pipeline: Pipeline = {
                     endV: 122,
                     panel: 0,
                     r: 75,
-                    x: Math.floor(width/4)*3,
-                    y: 150+150+75,
+                    x: Math.floor(width / 4) * 3,
+                    y: 150 + 150 + 75,
                     transform: undefined,
                     presc: 1
                 },
@@ -122,9 +116,6 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                "console": <ConsolePerconf>{
-                    print: true
-                }
             },
             gradient: "wu_temp",
             displayName: "Dew",
@@ -134,11 +125,10 @@ let pipeline: Pipeline = {
         },
 
 
-
         // Rain
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -147,8 +137,8 @@ let pipeline: Pipeline = {
                     endV: 12,
                     panel: 1,
                     r: 150,
-                    x: Math.floor(width/2),
-                    y: 150+smallSpacing,
+                    x: Math.floor(width / 2),
+                    y: 150 + smallSpacing,
                     transform: "rainrate",
                     presc: 2
                 },
@@ -156,9 +146,6 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                "console": <ConsolePerconf>{
-                    print: true
-                }
             },
             gradient: "rainrate",
             displayName: "Rain Rate",
@@ -168,7 +155,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -177,8 +164,8 @@ let pipeline: Pipeline = {
                     endV: 1.82,
                     panel: 1,
                     r: 75,
-                    x: Math.floor(width/4),
-                    y: 150+150+75,
+                    x: Math.floor(width / 4),
+                    y: 150 + 150 + 75,
                     transform: undefined,
                     presc: 2
                 }
@@ -195,9 +182,6 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                "console": <ConsolePerconf>{
-                    print: true
-                }
             },
             gradient: "rainaccum",
             displayName: "Daily Rain",
@@ -207,7 +191,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -216,8 +200,8 @@ let pipeline: Pipeline = {
                     endV: 4.68,
                     panel: 1,
                     r: 75,
-                    x: Math.floor(width/4)*3,
-                    y: 150+150+75,
+                    x: Math.floor(width / 4) * 3,
+                    y: 150 + 150 + 75,
                     transform: undefined,
                     presc: 2
                 }
@@ -232,7 +216,7 @@ let pipeline: Pipeline = {
         // Wind
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -241,8 +225,8 @@ let pipeline: Pipeline = {
                     endV: 65,
                     panel: 2,
                     r: 150,
-                    x: Math.floor(width/2),
-                    y: 150+smallSpacing,
+                    x: Math.floor(width / 2),
+                    y: 150 + smallSpacing,
                     transform: undefined,
                     presc: 1
                 },
@@ -250,9 +234,6 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                "console": <ConsolePerconf>{
-                    print: true
-                }
             },
             gradient: "wind",
             displayName: "Wind Speed",
@@ -262,7 +243,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -271,8 +252,8 @@ let pipeline: Pipeline = {
                     endV: 65,
                     panel: 2,
                     r: 75,
-                    x: Math.floor(width/4),
-                    y: 150+150+75,
+                    x: Math.floor(width / 4),
+                    y: 150 + 150 + 75,
                     transform: undefined,
                     presc: 1
                 },
@@ -280,9 +261,6 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                "console": <ConsolePerconf>{
-                    print: true
-                }
             },
             gradient: "wind",
             displayName: "Gust",
@@ -292,17 +270,17 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: true,
                     displayUnit: true,
-                    start: -Math.PI/2,
-                    end: Math.PI*2-Math.PI/2,
+                    start: -Math.PI / 2,
+                    end: Math.PI * 2 - Math.PI / 2,
                     startV: 0,
                     endV: 360,
                     panel: 2,
                     r: 75,
-                    x: Math.floor(width/4)*3,
-                    y: 150+150+75,
+                    x: Math.floor(width / 4) * 3,
+                    y: 150 + 150 + 75,
                     transform: "wind",
                     presc: 0
                 },
@@ -317,7 +295,7 @@ let pipeline: Pipeline = {
         // Water & Soil
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -326,8 +304,8 @@ let pipeline: Pipeline = {
                     endV: 77,
                     panel: 3,
                     r: 150,
-                    x: Math.floor(width/2),
-                    y: 150+smallSpacing,
+                    x: Math.floor(width / 2),
+                    y: 150 + smallSpacing,
                     transform: undefined,
                     presc: 1
                 },
@@ -335,9 +313,6 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                "console": <ConsolePerconf>{
-                    print: true
-                }
             },
             gradient: "wu_temp",
             displayName: "Water Temp.",
@@ -347,7 +322,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -356,8 +331,8 @@ let pipeline: Pipeline = {
                     endV: 86,
                     panel: 3,
                     r: 75,
-                    x: Math.floor(width/4),
-                    y: 150+150+75,
+                    x: Math.floor(width / 4),
+                    y: 150 + 150 + 75,
                     transform: undefined,
                     presc: 1
                 }
@@ -370,7 +345,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: true,
                     displayUnit: false,
                     start: ns,
@@ -379,8 +354,8 @@ let pipeline: Pipeline = {
                     endV: 16,
                     panel: 3,
                     r: 75,
-                    x: Math.floor(width/4)*3,
-                    y: 150+150+75,
+                    x: Math.floor(width / 4) * 3,
+                    y: 150 + 150 + 75,
                     transform: undefined,
                     presc: 0
                 }
@@ -395,7 +370,7 @@ let pipeline: Pipeline = {
         //Humidity
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -404,8 +379,8 @@ let pipeline: Pipeline = {
                     endV: 100,
                     panel: 4,
                     r: 150,
-                    x: Math.floor(width/2),
-                    y: 150+smallSpacing,
+                    x: Math.floor(width / 2),
+                    y: 150 + smallSpacing,
                     transform: undefined,
                     presc: 0
                 },
@@ -413,9 +388,6 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                "console": <ConsolePerconf>{
-                    print: true
-                }
             },
             gradient: "humidity",
             displayName: "Humidity",
@@ -427,7 +399,7 @@ let pipeline: Pipeline = {
         //UV
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -436,8 +408,8 @@ let pipeline: Pipeline = {
                     endV: 15,
                     panel: 5,
                     r: 150,
-                    x: Math.floor(width/2),
-                    y: 150+smallSpacing,
+                    x: Math.floor(width / 2),
+                    y: 150 + smallSpacing,
                     transform: undefined,
                     presc: 1
                 },
@@ -445,9 +417,6 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                "console": <ConsolePerconf>{
-                    print: true
-                }
             },
             gradient: "uv",
             displayName: "UV Index",
@@ -459,7 +428,7 @@ let pipeline: Pipeline = {
         //AQI
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -468,8 +437,8 @@ let pipeline: Pipeline = {
                     endV: 300,
                     panel: 6,
                     r: 150,
-                    x: Math.floor(width/2),
-                    y: 150+smallSpacing,
+                    x: Math.floor(width / 2),
+                    y: 150 + smallSpacing,
                     transform: undefined,
                     presc: 0
                 }
@@ -484,7 +453,7 @@ let pipeline: Pipeline = {
         //Pressure
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -493,8 +462,8 @@ let pipeline: Pipeline = {
                     endV: 31.00,
                     panel: 7,
                     r: 150,
-                    x: Math.floor(width/2),
-                    y: 150+smallSpacing,
+                    x: Math.floor(width / 2),
+                    y: 150 + smallSpacing,
                     transform: undefined,
                     presc: 2
                 },
@@ -502,9 +471,6 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                "console": <ConsolePerconf>{
-                    print: true
-                }
             },
             gradient: "pressure",
             displayName: "Pressure",
@@ -516,7 +482,7 @@ let pipeline: Pipeline = {
         //Solar Radiation
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -525,8 +491,8 @@ let pipeline: Pipeline = {
                     endV: 1361,
                     panel: 8,
                     r: 150,
-                    x: Math.floor(width/2),
-                    y: 150+smallSpacing,
+                    x: Math.floor(width / 2),
+                    y: 150 + smallSpacing,
                     transform: undefined,
                     presc: 2
                 },
@@ -534,9 +500,6 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                "console": <ConsolePerconf>{
-                    print: true
-                }
             },
             gradient: "solar",
             displayName: "Solar Radiation",
@@ -548,7 +511,7 @@ let pipeline: Pipeline = {
         //PM2.5
         {
             perConfig: {
-                "image": <ImagePerconf> {
+                "image": <ImagePerconf>{
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -557,8 +520,8 @@ let pipeline: Pipeline = {
                     endV: 1300,
                     panel: 9,
                     r: 150,
-                    x: Math.floor(width/2),
-                    y: 150+smallSpacing,
+                    x: Math.floor(width / 2),
+                    y: 150 + smallSpacing,
                     transform: "pm25",
                     presc: 0
                 },
@@ -566,6 +529,549 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
+            },
+            gradient: "pm25",
+            displayName: "PM2.5",
+            fieldName: "pm25",
+            transform: undefined,
+            unit: " µg/m³"
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wind",
+            displayName: "Wind Speed (WU)",
+            fieldName: "windSpeed",
+            transform: undefined,
+            unit: " mph",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wind",
+            displayName: "Wind Gust (WU)",
+            fieldName: "windGust",
+            transform: undefined,
+            unit: " mph",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wind",
+            displayName: "Daily Gust (Ambient)",
+            fieldName: "maxdailygust",
+            transform: undefined,
+            unit: " mph",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "winddir",
+            displayName: "Wind Direction",
+            fieldName: "winddir",
+            transform: undefined,
+            unit: "°",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wind",
+            displayName: "Wind Speed (Ambient)",
+            fieldName: "windspeedmph",
+            transform: undefined,
+            unit: " mph",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wind",
+            displayName: "Wind Gust (Ambient)",
+            fieldName: "windgustmph",
+            transform: undefined,
+            unit: " mph",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "rainrate",
+            displayName: "Rain Rate (WU)",
+            fieldName: "precipRate",
+            transform: undefined,
+            unit: " in/hr",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "rainaccum",
+            displayName: "Daily Rain (WU)",
+            fieldName: "precipTotal",
+            transform: undefined,
+            unit: " in",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "rainaccum",
+            displayName: "Hourly Rain (Ambient)",
+            fieldName: "hourlyrainin",
+            transform: undefined,
+            unit: " in",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "rainaccum",
+            displayName: "Daily Rain (Ambient)",
+            fieldName: "dailyrainin",
+            transform: undefined,
+            unit: " in",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "rainaccum",
+            displayName: "Weekly Rain (Ambient)",
+            fieldName: "weeklyrainin",
+            transform: undefined,
+            unit: " in",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "rainaccum",
+            displayName: "Monthly Rain (Ambient)",
+            fieldName: "monthlyrainin",
+            transform: undefined,
+            unit: " in",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "rainaccum",
+            displayName: "Yearly Rain (Ambient)",
+            fieldName: "yearlyrainin",
+            transform: undefined,
+            unit: " in",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wu_temp",
+            displayName: "Dew Point (WU)",
+            fieldName: "dewpt",
+            transform: undefined,
+            unit: "°F",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wu_temp",
+            displayName: "Temperature (WU)",
+            fieldName: "temp",
+            transform: undefined,
+            unit: "°F",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wu_temp",
+            displayName: "Heat Index (WU)",
+            fieldName: "heatIndex",
+            transform: undefined,
+            unit: "°F",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wu_temp",
+            displayName: "Wind Chill (WU)",
+            fieldName: "windChill",
+            transform: undefined,
+            unit: "°F",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wu_temp",
+            displayName: "Temperature (Ambient)",
+            fieldName: "tempf",
+            transform: undefined,
+            unit: "°F",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wu_temp",
+            displayName: "Temperature (Indoor)",
+            fieldName: "temp1f",
+            transform: undefined,
+            unit: "°F",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wu_temp",
+            displayName: "Temperature (Water)",
+            fieldName: "temp2f",
+            transform: undefined,
+            unit: "°F",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wu_temp",
+            displayName: "Temperature (Soil)",
+            fieldName: "soiltemp3",
+            transform: undefined,
+            unit: "°F",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wu_temp",
+            displayName: "Dew Point (Ambient)",
+            fieldName: "dewPoint",
+            transform: undefined,
+            unit: "°F",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wu_temp",
+            displayName: "Dew Point (Indoor)",
+            fieldName: "dewPoint1",
+            transform: undefined,
+            unit: "°F",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wu_temp",
+            displayName: "Dew Point (Soil)",
+            fieldName: "dewPoint3",
+            transform: undefined,
+            unit: "°F",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wu_temp",
+            displayName: "Feels Like (Ambient)",
+            fieldName: "feelsLike",
+            transform: undefined,
+            unit: "°F",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wu_temp",
+            displayName: "Feels Like (Indoor)",
+            fieldName: "feelsLike1",
+            transform: undefined,
+            unit: "°F",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "wu_temp",
+            displayName: "Feels Like (Soil)",
+            fieldName: "feelsLike3",
+            transform: undefined,
+            unit: "°F",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "pressure",
+            displayName: "Rel. Pressure (WU)",
+            fieldName: "pressure",
+            transform: undefined,
+            unit: " inHg",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "pressure",
+            displayName: "Rel. Pressure (Ambient)",
+            fieldName: "baromrelin",
+            transform: undefined,
+            unit: " inHg",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "pressure",
+            displayName: "Abs. Pressure (Ambient)",
+            fieldName: "baromabsin",
+            transform: undefined,
+            unit: " inHg",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "solar",
+            displayName: "Solar Radiation (WU)",
+            fieldName: "solarRadiation",
+            transform: undefined,
+            unit: "  W/m²",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "solar",
+            displayName: "Solar Radiation (Ambient)",
+            fieldName: "solarradiation",
+            transform: undefined,
+            unit: " W/m²",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "uv",
+            displayName: "UV Index",
+            fieldName: "uv",
+            transform: undefined,
+            unit: "",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "humidity",
+            displayName: "Humidity (Ambient)",
+            fieldName: "humidity",
+            transform: undefined,
+            unit: "%",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "humidity",
+            displayName: "Humidity (Indoor)",
+            fieldName: "humidity1",
+            transform: undefined,
+            unit: "%",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "soil",
+            displayName: "Humidity (Soil)",
+            fieldName: "soilhum3",
+            transform: undefined,
+            unit: "",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "batt",
+            displayName: "Battery (Station)",
+            fieldName: "battout",
+            transform: undefined,
+            unit: "",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "batt",
+            displayName: "Battery (Indoor)",
+            fieldName: "batt1",
+            transform: undefined,
+            unit: "",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "batt",
+            displayName: "Battery (Water)",
+            fieldName: "batt2",
+            transform: undefined,
+            unit: "",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "batt",
+            displayName: "Battery (Soil)",
+            fieldName: "batt3",
+            transform: undefined,
+            unit: "",
+        },
+
+        {
+            perConfig: {
+                "console": <ConsolePerconf>{
+                    print: true
+                }
+            },
+            gradient: "aqi",
+            displayName: "AQI",
+            fieldName: "aqi",
+            transform: undefined,
+            unit: "",
+        },
+
+        {
+            perConfig: {
                 "console": <ConsolePerconf>{
                     print: true
                 }
@@ -574,8 +1080,9 @@ let pipeline: Pipeline = {
             displayName: "PM2.5",
             fieldName: "pm25",
             transform: undefined,
-            unit: " µg/m³"
+            unit: " µg/m³",
         },
+
     ],
     inputs: [
         {
@@ -586,8 +1093,7 @@ let pipeline: Pipeline = {
         },
         {
             name: "ambientweather",
-            opts: {
-            }
+            opts: {}
         },
         {
             name: "aqi",
@@ -597,11 +1103,11 @@ let pipeline: Pipeline = {
             }
 
         }
-        ],
+    ],
     intermediaries: [
         {
             name: "cardinal",
-            opts:{}
+            opts: {}
         },
         {
             name: "soil",
@@ -639,7 +1145,7 @@ let pipeline: Pipeline = {
                 }
             }
         }
-        ],
+    ],
     runInst: true,
     processors: [
         {
@@ -692,14 +1198,14 @@ let pipeline: Pipeline = {
                         title: "UV Index",
                         x: spacing + width + spacing + width + spacing,
                         y: spacing + smallHeight + spacing,
-                        height: smallHeight+1,
+                        height: smallHeight + 1,
                         width: width,
                         fontSize: titleFontSize
                     },
                     {
                         title: "AQI",
                         x: spacing + width + spacing + width + spacing,
-                        y: spacing + smallHeight + spacing + smallHeight+1 + spacing,
+                        y: spacing + smallHeight + spacing + smallHeight + 1 + spacing,
                         height: smallHeight,
                         width: width,
                         fontSize: titleFontSize
@@ -723,7 +1229,7 @@ let pipeline: Pipeline = {
                     {
                         title: "PM2.5",
                         x: spacing + width + spacing + width + spacing + width + spacing,
-                        y: spacing + smallHeight + spacing + smallHeight+1 + spacing,
+                        y: spacing + smallHeight + spacing + smallHeight + 1 + spacing,
                         height: smallHeight,
                         width: width,
                         fontSize: titleFontSize

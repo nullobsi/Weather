@@ -4,6 +4,8 @@ import Gradients from "../defs/Gradients.ts";
 import DataOutput from "../defs/DataOutput.ts";
 import textPad from "../util/textPad.ts";
 import getDateString from "../util/getDateString.ts";
+import tempToColor, {hexToRGB} from "../util/tempToColor.ts";
+import * as Colors from "https://deno.land/std@0.76.0/fmt/colors.ts"
 
 type ConsolePerconf = {
     print: true
@@ -16,7 +18,20 @@ const output: DataOutput = async function output(data: WeatherData, opt, datafie
         .reduce((p,v) => v.displayName.length > p ? v.displayName.length : p,0)
     console.log("Weather Report for " + getDateString(new Date(data.date)));
     datafields.filter(v => v.perConfig.console !== undefined).forEach(v => {
-        console.log(`${textPad(v.displayName,max)}: ${data[v.fieldName] !== null && data[v.fieldName] !== undefined ? data[v.fieldName] : "No Data"}${v.unit}`);
+        let exists = data[v.fieldName] !== null && data[v.fieldName] !== undefined
+        let str = exists ? data[v.fieldName] : "No Data";
+        if (exists) {
+            let temp = data[v.fieldName];
+            let grad = gradients[v.gradient];
+            let color = hexToRGB(tempToColor(temp, grad));
+
+            str = Colors.rgb24(str, {
+                r: color[0],
+                g: color[1],
+                b: color[2]
+            });
+        }
+        console.log(`${textPad(v.displayName,max)}: ${str}${exists ? v.unit : ""}`);
     });
 
 }
