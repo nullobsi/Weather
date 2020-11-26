@@ -1119,7 +1119,7 @@ let pipeline: Pipeline = {
         {
             name: "rainrate",
             opts: <RainrateOpts>{
-                highEnd: 34,
+                highEnd: 37,
                 lowEnd: 32,
                 fieldName: "precipRate",
             }
