@@ -7,6 +7,7 @@ import {wundergroundOpts} from "../inputs/wunderground.ts";
 import {AqiOpts} from "../inputs/aqi.ts";
 import {SoilOpts} from "../intermediaries/soil.ts";
 import {ConsolePerconf} from "../outputs/console.ts";
+import {RainrateOpts} from "../intermediaries/rainrate.ts";
 
 const config = await getConfig("outputs", "main", {
     discordChannelId: "HERE",
@@ -1114,9 +1115,17 @@ let pipeline: Pipeline = {
             opts: <SoilOpts>{
                 fieldName: soilHumidity
             }
+        },
+        {
+            name: "rainrate",
+            opts: <RainrateOpts>{
+                highEnd: 34,
+                lowEnd: 32,
+                fieldName: "precipRate",
+            }
         }
     ],
-    interval: 120000,
+    interval: 300000,
     outputs: [
         {
             name: "console",

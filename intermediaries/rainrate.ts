@@ -1,24 +1,22 @@
 import Intermediary from "../defs/Intermediary.ts";
 
-let lastRain: number | undefined = undefined;
-let lastRainDate: Date | undefined = undefined
+type RainrateOpts = {
+    fieldName: string,
+    lowEnd: number,
+    highEnd: number
+}
+
+export type {RainrateOpts}
 
 let dataTransform: Intermediary = async function (opts, data, keypoints, pipeline) {
-    if (lastRain != undefined && lastRainDate != undefined) {
-        let date = new Date(data.date);
-        let rDiff = data.totalrainin - lastRain;
-        let dDiff = date.getTime() - lastRainDate.getTime();
-        data.instrain = rDiff / (dDiff / 3600000);
-        lastRain = data.totalrainin;
-        lastRainDate = date;
-        return;
-    }
-    else {
-        lastRain = data.totalrainin;
-        lastRainDate = new Date(data.date);
-        data.totalrainin = undefined;
-        return;
-    }
+    let opt = opts as RainrateOpts
+    let rainrate = pipeline.datafields.filter(val => val.fieldName == "precipRate")
+    rainrate.forEach(val => {
+        let dat = data[val.fieldName];
+        if (dat <= opt.lowEnd) val.gradient = "snow";
+        else if (opt.lowEnd < dat && dat <= opt.highEnd) val.gradient = "mixed";
+        else if (dat > opt.highEnd) val.gradient = "rainrate";
+    });
 }
 
 export default dataTransform;

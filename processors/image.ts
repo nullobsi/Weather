@@ -1,10 +1,6 @@
-//import { createRequire } from "https://deno.land/std@0.76.0/node/module.ts";
 import DataProcessor from "../defs/DataProcessor.ts";
 
-///const require = createRequire(import.meta.url);
-import Go from "https://x.nest.land/GoDeno@0.3.0/mod.ts"
-// @ts-ignore
-
+import Go from "https://x.nest.land/GoDeno@0.4.0/mod.ts"
 
 interface renderOpt {
     panels: {
@@ -37,7 +33,7 @@ interface renderOpt {
 }
 
 
-
+let wasmFile = await Deno.readFile("util/Canvas/go_build_Canvas_js");
 
 let process: DataProcessor = async function(options, gradients, datafields, data, transforms, outputs) {
 
@@ -88,8 +84,9 @@ let process: DataProcessor = async function(options, gradients, datafields, data
             transform: conf.transform
         })
     })
+
     let go = new Go()
-    let wa = await WebAssembly.instantiate(Deno.readFileSync("util/Canvas/go_build_Canvas_js"), go.importObject);
+    let wa = await WebAssembly.instantiate(wasmFile, go.importObject);
     let p = go.run(wa.instance);
     let size = await go.exports?.renderDials(finalOpt, gradients);
     let buffer = new Uint8Array(size);
