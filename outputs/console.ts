@@ -23,12 +23,18 @@ const output: DataOutput = async function output(data: WeatherData, opt, datafie
         if (exists) {
             let temp = data[v.fieldName];
             let grad = gradients[v.gradient];
-            let color = hexToRGB(tempToColor(temp, grad));
-            str = Colors.rgb24(str.toString(), {
-                r: color[0],
-                g: color[1],
-                b: color[2]
-            });
+            let interpolated: string = "NOCOLOR";
+            try {
+                interpolated = tempToColor(temp, grad)
+                let color = hexToRGB(interpolated);
+                str = Colors.rgb24(str.toString(), {
+                    r: color[0],
+                    g: color[1],
+                    b: color[2]
+                });
+            } catch (e) {
+                console.log("Strange error!\n" + e + "\n" + interpolated);
+            }
         }
         console.log(`${textPad(v.displayName,max)}: ${str}${Colors.reset(exists ? v.unit : "")}`);
     });
