@@ -8,6 +8,7 @@ import {AqiOpts} from "../inputs/aqi.ts";
 import {SoilOpts} from "../intermediaries/soil.ts";
 import {ConsolePerconf} from "../outputs/console.ts";
 import {RainrateOpts} from "../intermediaries/rainrate.ts";
+import {CapOptions} from "../intermediaries/cap.ts";
 
 const config = await getConfig("outputs", "main", {
     discordChannelId: "HERE",
@@ -483,6 +484,19 @@ let pipeline: Pipeline = {
         //Solar Radiation
         {
             perConfig: {
+                "discord": <DiscordPerconf>{
+                    updateRoleColor: false,
+                    sendToDiscord: true
+                },
+            },
+            gradient: "solar",
+            displayName: "Solar Radiation",
+            fieldName: "solarradiation",
+            transform: undefined,
+            unit: " W/m²"
+        },
+        {
+            perConfig: {
                 "image": <ImagePerconf>{
                     displayName: false,
                     displayUnit: true,
@@ -497,14 +511,10 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 2
                 },
-                "discord": <DiscordPerconf>{
-                    updateRoleColor: false,
-                    sendToDiscord: true
-                },
             },
             gradient: "solar",
             displayName: "Solar Radiation",
-            fieldName: "solarradiation",
+            fieldName: "solarRounded",
             transform: undefined,
             unit: " W/m²"
         },
@@ -1123,6 +1133,14 @@ let pipeline: Pipeline = {
                 lowEnd: 32,
                 fieldName: "precipRate",
                 tempFieldName: "temp"
+            }
+        },
+        {
+            name: "cap",
+            opts: <CapOptions>{
+                oldField: "solarradiation",
+                fieldName: "solarRounded",
+                maxDigits: 4
             }
         }
     ],

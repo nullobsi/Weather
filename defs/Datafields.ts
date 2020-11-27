@@ -6,7 +6,7 @@ type Datafields = {
     gradient: string,
     unit: string,
     transform: string | undefined,
-    perConfig: Indexed<Indexed<any> | undefined>
+    perConfig: Indexed<Indexed<any> | undefined>,
 }[]
 
 export default Datafields;
