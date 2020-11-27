@@ -1122,6 +1122,7 @@ let pipeline: Pipeline = {
                 highEnd: 37,
                 lowEnd: 32,
                 fieldName: "precipRate",
+                tempFieldName: "temp"
             }
         }
     ],
