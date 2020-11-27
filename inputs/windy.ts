@@ -67,3 +67,5 @@ let getData: DataInput = async function (opts) {
     });
     return out;
 }
+
+export default getData;
