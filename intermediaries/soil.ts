@@ -5,8 +5,8 @@ export type {SoilOpts}
 let dataTransform: Intermediary = async function (opts, data, keypoints, pipeline) {
     let fieldName = (opts as SoilOpts).fieldName;
     let point = data[fieldName]
-    let nd = Math.round(point / (100/15))
-    data[fieldName] = nd;
+    if (point === undefined) return;
+    data[fieldName] = Math.round(point / (100 / 15));
 }
 
 export default dataTransform;

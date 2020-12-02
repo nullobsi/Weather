@@ -1191,7 +1191,7 @@ let pipeline: Pipeline = {
                         fontSize: titleFontSize
                     },
                     {
-                        title: "Rain",
+                        title: "Precipitation",
                         x: spacing,
                         y: spacing + largeHeight + spacing,
                         height: largeHeight,

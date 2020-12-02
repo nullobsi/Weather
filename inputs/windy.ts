@@ -45,8 +45,6 @@ type WindyOpts = {
     levels: Array<"surface" | "1000h" | "950h" | "925h" | "900h" | "850h" | "800h" | "700h" | "600h" | "500h" | "400h" | "300h" | "200h" | "150h">,
 } & Model;
 
-
-
 let getData: DataInput = async function (opts) {
     let opt = opts as WindyOpts;
     let res = await fetch("https://api.windy.com/api/point-forecast/v2", {
