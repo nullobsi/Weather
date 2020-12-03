@@ -7,7 +7,7 @@ type CapOptions = {
 }
 
 export type { CapOptions }
-
+let regex = /.+\.(.+)/
 let inter: Intermediary = async function (opts, data, gradients, pipeline) {
     let opt = opts as CapOptions;
     let d = data[opt.oldField] as number;
@@ -22,8 +22,14 @@ let inter: Intermediary = async function (opts, data, gradients, pipeline) {
         }
     }
     data[opt.fieldName] = d;
+    let res = regex.exec(d.toString());
+    let nPresc:number;
+    if (res === null) nPresc = 0;
+    else {
+        nPresc = res[1].length
+    }
 
-    pipeline.datafields.filter(v => v.fieldName == opt.fieldName).forEach(v => v.perConfig.image !== undefined ? v.perConfig.image.presc = p : null)
+    pipeline.datafields.filter(v => v.fieldName == opt.fieldName).forEach(v => v.perConfig.image !== undefined ? v.perConfig.image.presc = nPresc : null)
 }
 
 export default inter;
