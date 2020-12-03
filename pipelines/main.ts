@@ -488,15 +488,6 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-            },
-            gradient: "solar",
-            displayName: "Solar Radiation",
-            fieldName: "solarradiation",
-            transform: undefined,
-            unit: " W/m²"
-        },
-        {
-            perConfig: {
                 "image": <ImagePerconf>{
                     displayName: false,
                     displayUnit: true,
@@ -514,7 +505,7 @@ let pipeline: Pipeline = {
             },
             gradient: "solar",
             displayName: "Solar Radiation",
-            fieldName: "solarRounded",
+            fieldName: "solarradiation",
             transform: undefined,
             unit: " W/m²"
         },
@@ -1138,9 +1129,9 @@ let pipeline: Pipeline = {
         {
             name: "cap",
             opts: <CapOptions>{
-                oldField: "solarradiation",
-                fieldName: "solarRounded",
-                maxDigits: 4
+                fieldName: "solarradiation",
+                maxDigits: 4,
+                maxPresc: 2
             }
         }
     ],

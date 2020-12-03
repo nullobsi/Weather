@@ -1,8 +1,8 @@
 import Intermediary from "../defs/Intermediary.ts";
 
 type CapOptions = {
-    oldField: string,
     maxDigits: number,
+    maxPresc: number
     fieldName: string,
 }
 
@@ -10,27 +10,23 @@ export type { CapOptions }
 let regex = /.+\.(.+)/
 let inter: Intermediary = async function (opts, data, gradients, pipeline) {
     let opt = opts as CapOptions;
-    let d = data[opt.oldField] as number;
+    let d = data[opt.fieldName] as number;
     if (d === undefined) return;
-    let res = cap(d, opt.maxDigits);
-    data[opt.fieldName] = res[0];
+    let res = cap(d, opt.maxDigits, opt.maxPresc);
 
-    pipeline.datafields.filter(v => v.fieldName == opt.fieldName).forEach(v => v.perConfig.image !== undefined ? v.perConfig.image.presc = res[1] : null)
+    pipeline.datafields.filter(v => v.fieldName == opt.fieldName).forEach(v => v.perConfig.image !== undefined ? v.perConfig.image.presc = res : null)
 }
 
-function cap(d: number, max: number){
-    let dstring = d.toString().replace(".","")
-    let p = max
-    if (dstring.length > max){
-        while (dstring.length > max) {
-            d = Math.round(d*Math.pow(10,p))/Math.pow(10,p);
-            p--
-            dstring = d.toString().replace(".","")
-        }
+function cap(d: number, max: number, maxPresc: number){
+    function retn(n: number){return n < maxPresc ? n : maxPresc}
+    let dstring = d.toString()
+    let decimalAt = dstring.indexOf(".")
+    if (decimalAt == -1) {
+        return retn(max-dstring.length)
     }
-    let res = /.+\.(.+)/.exec(d.toString())
-    let npresc = max - dstring.length + (res !== null ? res[1].length : 0)
-    return [d, npresc];
+    let integer = dstring.substring(0, decimalAt);
+    let decMax = max - integer.length;
+    return retn(decMax);
 }
 
 export default inter;
