@@ -29,9 +29,7 @@ function cap(d: number, max: number){
         }
     }
     let res = /.+\.(.+)/.exec(d.toString())
-    let npresc: number;
-    if (res === null) npresc = 0;
-    else npresc = res[1].length
+    let npresc = max - dstring.length + (res !== null ? res[1].length : 0)
     return [d, npresc];
 }
 
