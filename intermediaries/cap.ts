@@ -18,7 +18,7 @@ let inter: Intermediary = async function (opts, data, gradients, pipeline) {
 }
 
 function cap(d: number, max: number, maxPresc: number){
-    function retn(n: number){return n < maxPresc ? n : maxPresc}
+    function retn(n: number){return n < maxPresc ? (n >= 0 ? n : 0) : maxPresc}
     let dstring = d.toString()
     let decimalAt = dstring.indexOf(".")
     if (decimalAt == -1) {
