@@ -17,6 +17,7 @@ const getData: DataInput = async function() {
     }
     let dev = data[0];
     if (dev === undefined) {
+        console.log(data);
         throw new Error("Could not get devices from Ambient!")
     }
     return data[0].lastData;
