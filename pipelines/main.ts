@@ -1131,7 +1131,7 @@ let pipeline: Pipeline = {
             opts: <CapOptions>{
                 fieldName: "solarradiation",
                 maxDigits: 4,
-                maxPresc: 2
+                maxPresc: 2,
             }
         }
     ],
