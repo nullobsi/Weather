@@ -1085,6 +1085,20 @@ let pipeline: Pipeline = {
             unit: " µg/m³",
         },
 
+        {
+            perConfig: {
+                "discord": <DiscordPerconf>{
+                    updateRoleColor: true,
+                    sendToDiscord: false
+                },
+            },
+            gradient: "windy_temp",
+            displayName: "Temperature (Windy)",
+            fieldName: "temp",
+            transform: undefined,
+            unit: "°F"
+        },
+
     ],
     inputs: [
         {
