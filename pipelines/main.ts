@@ -353,7 +353,7 @@ let pipeline: Pipeline = {
                     start: ns,
                     end: ne,
                     startV: 1,
-                    endV: 16,
+                    endV: 15,
                     panel: 3,
                     r: 75,
                     x: Math.floor(width / 4) * 3,
