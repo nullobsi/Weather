@@ -8,7 +8,7 @@ export type {ImageInputOpts}
 const getData: DataInput = async function(options): Promise<WeatherData> {
     let opts = options as ImageInputOpts;
     let response = await fetch(opts.url);
-    let arr = await response.body.arrayBuffer();
+    let arr = await response.arrayBuffer();
 	let data = {
 		image: arr,
 	}
