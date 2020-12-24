@@ -9,6 +9,7 @@ import {SoilOpts} from "../intermediaries/soil.ts";
 import {ConsolePerconf} from "../outputs/console.ts";
 import {RainrateOpts} from "../intermediaries/rainrate.ts";
 import {CapOptions} from "../intermediaries/cap.ts";
+import {FtpOutputOpts} from "../outputs/ftp.ts";
 
 const config = await getConfig("outputs", "main", {
     discordChannelId: "HERE",
@@ -16,6 +17,12 @@ const config = await getConfig("outputs", "main", {
     wundergroundStationId: "HERE",
     aqiLat: 0,
     aqiLng: 0,
+
+    ftpPassword: "HERE",
+    ftpUsername: "HERE",
+    ftpHostname: "HERE",
+    ftpAuthname: "HERE",
+    ftpPort: 21,
 })
 //image
 const imgWidth = 1440
@@ -1176,6 +1183,18 @@ let pipeline: Pipeline = {
                     fieldName: "image",
                     fileName: "weather.png"
                 }
+            }
+        },
+        {
+            name: "ftp",
+            opts: <FtpOutputOpts>{
+                fieldName: "image",
+                uploadName: "otris/temp.png",
+                password: config.ftpPassword,
+                username: config.ftpUsername,
+                host: config.ftpHostname,
+                port: config.ftpPort,
+                tlsHostname: config.ftpAuthname,
             }
         }
     ],
