@@ -23,7 +23,7 @@ const output: DataOutput = async function output(data: WeatherData, opt, datafie
         if (exists) {
             let temp = data[v.fieldName];
             let grad = gradients[v.gradient];
-            let interpolated: string = "NOCOLOR";
+            let interpolated: string = "color";
             try {
                 interpolated = tempToColor(temp, grad)
                 let color = hexToRGB(interpolated);
