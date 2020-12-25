@@ -1189,7 +1189,7 @@ let pipeline: Pipeline = {
             name: "ftp",
             opts: <FtpOutputOpts>{
                 fieldName: "image",
-                uploadName: "otris/temp.png",
+                uploadName: "weather/temp.png",
                 password: config.ftpPassword,
                 username: config.ftpUsername,
                 host: config.ftpHostname,
