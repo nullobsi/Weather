@@ -9,7 +9,7 @@ const config = await getConfig("outputs", "discord", {
     "token": "HERE"
 });
 
-await Discord.default({
+await Discord.startBot({
     token: config.token,
     intents: []
 });
