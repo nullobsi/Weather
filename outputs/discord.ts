@@ -26,7 +26,14 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
     let msg = "Weather report for " + getDateString(new Date(data.date)) + "\n";
     //let maxlen = datafields.reduce<number>((p, c) => c.displayName.length > p ? c.displayName.length : p, 0);
     console.log("[discord] Getting roles...")
-    let roles = await Discord.getRoles(options.server) as DiscordRole[];
+    let roles: DiscordRole[] = [];
+    let hasPerm = true;
+    if (!Discord.botHasPermission(options.server, ["MANAGE_ROLES"])) {
+        console.error("[discord] No permission for roles, skipping!");
+        hasPerm = false;
+    } else {
+        roles = await Discord.getRoles(options.server) as DiscordRole[];
+    }
     for (let field of datafields) {
         try{
         if (!field.perConfig["discord"]) continue;
@@ -37,11 +44,8 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
             let str = value !== undefined && value !== null ? value : "No Data";
             msg += field.displayName + ": " + str + field.unit + "\n";
         }
-        if (perconf.updateRoleColor) {
-            if (!Discord.botHasPermission(options.server, ["MANAGE_ROLES"])) {
-                console.error("[discord] No permission for roles, skipping!");
-                continue;
-            }
+        if (perconf.updateRoleColor && hasPerm) {
+
             let color = value ? hexToNumber(tempToColor(value, gradient)) : undefined;
             let role = roles.find(v => v.name == field.displayName);
             if (role) {
