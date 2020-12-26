@@ -8,10 +8,18 @@ import DataOutput from "../defs/DataOutput.ts";
 const config = await getConfig("outputs", "discord", {
     "token": "HERE"
 });
-
+let resolve: () => void;
+let readyPromise = new Promise(res => {
+    resolve = res;
+});
 await Discord.startBot({
     token: config.token,
-    intents: []
+    intents: [],
+    eventHandlers: {
+        ready() {
+            resolve();
+        }
+    }
 });
 
 type DiscordPerconf = {
@@ -22,6 +30,7 @@ type DiscordOpt = {channel: string, server: string, attachment: {fieldName: stri
 export type {DiscordPerconf,DiscordOpt}
 
 const output: DataOutput = async function output(data, opt, datafields, gradients, processed) {
+    await readyPromise;
     let options = opt as DiscordOpt;
     let msg = "Weather report for " + getDateString(new Date(data.date)) + "\n";
     //let maxlen = datafields.reduce<number>((p, c) => c.displayName.length > p ? c.displayName.length : p, 0);
