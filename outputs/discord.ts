@@ -32,7 +32,13 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
         console.error("[discord] No permission for roles, skipping!");
         hasPerm = false;
     } else {
-        roles = await Discord.getRoles(options.server) as DiscordRole[];
+        let server = await Discord.cache.guilds.get(options.server);
+        if (server) {
+            roles = server.roles.array();
+        } else {
+            console.error("[discord] Server does not exist!");
+            return;
+        }
     }
     for (let field of datafields) {
         try{
