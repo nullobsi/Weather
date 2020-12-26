@@ -37,7 +37,8 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
             roles = server.roles.array();
         } else {
             console.error("[discord] Server does not exist!");
-            return;
+            console.error("[discord] Continuing with caution...");
+            hasPerm = false;
         }
     }
     for (let field of datafields) {
