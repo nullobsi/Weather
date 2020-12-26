@@ -16,7 +16,7 @@ const getData: DataInput = async function(options) {
     let data = JSON.parse(json);
     if (data.status !== "ok") throw new Error("AQI Fetch returned not ok!");
     data = data.data
-    return {aqi:data.aqi,pm25:data.iaqi.pm25.v};
+    return {aqi:data.aqi,/*pm25:data.iaqi.pm25.v*/};
 }
 
 export default getData;
