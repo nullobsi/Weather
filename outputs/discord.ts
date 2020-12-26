@@ -37,11 +37,11 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
     console.log("[discord] Getting roles...")
     let roles: DiscordRole[] = [];
     let hasPerm = true;
-    if (!Discord.botHasPermission(options.server, ["MANAGE_ROLES"])) {
+    if (!(await Discord.botHasPermission(options.server, ["MANAGE_ROLES"]))) {
         console.error("[discord] No permission for roles, skipping!");
         hasPerm = false;
     } else {
-        let server = await Discord.cache.guilds.get(options.server);
+        let server = Discord.cache.guilds.get(options.server);
         if (server) {
             roles = server.roles.array();
         } else {
