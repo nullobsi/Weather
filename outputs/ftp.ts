@@ -1,5 +1,4 @@
 import DataOutput from "../defs/DataOutput.ts";
-import getDateString from "../util/getDateString.ts";
 import FTPClient from "https://deno.land/x/ftpc@v1.0.0/mod.ts";
 
 const output: DataOutput = async (data, opt, datafields, gradients, processed) => {
@@ -15,14 +14,17 @@ const output: DataOutput = async (data, opt, datafields, gradients, processed) =
             implicit: false,
         }
     });
-    await c.connect();
     try {
+
+        await c.connect();
         await c.upload(opts.uploadName, processed[opts.fieldName]);
+        await c.close();
     } catch (e) {
-        console.error("Error occured, file may not be uploaded!")
+        console.error("[ftp] Error!");
         console.error(e);
+        c.close();
     }
-    await c.close();
+
 }
 
 export default output;
