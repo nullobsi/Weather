@@ -14,7 +14,7 @@ let readyPromise = new Promise(res => {
 });
 await Discord.startBot({
     token: config.token,
-    intents: [],
+    intents: [Discord.Intents.GUILDS],
     eventHandlers: {
         ready() {
             resolve();
