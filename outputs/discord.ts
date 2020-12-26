@@ -28,6 +28,7 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
     console.log("[discord] Getting roles...")
     let roles = await Discord.getRoles(options.server) as DiscordRole[];
     for (let field of datafields) {
+        try{
         if (!field.perConfig["discord"]) continue;
         let gradient = gradients[field.gradient];
         let perconf = field.perConfig["discord"] as DiscordPerconf;
@@ -37,7 +38,10 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
             msg += field.displayName + ": " + str + field.unit + "\n";
         }
         if (perconf.updateRoleColor) {
-
+            if (!Discord.botHasPermission(options.server, ["MANAGE_ROLES"])) {
+                console.error("[discord] No permission for roles, skipping!");
+                continue;
+            }
             let color = value ? hexToNumber(tempToColor(value, gradient)) : undefined;
             let role = roles.find(v => v.name == field.displayName);
             if (role) {
@@ -55,6 +59,9 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
                     permissions: undefined
                 })
             }
+        }} catch(e) {
+            console.error("[discord] Error, continuing...");
+            console.error(e);
         }
     }
     console.log("[discord] Sending message...")
