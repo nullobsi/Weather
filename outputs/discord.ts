@@ -9,7 +9,7 @@ const config = await getConfig("outputs", "discord", {
     "token": "HERE"
 });
 let resolve: () => void;
-let readyPromise = new Promise(res => {
+let readyPromise = new Promise<void>(res => {
     resolve = res;
 });
 await Discord.startBot({
