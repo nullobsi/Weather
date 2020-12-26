@@ -20,7 +20,7 @@ async function getConfig<T>(subdir: string, moduleName: string, def: T): Promise
                 let key = keys[i];
                 if (parsed[key] === undefined) {
                     let combo = {...def, ...parsed}
-                    let stringed = JSON.stringify(def, undefined, 4);
+                    let stringed = JSON.stringify(combo, undefined, 4);
                     await Deno.writeTextFile(configPath, stringed);
                     console.error(Colors.red(Colors.bold(`Config for module ${subdir}/${moduleName} is missing parameters, check file written to disk!`)))
                     Deno.exit(1);

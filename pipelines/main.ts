@@ -10,6 +10,7 @@ import {ConsolePerconf} from "../outputs/console.ts";
 import {RainrateOpts} from "../intermediaries/rainrate.ts";
 import {CapOptions} from "../intermediaries/cap.ts";
 import {FtpOutputOpts} from "../outputs/ftp.ts";
+import {AmbientPerconf} from "../inputs/ambientweather.ts";
 
 const config = await getConfig("outputs", "main", {
     discordChannelId: "HERE",
@@ -23,6 +24,12 @@ const config = await getConfig("outputs", "main", {
     ftpHostname: "HERE",
     ftpAuthname: "HERE",
     ftpPort: 21,
+
+    ambientApiKey1: "HERE",
+    ambientAppKey1: "HERE",
+
+    ambientApiKey2: "HERE",
+    ambientAppKey2: "HERE",
 })
 //image
 const imgWidth = 1440
@@ -1116,7 +1123,17 @@ let pipeline: Pipeline = {
         },
         {
             name: "ambientweather",
-            opts: {}
+            opts: <AmbientPerconf>{
+                apiKey: config.ambientApiKey1,
+                appKey: config.ambientAppKey1,
+            }
+        },
+        {
+            name: "ambientweather",
+            opts: <AmbientPerconf>{
+                apiKey: config.ambientApiKey2,
+                appKey: config.ambientAppKey2,
+            }
         },
         {
             name: "aqi",
