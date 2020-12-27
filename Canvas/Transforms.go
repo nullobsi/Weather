@@ -3,7 +3,7 @@ package main
 import "math"
 
 func pm25(a float64) float64 {
-	return math.Pow(a, 1/2.58496250072)
+	return a //math.Pow(a, 1/2.58496250072)
 }
 func rainRate(a float64) float64 {
 	if a <= 0 {
