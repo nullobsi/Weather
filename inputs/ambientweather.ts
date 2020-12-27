@@ -1,4 +1,3 @@
-import getConfig from "../util/getConfig.ts";
 import DataInput from "../defs/DataInput.ts";
 
 
@@ -13,17 +12,18 @@ const getData: DataInput = async function(options) {
     } catch (e) {
         throw new Error("Ambient didn't return valid JSON!")
     }
-    let dev = data[0];
+    let dev = data[opts.device];
     if (dev === undefined) {
         console.log(data);
         throw new Error("Could not get devices from Ambient!")
     }
-    return data[0].lastData;
+    return data[opts.device].lastData;
 }
 
 type AmbientPerconf = {
     apiKey: string,
     appKey: string,
+    device: number
 }
 
 export type {AmbientPerconf}

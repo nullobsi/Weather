@@ -27,9 +27,11 @@ const config = await getConfig("outputs", "main", {
 
     ambientApiKey1: "HERE",
     ambientAppKey1: "HERE",
+    ambientDevice1: 0,
 
     ambientApiKey2: "HERE",
     ambientAppKey2: "HERE",
+    ambientDevice2: 0,
 })
 //image
 const imgWidth = 1440
@@ -1126,6 +1128,7 @@ let pipeline: Pipeline = {
             opts: <AmbientPerconf>{
                 apiKey: config.ambientApiKey1,
                 appKey: config.ambientAppKey1,
+                device: config.ambientDevice1,
             }
         },
         {
@@ -1133,6 +1136,7 @@ let pipeline: Pipeline = {
             opts: <AmbientPerconf>{
                 apiKey: config.ambientApiKey2,
                 appKey: config.ambientAppKey2,
+                device: config.ambientDevice2,
             }
         },
         {
