@@ -27,11 +27,11 @@ const config = await getConfig("outputs", "main", {
 
     ambientApiKey1: "HERE",
     ambientAppKey1: "HERE",
-    ambientDevice1: 0,
+    ambientDevice1: "HERE",
 
     ambientApiKey2: "HERE",
     ambientAppKey2: "HERE",
-    ambientDevice2: 0,
+    ambientDevice2: "HERE",
 })
 //image
 const imgWidth = 1440
