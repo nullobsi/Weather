@@ -1,22 +1,24 @@
 import DataInput from "../defs/DataInput.ts";
+import Indexed from "../defs/Indexed.ts";
 
 
 const getData: DataInput = async function(options) {
     let opts = options as AmbientPerconf;
-    const requestUrl = `https://api.ambientweather.net/v1/devices/${opts.device}?apiKey=${opts.apiKey}&applicationKey=${opts.appKey}`;
+    const requestUrl = `https://api.ambientweather.net/v1/devices?apiKey=${opts.apiKey}&applicationKey=${opts.appKey}`;
     let response = await fetch(requestUrl);
     let json = await response.text();
-    let data:any;
+    let data: AmbientData;
     try {
         data = JSON.parse(json);
     } catch (e) {
         throw new Error("Ambient didn't return valid JSON!")
     }
-    if (data === undefined) {
+    let device = data.find(v => v.macAddress == opts.device);
+    if (device === undefined) {
         console.log(data);
         throw new Error("Could not get devices from Ambient!")
     }
-    return data;
+    return device.lastData;
 }
 
 type AmbientPerconf = {
@@ -24,6 +26,12 @@ type AmbientPerconf = {
     appKey: string,
     device: string,
 }
+
+type AmbientData = {
+    macAddress: string,
+    info: Indexed<string>,
+    lastData: Indexed<any>,
+}[];
 
 export type {AmbientPerconf}
 export default getData;
