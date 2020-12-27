@@ -12,12 +12,11 @@ const getData: DataInput = async function(options) {
     } catch (e) {
         throw new Error("Ambient didn't return valid JSON!")
     }
-    let dev = data[0];
-    if (dev === undefined) {
+    if (data === undefined) {
         console.log(data);
         throw new Error("Could not get devices from Ambient!")
     }
-    return data[0];
+    return data;
 }
 
 type AmbientPerconf = {
