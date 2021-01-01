@@ -103,6 +103,9 @@ func (a *arcGradient) GetColor(adj float64) color.Color {
 	if foundI == 0 {
 		return a.keypoints[foundI].color
 	}
+	if foundI == l {
+		return a.keypoints[l-1].color
+	}
 	p := (adj - a.keypoints[foundI-1].value) / (a.keypoints[foundI].value - a.keypoints[foundI-1].value)
 	//v := uint8(255*p);
 	//println(foundI)
