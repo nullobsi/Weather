@@ -165,9 +165,17 @@ async function runPipeline(key: string) {
     let data: WeatherData = {};
     console.log(`[${key}] Getting data...`);
     for (let i = 0; i < pipeline.inputs.length; i ++) {
-        console.log(`[${key}] Fetching ${pipeline.inputs[i].name}...`);
-        let input = inputs[pipeline.inputs[i].name];
+        let p = pipeline.inputs[i];
+        console.log(`[${key}] Fetching ${p.name}...`);
+        let input = inputs[p.name];
         let fetched = await input(pipeline.inputs[i].opts);
+        if (p.whitelist !== undefined) {
+            let whitelist = p.whitelist;
+            fetched = Object.fromEntries(Object.entries(fetched).filter(v => whitelist.includes(v[0])));
+        } else if (p.blacklist !== undefined) {
+            let blacklist = p.blacklist;
+            fetched = Object.fromEntries(Object.entries(fetched).filter(v => !blacklist.includes(v[0])));
+        }
         data = {...data, ...fetched};
     }
 
