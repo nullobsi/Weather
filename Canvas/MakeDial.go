@@ -50,8 +50,6 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 		}
 	}
 
-	numPoints := gradient.Length()
-
 	casing := gg.NewLinearGradient(
 		x+ox+math.Cos(math.Pi-math.Pi/4)*radius,
 		y+oy+math.Sin(math.Pi-math.Pi/4)*radius,
@@ -66,6 +64,8 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 	c.DrawArc(x+ox, y+oy, radius, startAngle-math.Pi*0.01, endAngle+math.Pi*0.01)
 	c.SetLineWidth(thickness * 1.3)
 	c.Stroke()
+
+	numPoints := gradient.Length()
 
 	startIndex := 0
 	for ; gradient.Index(startIndex).Index(0).Float() < startV; startIndex++ {
@@ -155,6 +155,35 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 	//fmt.Println(dial.Get("unit").String())
 	if !dial.Get("value").IsNull() {
 		temp := dial.Get("value").Float()
+		var valueColor color.Color
+
+		if temp < gradient.Index(0).Index(0).Float() {
+			valueColor, _ = colorx.ParseHexColor(gradient.Index(0).Index(1).String())
+		} else if temp > gradient.Index(numPoints-1).Index(0).Float() {
+			valueColor, _ = colorx.ParseHexColor(gradient.Index(numPoints - 1).Index(1).String())
+		} else {
+			lowI := numPoints - 1
+			for ; gradient.Index(lowI).Index(0).Float() >= temp && lowI > 0; lowI-- {
+			}
+
+			highI := lowI + 1
+
+			lowPoint := gradient.Index(lowI)
+			highPoint := gradient.Index(highI)
+
+			color0, _ := colorx.ParseHexColor(lowPoint.Index(1).String())
+			value0 := lowPoint.Index(0).Float()
+
+			color1, _ := colorx.ParseHexColor(highPoint.Index(1).String())
+			value1 := highPoint.Index(0).Float()
+
+			p := (temp - value0) / (value1 - value0)
+
+			nColor := interpolate(color0, color1, p)
+
+			valueColor = nColor
+		}
+
 		tempAdj := (grad.transform(temp) - grad.min) / (grad.max - grad.min)
 		if tempAdj < 0 {
 			tempAdj = 0
@@ -162,7 +191,6 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 			tempAdj = 1
 		}
 		valueAngle := startAngle + (endAngle-startAngle)*tempAdj
-		valueColor := grad.GetColor(temp)
 		c.SetColor(valueColor)
 		valueStr := strconv.FormatFloat(math.Abs(temp), 'f', dial.Get("presc").Int(), 64)
 		if temp < 0 {
