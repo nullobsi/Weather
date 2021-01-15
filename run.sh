@@ -5,7 +5,7 @@ git pull || exit
 
 echo "Build dial renderer..."
 cd Canvas || exit
-GOOS=js GOARCH=wasm go build -o ../util/Canvas/go_build_Canvas_js || exit
+GOOS=js GOARCH=wasm go build -o ../util/Canvas/go_build_WeatherCanvas_js || exit
 cd ..
 
 echo "Run mod.ts..."
