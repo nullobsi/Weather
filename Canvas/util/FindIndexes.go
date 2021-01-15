@@ -1,18 +1,23 @@
 package util
 
 import (
+	"fmt"
 	"syscall/js"
 )
 
 // Returns -1 on 1st if low and -1 on 2nd if high
 func FindIndexes(getV func(int) float64, alen int, toFind float64) (int, int) {
 	//high/low
+	fmt.Print("Find", toFind, "in a", alen, "long array with lowest value", getV(0), "and highest value", getV(alen-1))
 	if toFind <= getV(0) {
+		fmt.Println(" and value is lowest")
 		return -1, 0
 	} else if toFind >= getV(alen-1) {
+		fmt.Println(" and value is highest")
 		return alen - 1, -1
 	}
 
+	fmt.Println(" and value is in between")
 	// find the low index; that is, one which has a value less than the number to find
 	lowI := alen - 1
 	for ; getV(lowI) > toFind; lowI-- {

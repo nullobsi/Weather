@@ -4,6 +4,7 @@ import (
 	"WeatherCanvas/structs"
 	"WeatherCanvas/transforms"
 	"WeatherCanvas/util"
+	"fmt"
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
 	"github.com/icza/gox/imagex/colorx"
@@ -85,13 +86,15 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 	endVlow, endVhigh := util.FindIndexesJS(gradient, endV)
 
 	// if the values are offset, calculate the new start/end and add it to the gradient
-	if startVlow != -1 && startVhigh != -1 {
+	if startVlow != -1 {
 		nColor := util.GetJSColor(gradient, startVlow, startVhigh, startV)
 		grad.AddColorStop(startV, nColor)
 	}
 
+	fmt.Println("Start at", startVlow+1, "End at", endVlow)
 	// add all intermediate points
 	for i := startVlow + 1; i <= endVlow; i++ {
+
 		point := gradient.Index(i)
 		value := point.Index(0).Float()
 		hex := point.Index(1).String()
