@@ -33,7 +33,7 @@ interface renderOpt {
 }
 
 
-let wasmFile = await Deno.readFile("util/Canvas/go_build_Canvas_js");
+let wasmFile = await Deno.readFile("util/Canvas/go_build_WeatherCanvas_js");
 
 let process: DataProcessor = async function(options, gradients, datafields, data, transforms, outputs) {
 
