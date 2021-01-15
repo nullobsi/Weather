@@ -85,7 +85,7 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 	endVlow, endVhigh := util.FindIndexesJS(gradient, endV)
 
 	// if the values are offset, calculate the new start/end and add it to the gradient
-	if startVlow != -1 || startVhigh != -1 {
+	if startVlow != -1 && startVhigh != -1 {
 		nColor := util.GetJSColor(gradient, startVlow, startVhigh, startV)
 		grad.AddColorStop(startV, nColor)
 	}
