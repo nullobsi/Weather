@@ -7,6 +7,7 @@
 
 **/config/*
 util/Canvas/go_build_Canvas_js
+util/Canvas/go_build_WeatherCanvas_js
 archive/**
 # User-specific stuff
 .idea/**/workspace.xml
