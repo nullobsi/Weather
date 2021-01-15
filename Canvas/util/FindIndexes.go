@@ -11,7 +11,7 @@ var logV = false
 func FindIndexes(getV func(int) float64, alen int, toFind float64) (int, int) {
 	//high/low
 	if logV {
-		fmt.Print("Find", toFind, "in a", alen, "long array with lowest value", getV(0), "and highest value", getV(alen-1))
+		fmt.Print("Find ", toFind, " in a ", alen, " long array with lowest value ", getV(0), " and highest value ", getV(alen-1))
 	}
 	if toFind <= getV(0) {
 		if logV {

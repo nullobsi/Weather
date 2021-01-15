@@ -94,12 +94,13 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 	fmt.Println("Start at", startVlow+1, "End at", endVlow)
 	// add all intermediate points
 	for i := startVlow + 1; i <= endVlow; i++ {
-
+		fmt.Print(i, "... ")
 		point := gradient.Index(i)
 		value := point.Index(0).Float()
 		hex := point.Index(1).String()
 		grad.AddColorStopHex(value, hex)
 	}
+	fmt.Println()
 
 	if endVhigh != -1 {
 		nColor := util.GetJSColor(gradient, endVlow, endVhigh, startV)
