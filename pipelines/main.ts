@@ -1129,7 +1129,8 @@ let pipeline: Pipeline = {
                 apiKey: config.ambientApiKey1,
                 appKey: config.ambientAppKey1,
                 device: config.ambientDevice1,
-            }
+            },
+            blacklist: [water],
         },
         {
             name: "ambientweather",
@@ -1137,7 +1138,7 @@ let pipeline: Pipeline = {
                 apiKey: config.ambientApiKey2,
                 appKey: config.ambientAppKey2,
                 device: config.ambientDevice2,
-            }
+            },
         },
         {
             name: "aqi",
