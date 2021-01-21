@@ -1,11 +1,8 @@
-package main
+package transforms
 
 import "math"
 
-func pm25(a float64) float64 {
-	return a //math.Pow(a, 1/2.58496250072)
-}
-func rainRate(a float64) float64 {
+func RainRate(a float64) float64 {
 	if a <= 0 {
 		return a
 	}

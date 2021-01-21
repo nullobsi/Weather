@@ -1,4 +1,4 @@
-package main
+package structs
 
 import (
 	"image/color"
@@ -6,8 +6,8 @@ import (
 )
 
 type arcGradientTransform struct {
-	transform func(float64) float64
-	max, min  float64
+	Transform func(float64) float64
+	Max, Min  float64
 	arcGradient
 }
 
@@ -31,35 +31,35 @@ func (a arcGradientTransform) ColorAt(x, y int) color.Color {
 	adj := theta / (a.theta1 - a.theta0)
 
 	l := len(a.keypoints)
-	if adj <= a.keypoints[0].value {
-		return a.keypoints[0].color
+	if adj <= a.keypoints[0].Value {
+		return a.keypoints[0].Color
 	}
-	if adj >= a.keypoints[l-1].value {
-		return a.keypoints[l-1].color
+	if adj >= a.keypoints[l-1].Value {
+		return a.keypoints[l-1].Color
 	}
 	foundI := 0
 	for l1, point := range a.keypoints {
-		if point.value >= adj {
+		if point.Value >= adj {
 			foundI = l1
 			break
 		}
 	}
-	transMin := a.keypoints[foundI-1].value
-	transMax := a.keypoints[foundI].value
+	transMin := a.keypoints[foundI-1].Value
+	transMax := a.keypoints[foundI].Value
 	transVal := adj
 	p := (transVal - transMin) / (transMax - transMin)
 	//fmt.Println(a.min,a.max)
 
 	return interpolate(
-		a.keypoints[foundI].color,
-		a.keypoints[foundI-1].color,
+		a.keypoints[foundI].Color,
+		a.keypoints[foundI-1].Color,
 		p,
 	)
 }
 
 func NewTransArcGradient(x, y, theta0, theta1, r, width float64, f func(float64) float64) *arcGradientTransform {
 	return &arcGradientTransform{
-		transform: f,
+		Transform: f,
 		arcGradient: arcGradient{
 			x:      x,
 			y:      y,
@@ -74,20 +74,20 @@ func NewTransArcGradient(x, y, theta0, theta1, r, width float64, f func(float64)
 }
 
 func (a *arcGradientTransform) GetColor(value float64) color.Color {
-	value = (a.transform(value) - a.min) / (a.max - a.min)
+	value = (a.Transform(value) - a.Min) / (a.Max - a.Min)
 	return a.arcGradient.GetColor(value)
 }
 
 func (a *arcGradientTransform) Normalize() {
-	var max float64 = a.transform(a.keypoints[len(a.keypoints)-1].value)
-	var min float64 = a.transform(a.keypoints[0].value)
-	a.min = min
-	a.max = max
+	var max float64 = a.Transform(a.keypoints[len(a.keypoints)-1].Value)
+	var min float64 = a.Transform(a.keypoints[0].Value)
+	a.Min = min
+	a.Max = max
 	max = max - min
 	for i, key := range a.keypoints {
 		a.keypoints[i] = Keypoint{
-			value: (a.transform(key.value) - min) / max,
-			color: key.color,
+			Value: (a.Transform(key.Value) - min) / max,
+			Color: key.Color,
 		}
 	}
 }

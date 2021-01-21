@@ -1,4 +1,4 @@
-package main
+package structs
 
 import (
 	"github.com/icza/gox/imagex/colorx"
@@ -40,25 +40,25 @@ func (a arcGradient) ColorAt(x, y int) color.Color {
 	//}
 	//adj = 1  -adj;
 	l := len(a.keypoints)
-	if adj <= a.keypoints[0].value {
-		return a.keypoints[0].color
+	if adj <= a.keypoints[0].Value {
+		return a.keypoints[0].Color
 	}
-	if adj >= a.keypoints[l-1].value {
-		return a.keypoints[l-1].color
+	if adj >= a.keypoints[l-1].Value {
+		return a.keypoints[l-1].Color
 	}
 	foundI := 0
 	for l1, point := range a.keypoints {
-		if point.value >= adj {
+		if point.Value >= adj {
 			foundI = l1
 			break
 		}
 	}
-	p := (adj - a.keypoints[foundI-1].value) / (a.keypoints[foundI].value - a.keypoints[foundI-1].value)
+	p := (adj - a.keypoints[foundI-1].Value) / (a.keypoints[foundI].Value - a.keypoints[foundI-1].Value)
 	//v := uint8(255*p);
 	//println(foundI)
 	return interpolate(
-		a.keypoints[foundI].color,
-		a.keypoints[foundI-1].color,
+		a.keypoints[foundI].Color,
+		a.keypoints[foundI-1].Color,
 		p,
 	)
 }
@@ -76,11 +76,6 @@ func interpolate(color1, color2 color.Color, w1 float64) color.Color {
 	}
 }
 
-type Keypoint struct {
-	value float64
-	color color.Color
-}
-
 func NewArcGradient(x, y, theta0, theta1, r, width float64) *arcGradient {
 	return &arcGradient{x: x, y: y, theta0: theta0, theta1: theta1, r: r, t: width,
 		iR: r - (width / 2), oR: r + (width / 2)}
@@ -88,8 +83,8 @@ func NewArcGradient(x, y, theta0, theta1, r, width float64) *arcGradient {
 
 func (a *arcGradient) AddColorStop(value float64, color color.Color) {
 	a.keypoints = append(a.keypoints, Keypoint{
-		value: value,
-		color: color,
+		Value: value,
+		Color: color,
 	})
 	sort.Sort(a.keypoints)
 }
@@ -98,20 +93,20 @@ func (a *arcGradient) GetColor(adj float64) color.Color {
 	//fmt.Println(adj)
 	l := len(a.keypoints)
 	foundI := 0
-	for ; foundI < l && a.keypoints[foundI].value <= adj; foundI += 1 {
+	for ; foundI < l && a.keypoints[foundI].Value <= adj; foundI += 1 {
 	}
 	if foundI == 0 {
-		return a.keypoints[foundI].color
+		return a.keypoints[foundI].Color
 	}
 	if foundI == l {
-		return a.keypoints[l-1].color
+		return a.keypoints[l-1].Color
 	}
-	p := (adj - a.keypoints[foundI-1].value) / (a.keypoints[foundI].value - a.keypoints[foundI-1].value)
+	p := (adj - a.keypoints[foundI-1].Value) / (a.keypoints[foundI].Value - a.keypoints[foundI-1].Value)
 	//v := uint8(255*p);
 	//println(foundI)
 	return interpolate(
-		a.keypoints[foundI].color,
-		a.keypoints[foundI-1].color,
+		a.keypoints[foundI].Color,
+		a.keypoints[foundI-1].Color,
 		p,
 	)
 }
@@ -119,8 +114,8 @@ func (a *arcGradient) GetColor(adj float64) color.Color {
 func (a *arcGradient) AddColorStopHex(value float64, color string) {
 	col, _ := colorx.ParseHexColor(color)
 	a.keypoints = append(a.keypoints, Keypoint{
-		value: value,
-		color: col,
+		Value: value,
+		Color: col,
 	})
 	sort.Sort(a.keypoints)
 }
@@ -128,16 +123,16 @@ func (a *arcGradient) AddColorStopHex(value float64, color string) {
 func (a *arcGradient) Normalize() {
 	var max float64 = math.Inf(-1)
 	for _, key := range a.keypoints {
-		if key.value > max {
-			max = key.value
+		if key.Value > max {
+			max = key.Value
 		}
 	}
-	var min float64 = a.keypoints[0].value
+	var min float64 = a.keypoints[0].Value
 	max = max - min
 	for i, key := range a.keypoints {
 		a.keypoints[i] = Keypoint{
-			value: (key.value - min) / max,
-			color: key.color,
+			Value: (key.Value - min) / max,
+			Color: key.Color,
 		}
 	}
 }
@@ -149,7 +144,7 @@ func (s keypoints) Len() int {
 
 // Less satisfies the Sort interface.
 func (s keypoints) Less(i, j int) bool {
-	return s[i].value < s[j].value
+	return s[i].Value < s[j].Value
 }
 
 // Swap satisfies the Sort interface.
