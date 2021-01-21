@@ -179,7 +179,7 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 
 			p := (temp - value0) / (value1 - value0)
 
-			nColor := interpolate(color0, color1, p)
+			nColor := interpolate(color1, color0, p)
 
 			valueColor = nColor
 		}
