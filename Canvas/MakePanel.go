@@ -19,13 +19,9 @@ func makePanel(c *gg.Context, panel js.Value, parsed *truetype.Font, gradients j
 	title := panel.Get("title").String()
 	titleSize := panel.Get("fontSize").Float()
 
-	// create new font
 	font := truetype.NewFace(parsed, &truetype.Options{Size: titleSize})
 
-	// save state
 	c.Push()
-
-	// draw
 	c.SetFontFace(font)
 	height := c.FontHeight()
 	metrics := font.Metrics()
@@ -36,9 +32,8 @@ func makePanel(c *gg.Context, panel js.Value, parsed *truetype.Font, gradients j
 	c.Fill()
 	c.SetColor(color.RGBA{255, 255, 255, 255})
 	c.DrawStringAnchored(title, x+w/2, y+height/2, 0.5, 0.5)
+	//c.DrawString(title, x+padding, y+(float64(metrics.Height)/64)-padding);
 	font.Close()
-
-	// draw dials
 	dials := panel.Get("dials")
 	numDials := dials.Length()
 

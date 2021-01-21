@@ -1,10 +1,6 @@
 package main
 
 import (
-	"WeatherCanvas/structs"
-	"WeatherCanvas/transforms"
-	"WeatherCanvas/util"
-	"fmt"
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
 	"github.com/icza/gox/imagex/colorx"
@@ -16,23 +12,17 @@ import (
 )
 
 func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.Value, oy, ox float64) {
-	// clear state
-	c.Push()
 
-	// get x and y offset of dial
+	c.Push()
 	x := dial.Get("cx").Float()
 	y := dial.Get("cy").Float()
-
-	// get offset values
 	startV := dial.Get("startV").Float()
 	endV := dial.Get("endV").Float()
 
-	// font sizes
 	bfSize := dial.Get("bigFontSize").Float()
 	sfSize := dial.Get("smallFontSize").Float()
 	//lfSize := dial.Get("smallFontSize").Float()
 
-	// calculate some useful values
 	outerRadius := dial.Get("r").Float()
 	innerRadius := outerRadius - (outerRadius * 0.5)
 	thickness := (outerRadius - innerRadius) / 2
@@ -41,105 +31,116 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 	startAngle := dial.Get("start").Float()
 	endAngle := dial.Get("end").Float()
 
-	// create new gradient
-	grad := structs.NewTransArcGradient(x+ox, y+oy, startAngle, endAngle, radius, thickness, func(a float64) float64 { return a })
-
-	// transform defines the dial mode, 0 is normal 1 is wind dir (Circular)
+	grad := NewTransArcGradient(x+ox, y+oy, startAngle, endAngle, radius, thickness, func(a float64) float64 { return a })
 	transform := 0
 	if !dial.Get("transform").IsUndefined() {
 		transformStr := dial.Get("transform").String()
 		if transformStr == "wind" {
 			transform = 1
 		} else if transformStr == "rainrate" {
-			grad.Transform = func(a float64) float64 {
+			grad.transform = func(a float64) float64 {
 				if a <= 0.0253 {
-					return transforms.RainRate(a) / 4
+					return rainRate(a) / 4
 				} else {
-					return transforms.RainRate(a) - 15
+					return rainRate(a) - 15
 				}
 			}
 		} else if transformStr == "pm25" {
-			grad.Transform = transforms.PM25
+			grad.transform = pm25
 		}
 	}
 
-	// create a gradient for the outer casing of the dial
-	casingGradient := gg.NewLinearGradient(
+	casing := gg.NewLinearGradient(
 		x+ox+math.Cos(math.Pi-math.Pi/4)*radius,
 		y+oy+math.Sin(math.Pi-math.Pi/4)*radius,
 		x+ox+math.Cos(math.Pi)*radius,
 		y+oy+math.Sin(math.Pi)*radius,
 	)
-	casingGradient.AddColorStop(0, color.Gray{0x66})
-	casingGradient.AddColorStop(1, color.Gray{0xbb})
+	casing.AddColorStop(0, color.Gray{0x66})
+	casing.AddColorStop(1, color.Gray{0xbb})
 
-	// draw the outer casing
-	c.SetStrokeStyle(casingGradient)
+	c.SetStrokeStyle(casing)
 	c.SetLineCap(gg.LineCapButt)
 	c.DrawArc(x+ox, y+oy, radius, startAngle-math.Pi*0.01, endAngle+math.Pi*0.01)
 	c.SetLineWidth(thickness * 1.3)
 	c.Stroke()
 
-	// find the start and end indexes for the offset values
-	startVlow, startVhigh := util.FindIndexesJS(gradient, startV)
+	numPoints := gradient.Length()
 
-	endVlow, endVhigh := util.FindIndexesJS(gradient, endV)
-
-	// if the values are offset, calculate the new start/end and add it to the gradient
-	if startVlow != -1 {
-		nColor := util.GetJSColor(gradient, startVlow, startVhigh, startV)
-		grad.AddColorStop(startV, nColor)
+	startIndex := 0
+	for ; gradient.Index(startIndex).Index(0).Float() < startV; startIndex++ {
 	}
 
-	fmt.Println("Start at", startVlow+1, "End at", endVlow)
-	// add all intermediate points
-	for i := startVlow + 1; i <= endVlow; i++ {
-		fmt.Print(i, "... ")
+	endIndex := numPoints - 1
+	for ; gradient.Index(endIndex).Index(0).Float() > endV; endIndex-- {
+	}
+
+	if startIndex != 0 {
+		prevIndex := startIndex - 1
+		prevPoint := gradient.Index(prevIndex)
+		startPoint := gradient.Index(startIndex)
+
+		color0, _ := colorx.ParseHexColor(prevPoint.Index(1).String())
+		value0 := prevPoint.Index(0).Float()
+
+		color1, _ := colorx.ParseHexColor(startPoint.Index(1).String())
+		value1 := startPoint.Index(0).Float()
+
+		p := (startV - value0) / (value1 - value0)
+
+		nColor := interpolate(color1, color0, p)
+		grad.AddColorStop(startV, nColor)
+
+	}
+
+	for i := startIndex; i <= endIndex; i++ {
 		point := gradient.Index(i)
 		value := point.Index(0).Float()
 		hex := point.Index(1).String()
 		grad.AddColorStopHex(value, hex)
 	}
-	fmt.Println()
 
-	if endVhigh != -1 {
-		nColor := util.GetJSColor(gradient, endVlow, endVhigh, startV)
+	if endIndex != numPoints-1 {
+		prevPoint := gradient.Index(endIndex)
+		endPoint := gradient.Index(endIndex + 1)
+
+		color0, _ := colorx.ParseHexColor(prevPoint.Index(1).String())
+		value0 := prevPoint.Index(0).Float()
+
+		color1, _ := colorx.ParseHexColor(endPoint.Index(1).String())
+		value1 := endPoint.Index(0).Float()
+
+		p := (endV - value0) / (value1 - value0)
+
+		nColor := interpolate(color1, color0, p)
 		grad.AddColorStop(endV, nColor)
 	}
 
-	// normalize gradient
 	grad.Normalize()
 
-	// draw gradient
 	c.DrawArc(x+ox, y+oy, radius, startAngle, endAngle)
 	c.SetLineWidth(thickness)
 	c.SetStrokeStyle(grad)
 	c.SetLineCap(gg.LineCapButt)
 	c.Stroke()
 	c.SetLineCap(gg.LineCapRound)
+	//draw texts
 
-	// draw texts
-
-	// special funny value to make sure display name is drawn properly
-	dispNameYmult := 1.0
+	mult := 1.0
 	if transform == 1 {
-		dispNameYmult = 0.6
+		mult = 0.6
 	}
 
-	// create new render fontface
 	font := truetype.NewFace(parsed, &truetype.Options{Size: bfSize})
 
 	c.SetColor(color.White)
 	c.SetFontFace(font)
-
-	// draw display name
+	//above c.DrawStringAnchored(dial.Get("displayName").String(), x+ox, y + oy - outerRadius,0.5,0)
 	if transform != 1 {
 		c.DrawStringAnchored(dial.Get("displayName").String(), x+ox, y+oy-outerRadius/3, 0.5, 0.5)
 	} else if transform == 1 {
-		c.DrawStringAnchored(dial.Get("displayName").String(), x+ox, y+oy-radius*dispNameYmult, 0.5, 1.2)
+		c.DrawStringAnchored(dial.Get("displayName").String(), x+ox, y+oy-radius*mult, 0.5, 1.2)
 	}
-
-	// draw unit
 	if transform != 1 {
 		font2 := truetype.NewFace(parsed, &truetype.Options{Size: sfSize})
 
@@ -149,47 +150,59 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 
 		font2.Close()
 	}
-
 	c.SetFontFace(font)
 
+	//fmt.Println(dial.Get("unit").String())
 	if !dial.Get("value").IsNull() {
-
-		// obtain value color
-		val := dial.Get("value").Float()
+		temp := dial.Get("value").Float()
 		var valueColor color.Color
 
-		lowI, highI := util.FindIndexesJS(gradient, val)
-
-		if lowI == -1 {
+		if temp < gradient.Index(0).Index(0).Float() {
 			valueColor, _ = colorx.ParseHexColor(gradient.Index(0).Index(1).String())
-		} else if highI == -1 {
-			valueColor, _ = colorx.ParseHexColor(gradient.Index(lowI).Index(1).String())
+		} else if temp > gradient.Index(numPoints-1).Index(0).Float() {
+			valueColor, _ = colorx.ParseHexColor(gradient.Index(numPoints - 1).Index(1).String())
 		} else {
-			valueColor = util.GetJSColor(gradient, lowI, highI, val)
+			lowI := numPoints - 1
+			for ; gradient.Index(lowI).Index(0).Float() >= temp && lowI > 0; lowI-- {
+			}
+
+			highI := lowI + 1
+
+			lowPoint := gradient.Index(lowI)
+			highPoint := gradient.Index(highI)
+
+			color0, _ := colorx.ParseHexColor(lowPoint.Index(1).String())
+			value0 := lowPoint.Index(0).Float()
+
+			color1, _ := colorx.ParseHexColor(highPoint.Index(1).String())
+			value1 := highPoint.Index(0).Float()
+
+			p := (temp - value0) / (value1 - value0)
+
+			nColor := interpolate(color0, color1, p)
+
+			valueColor = nColor
 		}
 
-		// calculate angle for needle
-		valueAdj := (grad.Transform(val) - grad.Min) / (grad.Max - grad.Min)
-		if valueAdj < 0 {
-			valueAdj = 0
-		} else if valueAdj > 1 {
-			valueAdj = 1
+		tempAdj := (grad.transform(temp) - grad.min) / (grad.max - grad.min)
+		if tempAdj < 0 {
+			tempAdj = 0
+		} else if tempAdj > 1 {
+			tempAdj = 1
 		}
-		valueAngle := startAngle + (endAngle-startAngle)*valueAdj
-
-		// draw value text
+		valueAngle := startAngle + (endAngle-startAngle)*tempAdj
 		c.SetColor(valueColor)
-		valueStr := strconv.FormatFloat(math.Abs(val), 'f', dial.Get("presc").Int(), 64)
-		if val < 0 {
+		valueStr := strconv.FormatFloat(math.Abs(temp), 'f', dial.Get("presc").Int(), 64)
+		if temp < 0 {
 			valueStr = "−" + valueStr
 		}
 		if transform == 1 {
 			valueStr += dial.Get("unit").String()
 		}
-		c.DrawStringAnchored(valueStr, x+ox, y+oy+radius*dispNameYmult, 0.5, -0.2)
+		c.DrawStringAnchored(valueStr, x+ox, y+oy+radius*mult, 0.5, -0.2)
 
-		// draw needle
 		if transform == 0 {
+			//draw needle
 			needleWidth := outerRadius / 16
 			c.SetLineWidth(needleWidth / 2)
 			c.SetColor(color.Black)
@@ -280,4 +293,5 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 	font.Close()
 
 	c.Pop()
+
 }
