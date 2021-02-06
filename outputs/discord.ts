@@ -1,4 +1,4 @@
-import * as Discord from "https://raw.githubusercontent.com/discordeno/discordeno/next/mod.ts";
+import * as Discord from "https://deno.land/x/discordeno@10.2.0/mod.ts";
 import getConfig from "../util/getConfig.ts";
 import tempToColor from "../util/tempToColor.ts";
 import DiscordRole from "../defs/DiscordRole.ts";
