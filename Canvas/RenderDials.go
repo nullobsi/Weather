@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
+	"image"
 	"io/ioutil"
 	"syscall/js"
 )
@@ -40,12 +41,19 @@ func RenderDials() (js.Func, js.Func) {
 		fmt.Println("Drawing dials, ")
 		//create drawing board
 		dc := gg.NewContext(width, height)
-		image, err := gg.LoadPNG("./Canvas/image.png")
+
+		imgBytes := args[1].Int()
+		bgImageArr := make([]byte, imgBytes)
+
+		js.CopyBytesToGo(bgImageArr, args[2])
+
+		bgImage, _, err := image.Decode(bytes.NewReader(bgImageArr))
+
 		if err != nil {
 			fmt.Println("There was an error")
 			return nil
 		}
-		dc.DrawImage(image, 0, 0)
+		dc.DrawImage(bgImage, 0, 0)
 		//load font
 		fontBytes, err := ioutil.ReadFile(fontName)
 		if err != nil {
@@ -61,43 +69,6 @@ func RenderDials() (js.Func, js.Func) {
 		for i := 0; i < numPanels; i++ {
 			makePanel(dc, panels.Index(i), parsed, args[1])
 		}
-		//ox := float64(width)/2
-		//oy := float64(height)/2
-
-		//makePanel(dc, 0, 0, float64(width), float64(height), 0, "Test", face);
-
-		//oy += float64(face.Metrics().Height)/64 + (float64(face.Metrics().Height)/64)*0.1
-		//create gradient
-
-		//dc.DrawRectangle(ox,oy, ox/2,oy/2);
-		//dc.Fill()
-		//black background
-		//dc.DrawArc(ox,oy, outerRadius, startAngle, endAngle)
-		//dc.SetLineWidth(innerRadius/2 + 1);
-		//dc.SetStrokeStyle(grad)
-		//dc.SetColor(color.RGBA{0,0,0,255});
-		//dc.Stroke();
-
-		//dc.Stroke()
-		//dc.Fill()
-
-		/*// gradient dial
-		dc.DrawArc(ox,oy, outerRadius, startAngle, endAngle);
-		dc.SetFillStyle(grad);
-		dc.Fill();
-
-		//make it a dials instead of half circle
-		dc.DrawArc(ox,oy, innerRadius, startAngle, endAngle)
-		dc.SetColor(color.RGBA{0,0,0,255})
-		dc.Fill()
-
-		//trapezoidal structure to cover bottom part
-		dc.MoveTo(innerRadius * math.Cos(startAngle) + ox, innerRadius * math.Sin(startAngle) + oy)
-		dc.LineTo(outerRadius * math.Cos(startAngle) + ox, outerRadius * math.Sin(startAngle) + oy)
-		dc.LineTo(outerRadius * math.Cos(endAngle) + ox, outerRadius * math.Sin(endAngle) + oy);
-		dc.LineTo(innerRadius * math.Cos(endAngle) + ox, innerRadius * math.Sin(endAngle) + oy);
-		dc.ClosePath()
-		dc.Fill()*/
 
 		//store into temporary buffer, return length (so memory can be allocated in JS)
 		buf := new(bytes.Buffer)
