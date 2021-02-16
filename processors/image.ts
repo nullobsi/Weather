@@ -29,7 +29,7 @@ interface renderOpt {
         height: number;
     }[];
     width: number;
-    height: number
+    height: number;
 }
 
 
@@ -41,7 +41,8 @@ let process: DataProcessor = async function(options, gradients, datafields, data
     let finalOpt: renderOpt = {
         height: opt.height,
         width: opt.width,
-        panels: []
+        panels: [],
+        opt.
     };
     opt.panels.forEach(panel => {
         finalOpt.panels.push({
@@ -88,7 +89,10 @@ let process: DataProcessor = async function(options, gradients, datafields, data
     let go = new Go()
     let wa = await WebAssembly.instantiate(wasmFile, go.importObject);
     let p = go.run(wa.instance);
-    let size = await go.exports?.renderDials(finalOpt, gradients);
+
+    let bgImg: ArrayBuffer = data[opt.imageKey];
+
+    let size = await go.exports?.renderDials(finalOpt, gradients, bgImg.byteLength, bgImg);
     let buffer = new Uint8Array(size);
     await go.exports?.copyDials(buffer);
     outputs.image = buffer;
@@ -106,6 +110,7 @@ interface ImageOptions {
         width: number,
         fontSize: number
     }[]
+    imageKey: string
 }
 
 export type {ImageOptions};

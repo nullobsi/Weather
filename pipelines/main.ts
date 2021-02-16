@@ -11,6 +11,7 @@ import {RainrateOpts} from "../intermediaries/rainrate.ts";
 import {CapOptions} from "../intermediaries/cap.ts";
 import {FtpOutputOpts} from "../outputs/ftp.ts";
 import {AmbientPerconf} from "../inputs/ambientweather.ts";
+import {ImageInputOpts} from "../inputs/image.ts";
 
 const config = await getConfig("outputs", "main", {
     discordChannelId: "HERE",
@@ -32,6 +33,8 @@ const config = await getConfig("outputs", "main", {
     ambientApiKey2: "HERE",
     ambientAppKey2: "HERE",
     ambientDevice2: "HERE",
+
+    backgroundUrl: "HERE",
 })
 //image
 const imgWidth = 1440
@@ -1147,6 +1150,12 @@ let pipeline: Pipeline = {
                 lat: config.aqiLat,
             }
 
+        },
+        {
+            name: "image",
+            opts: <ImageInputOpts>{
+                url: config.backgroundUrl,
+            }
         }
     ],
     intermediaries: [

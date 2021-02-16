@@ -42,10 +42,10 @@ func RenderDials() (js.Func, js.Func) {
 		//create drawing board
 		dc := gg.NewContext(width, height)
 
-		imgBytes := args[1].Int()
+		imgBytes := args[2].Int()
 		bgImageArr := make([]byte, imgBytes)
 
-		js.CopyBytesToGo(bgImageArr, args[2])
+		js.CopyBytesToGo(bgImageArr, args[3])
 
 		bgImage, _, err := image.Decode(bytes.NewReader(bgImageArr))
 
