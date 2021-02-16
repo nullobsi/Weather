@@ -9,8 +9,9 @@ const getData: DataInput = async function(options): Promise<WeatherData> {
     let opts = options as ImageInputOpts;
     let response = await fetch(opts.url);
     let arr = await response.arrayBuffer();
+
 	let data = {
-		image: arr,
+		image: new Uint8Array(arr),
 	}
     return data as WeatherData;
 }
