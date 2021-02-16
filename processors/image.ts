@@ -42,7 +42,6 @@ let process: DataProcessor = async function(options, gradients, datafields, data
         height: opt.height,
         width: opt.width,
         panels: [],
-        opt.
     };
     opt.panels.forEach(panel => {
         finalOpt.panels.push({
