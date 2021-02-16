@@ -1236,6 +1236,7 @@ let pipeline: Pipeline = {
             opts: <ImageOptions>{
                 height: imgHeight,
                 width: imgWidth,
+                imageKey: "image",
                 panels: [
                     {
                         title: "Temperature",
