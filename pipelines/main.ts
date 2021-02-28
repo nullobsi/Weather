@@ -17,6 +17,7 @@ const config = await getConfig("outputs", "main", {
     discordChannelId: "HERE",
     discordServerId: "HERE",
     wundergroundStationId: "HERE",
+    wuStationId2: "HERE",
     aqiLat: 0,
     aqiLng: 0,
 
@@ -994,7 +995,7 @@ let pipeline: Pipeline = {
                 }
             },
             gradient: "humidity",
-            displayName: "Humidity (Ambient)",
+            displayName: "Humidity (WU)",
             fieldName: "humidity",
             transform: undefined,
             unit: "%",
@@ -1123,8 +1124,15 @@ let pipeline: Pipeline = {
         {
             name: "wunderground",
             opts: <wundergroundOpts>{
-                stationId: config.wundergroundStationId
+                stationId: config.wuStationId2
             }
+        },
+        {
+            name: "wunderground",
+            opts: <wundergroundOpts>{
+                stationId: config.wundergroundStationId
+            },
+            blacklist: ["pressure"],
         },
         {
             name: "ambientweather",
@@ -1133,7 +1141,7 @@ let pipeline: Pipeline = {
                 appKey: config.ambientAppKey1,
                 device: config.ambientDevice1,
             },
-            blacklist: [water],
+            blacklist: [water, "humidity"],
         },
         {
             name: "ambientweather",
@@ -1142,6 +1150,9 @@ let pipeline: Pipeline = {
                 appKey: config.ambientAppKey2,
                 device: config.ambientDevice2,
             },
+            blacklist: [
+                "humidity"
+            ]
         },
         {
             name: "aqi",

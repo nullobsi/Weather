@@ -51,6 +51,7 @@ func RenderDials() (js.Func, js.Func) {
 
 		if err != nil {
 			fmt.Println("Error decoding image:\n", err)
+			quitCh <- true
 			return nil
 		}
 		dc.DrawImage(bgImage, 0, 0)
