@@ -110,8 +110,9 @@ async function pickImage(folder: string, subdir: string): Promise<Uint8Array> {
     images = images.filter(v => v != seenImages[subdir]);
     let imageFn = images[Math.floor(Math.random() * images.length)];
     let imagePath = path.join(folder, subdir, imageFn);
-    pickedImages[subdir] = imagePath;
-    seenImages[subdir] = imagePath;
+    pickedImages[subdir] = imageFn;
+    seenImages[subdir] = imageFn;
+    console.log(imagePath)
     return Deno.readFile(imagePath);
 }
 
