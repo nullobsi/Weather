@@ -65,8 +65,8 @@ const getImg: Intermediary = async function(options, data, gradients, pipeline){
         data.image = await pickImage(folder, "Hot");
         return;
     }
-    if (values.temp > t.windy) {
-        data.iamge = await pickImage(folder, "Windy");
+    if (values.wind > t.windy) {
+        data.image = await pickImage(folder, "Windy");
         return;
     }
 
