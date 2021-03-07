@@ -41,8 +41,8 @@ const getImg: Intermediary = async function(options, data, gradients, pipeline){
     let opts = options as ImageInterOpts;
     let t = opts.thresholds
 
-    let month = new Date().getMonth() - 1;
-    let folder = path.join(opts.folder, month.toString());
+    let month = new Date().getMonth();
+    let folder = path.join(opts.folder, (month+1).toString());
 
     // this line written in the typescript zen - do not touch
     let values = Object.fromEntries(pipeline.datafields.filter(v => v.perConfig.imagePicker !== undefined).map(v => [(v.perConfig.imagePicker as ImagePickerPerConf).useFor, data[v.fieldName]])) as {[K in ImagePickerPerConf["useFor"]]: number};

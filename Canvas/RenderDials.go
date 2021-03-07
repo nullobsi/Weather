@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
+	"github.com/nfnt/resize"
 	"image"
 	"io/ioutil"
 	"syscall/js"
@@ -48,6 +49,7 @@ func RenderDials() (js.Func, js.Func) {
 		js.CopyBytesToGo(bgImageArr, args[3])
 
 		bgImage, _, err := image.Decode(bytes.NewReader(bgImageArr))
+		bgImage = resize.Resize(uint(width), 0, bgImage, resize.Lanczos3)
 
 		if err != nil {
 			fmt.Println("Error decoding image:\n", err)
