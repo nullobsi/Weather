@@ -1224,9 +1224,7 @@ let pipeline: Pipeline = {
             name: "image",
             opts: <ImageInterOpts>{
                 folder: config.imagesFolder,
-                thresholds: {
-
-                }
+                thresholds: config.thresholds
             }
         }
     ],
