@@ -94,9 +94,9 @@ let seenImages: {[x:string]: string | undefined} = {};
 async function pickImage(folder: string, subdir: string): Promise<Uint8Array> {
     let currentDay = new Date().getDay();
     if (currentDay == lastDate) {
-        let imagePath = pickedImages[subdir];
-        if (imagePath) {
-            return Deno.readFile(imagePath);
+        let imageFn = pickedImages[subdir];
+        if (imageFn) {
+            return Deno.readFile(path.join(folder, subdir, imageFn));
         }
     } else {
         pickedImages = {};
