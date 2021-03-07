@@ -11,7 +11,7 @@ import {RainrateOpts} from "../intermediaries/rainrate.ts";
 import {CapOptions} from "../intermediaries/cap.ts";
 import {FtpOutputOpts} from "../outputs/ftp.ts";
 import {AmbientPerconf} from "../inputs/ambientweather.ts";
-import {ImageInputOpts} from "../inputs/image.ts";
+import {ImageInterOpts, ImagePickerPerConf, Thresholds} from "../intermediaries/image.ts";
 
 const config = await getConfig("outputs", "main", {
     discordChannelId: "HERE",
@@ -36,6 +36,17 @@ const config = await getConfig("outputs", "main", {
     ambientDevice2: "HERE",
 
     backgroundUrl: "HERE",
+    imagesFolder: "HERE",
+
+    thresholds: <Thresholds>{
+        stormy: [0,0],
+        bright: [0,0,0,0,0,0,0,0,0,0,0,0],
+        humid: 0,
+        windy: 0,
+        hot: [0,0,0,0,0,0,0,0,0,0,0,0],
+        cold: [0,0,0,0,0,0,0,0,0,0,0,0],
+        sunset: 0,
+    }
 })
 //image
 const imgWidth = 1440
@@ -84,6 +95,9 @@ let pipeline: Pipeline = {
                     updateRoleColor: true,
                     sendToDiscord: true
                 },
+                imagePicker: <ImagePickerPerConf>{
+                    useFor: "temp"
+                }
             },
             gradient: "wu_temp",
             displayName: "Temperature",
@@ -168,6 +182,9 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
+                imagePicker: <ImagePickerPerConf>{
+                    useFor: "precip"
+                }
             },
             gradient: "rainrate",
             displayName: "Rain Rate",
@@ -256,6 +273,9 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
+                imagePicker: <ImagePickerPerConf>{
+                    useFor: "wind"
+                }
             },
             gradient: "wind",
             displayName: "Wind Speed",
@@ -410,6 +430,9 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
+                imagePicker: <ImagePickerPerConf>{
+                    useFor: "humidity"
+                }
             },
             gradient: "humidity",
             displayName: "Humidity",
@@ -493,6 +516,9 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
+                imagePicker: <ImagePickerPerConf>{
+                    useFor: "pressure"
+                }
             },
             gradient: "pressure",
             displayName: "Pressure",
@@ -522,6 +548,9 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 2
                 },
+                imagePicker: {
+                    useFor: "solar"
+                }
             },
             gradient: "solar",
             displayName: "Solar Radiation",
@@ -1161,12 +1190,6 @@ let pipeline: Pipeline = {
                 lat: config.aqiLat,
             }
 
-        },
-        {
-            name: "image",
-            opts: <ImageInputOpts>{
-                url: config.backgroundUrl,
-            }
         }
     ],
     intermediaries: [
@@ -1195,6 +1218,15 @@ let pipeline: Pipeline = {
                 fieldName: "solarradiation",
                 maxDigits: 4,
                 maxPresc: 2,
+            }
+        },
+        {
+            name: "image",
+            opts: <ImageInterOpts>{
+                folder: config.imagesFolder,
+                thresholds: {
+
+                }
             }
         }
     ],
