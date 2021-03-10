@@ -107,7 +107,7 @@ async function pickImage(folder: string, subdir: string): Promise<Uint8Array> {
     for await (let file of fileList) {
         images.push(file.name);
     }
-    images = images.filter(v => v != seenImages[subdir]);
+    images = images.filter(v => v != seenImages[subdir] && !v.startsWith("."));
     let imageFn = images[Math.floor(Math.random() * images.length)];
     let imagePath = path.join(folder, subdir, imageFn);
     pickedImages[subdir] = imageFn;
