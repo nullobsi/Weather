@@ -130,6 +130,7 @@ let tabLog = (v:string) => console.log("\t" + v)
 
 console.log("[init] Loaded Gradients:")
 Object.keys(gradients).forEach(tabLog);
+
 console.log("[init] Loaded Inputs:")
 Object.keys(inputs).forEach(tabLog)
 

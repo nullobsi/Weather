@@ -1,6 +1,7 @@
 package main
 
 import (
+	"WeatherCanvas/util"
 	"image/color"
 	"math"
 )
@@ -50,7 +51,7 @@ func (a arcGradientTransform) ColorAt(x, y int) color.Color {
 	p := (transVal - transMin) / (transMax - transMin)
 	//fmt.Println(a.min,a.max)
 
-	return interpolate(
+	return util.Interpolate(
 		a.keypoints[foundI].color,
 		a.keypoints[foundI-1].color,
 		p,

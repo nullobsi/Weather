@@ -14,10 +14,12 @@ import (
 var quitCh = make(chan bool)
 
 func main() {
-	//fmt.Println("Hello from GO! (now with gradients)");
+	// export functions
 	fun1, fun2 := RenderDials()
 	js.Global().Set("renderDials", fun1)
 	js.Global().Set("copyDials", fun2)
+
+	// quit
 	select {
 	case b := <-quitCh:
 		if b {
@@ -27,7 +29,9 @@ func main() {
 }
 
 func RenderDials() (js.Func, js.Func) {
-	var bytearr []byte
+	// rendered final result png
+	var finishedImage []byte
+
 	jsFunc := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		if len(args) < 2 {
 			panic("Not enough params!")
@@ -43,6 +47,7 @@ func RenderDials() (js.Func, js.Func) {
 		//create drawing board
 		dc := gg.NewContext(width, height)
 
+		// decode background image
 		imgBytes := args[2].Int()
 		bgImageArr := make([]byte, imgBytes)
 
@@ -57,15 +62,19 @@ func RenderDials() (js.Func, js.Func) {
 			return nil
 		}
 		dc.DrawImage(bgImage, 0, 0)
+
 		//load font
 		fontBytes, err := ioutil.ReadFile(fontName)
 		if err != nil {
-			fmt.Println("There was an error")
+			fmt.Println("Error reading font:\n", err)
+			quitCh <- true
 			return nil
 		}
 		parsed, err := truetype.Parse(fontBytes)
 		if err != nil {
-			panic("Error loading font!")
+			fmt.Println("Error parsing font:\n", err)
+			quitCh <- true
+			return nil
 		}
 
 		//draw panels
@@ -76,14 +85,19 @@ func RenderDials() (js.Func, js.Func) {
 		//store into temporary buffer, return length (so memory can be allocated in JS)
 		buf := new(bytes.Buffer)
 
-		dc.EncodePNG(buf)
-		bytearr = buf.Bytes()
-		//buf.Reset()
-		return len(bytearr)
+		err = dc.EncodePNG(buf)
+		if err != nil {
+			fmt.Println("Error encoding:\n", err)
+			quitCh <- true
+			return nil
+		}
+
+		finishedImage = buf.Bytes()
+		return len(finishedImage)
 	})
 	jsFunc2 := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		// copy buffer into JS buffer of proper length
-		val := js.CopyBytesToJS(args[0], bytearr)
+		val := js.CopyBytesToJS(args[0], finishedImage)
 		quitCh <- true
 		return val
 	})

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"WeatherCanvas/util"
 	"github.com/icza/gox/imagex/colorx"
 	"image/color"
 	"math"
@@ -56,24 +57,11 @@ func (a arcGradient) ColorAt(x, y int) color.Color {
 	p := (adj - a.keypoints[foundI-1].value) / (a.keypoints[foundI].value - a.keypoints[foundI-1].value)
 	//v := uint8(255*p);
 	//println(foundI)
-	return interpolate(
+	return util.Interpolate(
 		a.keypoints[foundI].color,
 		a.keypoints[foundI-1].color,
 		p,
 	)
-}
-
-func interpolate(color1, color2 color.Color, w1 float64) color.Color {
-	r1, g1, b1, a1 := color1.RGBA()
-	r2, g2, b2, a2 := color2.RGBA()
-	w2 := 1 - w1
-	//println(r1,g1,b1,a1);
-	return color.RGBA{
-		R: uint8(float64(r1)/float64(a1)*255*w1 + float64(r2)/float64(a2)*255*w2),
-		G: uint8(float64(g1)/float64(a1)*255*w1 + float64(g2)/float64(a2)*255*w2),
-		B: uint8(float64(b1)/float64(a1)*255*w1 + float64(b2)/float64(a2)*255*w2),
-		A: uint8(float64(a1)/float64(a1)*255*w1 + float64(a2)/float64(a1)*255*w2),
-	}
 }
 
 type Keypoint struct {
@@ -109,7 +97,7 @@ func (a *arcGradient) GetColor(adj float64) color.Color {
 	p := (adj - a.keypoints[foundI-1].value) / (a.keypoints[foundI].value - a.keypoints[foundI-1].value)
 	//v := uint8(255*p);
 	//println(foundI)
-	return interpolate(
+	return util.Interpolate(
 		a.keypoints[foundI].color,
 		a.keypoints[foundI-1].color,
 		p,
