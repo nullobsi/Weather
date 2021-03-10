@@ -92,8 +92,8 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 		return v
 	}
 
-	startIndex := util.FindLoIndex(startV, indexGrad, gradient.Length())
-	endIndex := util.FindHiIndex(endV, indexGrad, gradient.Length())
+	startIndex := util.FindLoIndex(startV, indexGrad, numPoints)
+	endIndex := util.FindLoIndex(endV, indexGrad, numPoints)
 
 	if startIndex != 0 {
 		nColor := util.GetColor(startIndex-1, startIndex, getGrad, startV)

@@ -33,6 +33,10 @@ func FindHiIndex(val float64, g func(int) float64, l int) int {
 		return 0
 	}
 
+	if val < g(l-1) {
+		return l
+	}
+
 	for i := 0; i < l; i++ {
 		if val < g(i) {
 			return i
