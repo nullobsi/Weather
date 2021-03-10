@@ -40,6 +40,7 @@ let lastDate = new Date().getDay();
 const getImg: Intermediary = async function(options, data, gradients, pipeline){
     let opts = options as ImageInterOpts;
     let t = opts.thresholds
+    console.log(t);
 
     let month = new Date().getMonth();
     let folder = path.join(opts.folder, (month+1).toString());
@@ -64,8 +65,8 @@ const getImg: Intermediary = async function(options, data, gradients, pipeline){
         data.image = await pickImage(folder, "Hot");
         return;
     }
-    if (values.temp > t.windy) {
-        data.iamge = await pickImage(folder, "Windy");
+    if (values.wind > t.windy) {
+        data.image = await pickImage(folder, "Windy");
         return;
     }
 
