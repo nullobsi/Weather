@@ -87,7 +87,7 @@ func makeDial(c *gg.Context, dial js.Value, parsed *truetype.Font, gradient js.V
 	}
 
 	// find indexes
-	startIndex := util.FindLoIndex(startV, indexGrad, numPoints)
+	startIndex := util.FindHiIndex(startV, indexGrad, numPoints)
 	endIndex := util.FindLoIndex(endV, indexGrad, numPoints)
 
 	// cut gradient down, add keypoints
