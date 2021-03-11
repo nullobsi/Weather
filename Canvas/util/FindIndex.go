@@ -33,7 +33,7 @@ func FindHiIndex(val float64, g func(int) float64, l int) int {
 		return 0
 	}
 
-	if val < g(l-1) {
+	if val >= g(l-1) {
 		return l
 	}
 
