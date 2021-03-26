@@ -46,7 +46,11 @@ const getImg: Intermediary = async function(options, data, gradients, pipeline){
     let folder = path.join(opts.folder, (month+1).toString());
 
     // this line written in the typescript zen - do not touch
-    let values = Object.fromEntries(pipeline.datafields.filter(v => v.perConfig.imagePicker !== undefined).map(v => [(v.perConfig.imagePicker as ImagePickerPerConf).useFor, data[v.fieldName]])) as {[K in ImagePickerPerConf["useFor"]]: number};
+    let values = Object
+        .fromEntries(pipeline.datafields
+            .filter(v => v.perConfig.imagePicker !== undefined)
+            .map(v => [(v.perConfig.imagePicker as ImagePickerPerConf).useFor, data[v.fieldName]])) as
+        {[K in ImagePickerPerConf["useFor"]]: number};
     console.log(values);
 
     if (values.solar < t.sunset) {
@@ -110,6 +114,12 @@ async function pickImage(folder: string, subdir: string): Promise<Uint8Array> {
     }
     images = images.filter(v => v != seenImages[subdir] && !v.startsWith("."));
     let imageFn = images[Math.floor(Math.random() * images.length)];
+    if (images.length == 0 || imageFn == undefined) {
+        console.error("No images found!");
+        console.log(imageFn);
+        console.log(images);
+        Deno.exit(1);
+    }
     let imagePath = path.join(folder, subdir, imageFn);
     pickedImages[subdir] = imageFn;
     seenImages[subdir] = imageFn;
