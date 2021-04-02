@@ -69,8 +69,8 @@ const ne = Math.PI * 2 + Math.PI / 4;
 //sensor numbers
 const indoor = "temp1f"
 const water = "temp2f"
-const soil = "soiltemp3"
-const soilHumidity = "soilhum3"
+const soil = "temp8f"
+const soilHumidity = "soilhum1"
 
 let pipeline: Pipeline = {
     datafields: [
@@ -392,8 +392,8 @@ let pipeline: Pipeline = {
                     displayUnit: false,
                     start: ns,
                     end: ne,
-                    startV: 1,
-                    endV: 15,
+                    startV: 0,
+                    endV: 100,
                     panel: 3,
                     r: 75,
                     x: Math.floor(width / 4) * 3,
@@ -402,7 +402,7 @@ let pipeline: Pipeline = {
                     presc: 0
                 }
             },
-            gradient: "soil",
+            gradient: "humidity",
             displayName: "Hum.",
             fieldName: soilHumidity,
             transform: undefined,
