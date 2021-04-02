@@ -97,13 +97,21 @@ let pickedImages: {[x:string]:string | undefined} = {};
 let seenImages: {[x:string]: string | undefined} = {};
 
 async function pickImage(folder: string, subdir: string): Promise<Uint8Array> {
+    console.log("Picked images and seen images are:");
+    console.log(pickedImages);
+    console.log(seenImages);
+    console.log(`Searching in folder ${folder} subdir ${subdir}`);
     let currentDay = new Date().getDay();
+    console.log(`It is currently the ${currentDay}st/nd/rd/th of the month`);
     if (currentDay == lastDate) {
         let imageFn = pickedImages[subdir];
         if (imageFn) {
+            console.log(`The day has not changed. Choosing previous image: ${imageFn}`);
             return Deno.readFile(path.join(folder, subdir, imageFn));
         }
+        console.log(`The day has not changed. However, a cached image for this subdir does not exist.`);
     } else {
+        console.log(`The day has changed. Resetting image cache...`);
         pickedImages = {};
         lastDate = currentDay;
     }
@@ -112,8 +120,13 @@ async function pickImage(folder: string, subdir: string): Promise<Uint8Array> {
     for await (let file of fileList) {
         images.push(file.name);
     }
+    console.log(`Found files:`);
+    console.log(images);
     images = images.filter(v => v != seenImages[subdir] && !v.startsWith("."));
+    console.log("Filtered already seen images and hidden files...");
+    console.log(images);
     let imageFn = images[Math.floor(Math.random() * images.length)];
+    console.log(`Picked random image: ${imageFn}`);
     if (images.length == 0 || imageFn == undefined) {
         console.error("No images found!");
         console.log(imageFn);
