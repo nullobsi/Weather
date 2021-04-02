@@ -1198,12 +1198,6 @@ let pipeline: Pipeline = {
             opts: {}
         },
         {
-            name: "soil",
-            opts: <SoilOpts>{
-                fieldName: soilHumidity
-            }
-        },
-        {
             name: "rainrate",
             opts: <RainrateOpts>{
                 highEnd: 37,
