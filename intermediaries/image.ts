@@ -101,7 +101,7 @@ async function pickImage(folder: string, subdir: string): Promise<Uint8Array> {
     console.log(pickedImages);
     console.log(seenImages);
     console.log(`Searching in folder ${folder} subdir ${subdir}`);
-    let currentDay = new Date().getDay();
+    let currentDay = new Date().getDate();
     console.log(`It is currently the ${currentDay}st/nd/rd/th of the month`);
     if (currentDay == lastDate) {
         let imageFn = pickedImages[subdir];
