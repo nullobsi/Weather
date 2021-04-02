@@ -53,12 +53,12 @@ const getImg: Intermediary = async function(options, data, gradients, pipeline){
         {[K in ImagePickerPerConf["useFor"]]: number};
     console.log(values);
 
-    if (values.solar < t.sunset) {
-        data.image = await pickImage(folder, "Sunset");
-        return;
-    }
     if (values.solar == 0) {
         data.image = await pickImage(folder, "Night");
+        return;
+    }
+    if (values.solar < t.sunset) {
+        data.image = await pickImage(folder, "Sunset");
         return;
     }
     if (values.temp < t.cold[month]) {
