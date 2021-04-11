@@ -105,7 +105,7 @@ let pipeline: Pipeline = {
                     r,
                     x: dialMargin + r,
                     y: squareSize*2 + dialMargin + r,
-                    presc: 0,
+                    presc: 1,
                 },
             },
         },
@@ -128,7 +128,7 @@ let pipeline: Pipeline = {
                     r,
                     x: squareSize + dialMargin + r,
                     y: dialMargin + r,
-                    presc: 1,
+                    presc: 2,
                     transform: undefined
                 },
             },
