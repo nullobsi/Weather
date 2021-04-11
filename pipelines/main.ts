@@ -49,7 +49,7 @@ const config = await getConfig("pipelines", "main", {
     }
 })
 // scale factor
-const s = 2
+const s = 1.5;
 
 //image
 const imgWidth = 1440 * s
