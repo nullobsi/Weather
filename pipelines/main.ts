@@ -389,7 +389,7 @@ let pipeline: Pipeline = {
             perConfig: {
                 "image": <ImagePerconf>{
                     displayName: true,
-                    displayUnit: false,
+                    displayUnit: true,
                     start: ns,
                     end: ne,
                     startV: 0,
@@ -406,7 +406,7 @@ let pipeline: Pipeline = {
             displayName: "Hum.",
             fieldName: soilHumidity,
             transform: undefined,
-            unit: ""
+            unit: "%"
         },
 
         //Humidity
