@@ -50,5 +50,5 @@ const FeelsLike: Intermediary = async (opts, data) => {
     }
 }
 
-export {FeelsLikeOpts}
+export type {FeelsLikeOpts}
 export default FeelsLike;

@@ -25,5 +25,5 @@ const DewPoint: Intermediary = async (opts, data) => {
     }
 }
 
-export {DewPointOpts}
+export type {DewPointOpts}
 export default DewPoint;

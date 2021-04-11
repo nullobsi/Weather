@@ -7,6 +7,8 @@ import {ImageOptions, ImagePerconf} from "../processors/image.ts";
 import {ConvOpts} from "../intermediaries/conv.ts";
 import {MultiConvOpts} from "../intermediaries/multiconv.ts";
 import {FeelsLikeOpts} from "../intermediaries/feelslike.ts";
+import {ImageInterOpts} from "../intermediaries/image.ts";
+import {ImageUrlOpts} from "../inputs/imageUrl.ts";
 
 const config = await getConfig("pipelines", "table", {
     "url": "HERE",
@@ -14,6 +16,7 @@ const config = await getConfig("pipelines", "table", {
     "channelId": "HERE",
     "serverId": "HERE",
     "title": "HERE",
+    "bgUrl": "HERE",
 });
 
 //image
@@ -233,6 +236,12 @@ let pipeline: Pipeline = {
                 url: config.url,
             },
         },
+        {
+            name: "imageUrl",
+            opts: <ImageUrlOpts>{
+                url: config.bgUrl,
+            }
+        }
     ],
     outputs: [
         {
@@ -305,7 +314,7 @@ let pipeline: Pipeline = {
                 windMph: "windSpeedMph",
                 tempF: "T_Avg_F",
             },
-        },
+        }
     ],
     processors: [
         {

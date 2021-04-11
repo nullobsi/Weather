@@ -14,5 +14,5 @@ const Conv: Intermediary = async (opts, data) => {
     }
 }
 
-export {ConvOpts}
+export type {ConvOpts}
 export default Conv;

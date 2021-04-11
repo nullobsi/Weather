@@ -32,5 +32,5 @@ const getData: DataInput = async function(options) {
 
     return dat;
 }
-export {TableOpts}
+export type {TableOpts}
 export default getData;
