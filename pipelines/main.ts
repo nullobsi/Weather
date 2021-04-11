@@ -1243,7 +1243,8 @@ let pipeline: Pipeline = {
                 extraFiles: [{
                     ext: ".png",
                     fieldName: "image"
-                }]
+                }],
+                removeKeys: ["image"],
             }
         },
         {
