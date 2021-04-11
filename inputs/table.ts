@@ -20,6 +20,11 @@ const getData: DataInput = async function(options) {
     let response = await fetch(opt.url);
     let txt = await response.text();
     let dat:WeatherData = {};
+    let dateR = /<b>Record Date: <\/b>(?<datStr>[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{2})<br>/gim;
+    let res = dateR.exec(txt);
+    if (res && res.groups) {
+        dat["date"] = new Date(res.groups.datStr);
+    }
 
     let r = /<tr><th>(?<title>.+)<\/th><td>(?<value>.+)<\/td><\/tr>/gim;
     let m;
