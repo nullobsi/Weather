@@ -13,7 +13,7 @@ import {FtpOutputOpts} from "../outputs/ftp.ts";
 import {AmbientPerconf} from "../inputs/ambientweather.ts";
 import {ImageInterOpts, ImagePickerPerConf, Thresholds} from "../intermediaries/image.ts";
 
-const config = await getConfig("outputs", "main", {
+const config = await getConfig("pipelines", "main", {
     discordChannelId: "HERE",
     discordServerId: "HERE",
     wundergroundStationId: "HERE",
@@ -1137,7 +1137,7 @@ let pipeline: Pipeline = {
         {
             perConfig: {
                 "discord": <DiscordPerconf>{
-                    updateRoleColor: true,
+                    updateRoleColor: false,
                     sendToDiscord: false
                 },
             },
@@ -1251,18 +1251,18 @@ let pipeline: Pipeline = {
                 }
             }
         },
-        {
-            name: "ftp",
-            opts: <FtpOutputOpts>{
-                fieldName: "image",
-                uploadName: "weather/temp.png",
-                password: config.ftpPassword,
-                username: config.ftpUsername,
-                host: config.ftpHostname,
-                port: config.ftpPort,
-                tlsHostname: config.ftpAuthname,
-            }
-        }
+        // {
+        //     name: "ftp",
+        //     opts: <FtpOutputOpts>{
+        //         fieldName: "image",
+        //         uploadName: "weather/temp.png",
+        //         password: config.ftpPassword,
+        //         username: config.ftpUsername,
+        //         host: config.ftpHostname,
+        //         port: config.ftpPort,
+        //         tlsHostname: config.ftpAuthname,
+        //     }
+        // }
     ],
     runInst: true,
     processors: [
