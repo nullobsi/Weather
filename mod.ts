@@ -55,7 +55,7 @@ for await (let dirEntry of dirEntries) {
         let name = path.basename(dirEntry.name, ".ts");
         let readModule = await import("file://"+p);
         if (readModule.default == undefined) {
-            console.error(`[intermediary] {name} has no exports!`)
+            console.error(`[intermediary] ${name} has no exports!`)
             Deno.exit(1);
         }
         intermediaries[name] = readModule.default;
@@ -71,7 +71,7 @@ for await (let dirEntry of dirEntries) {
         let name = path.basename(dirEntry.name, ".ts");
         let readModule = await import("file://"+p);
         if (readModule.default == undefined) {
-            console.error(`[output] {name} has no exports!`)
+            console.error(`[output] ${name} has no exports!`)
             Deno.exit(1);
         }
         outputs[name] = readModule.default;
@@ -87,7 +87,7 @@ for await (let dirEntry of dirEntries) {
         let name = path.basename(dirEntry.name, ".ts");
         let readModule = await import("file://"+p);
         if (readModule.default == undefined) {
-            console.error(`[transform] {name} has no exports!`)
+            console.error(`[transform] ${name} has no exports!`)
             Deno.exit(1);
         }
         transforms[name] = readModule.default;
@@ -103,7 +103,7 @@ for await (let dirEntry of dirEntries) {
         let name = path.basename(dirEntry.name, ".ts");
         let readModule = await import("file://"+p);
         if (readModule.default == undefined) {
-            console.error(`[process] {name} has no exports!`)
+            console.error(`[process] ${name} has no exports!`)
             Deno.exit(1);
         }
         processors[name] = readModule.default;
@@ -119,7 +119,7 @@ for await (let dirEntry of dirEntries) {
         let name = path.basename(dirEntry.name, ".ts");
         let readModule = await import("file://"+p);
         if (readModule.default == undefined) {
-            console.error(`[pipeline] {name} has no exports!`)
+            console.error(`[pipeline] ${name} has no exports!`)
             Deno.exit(1);
         }
         pipelines[name] = readModule.default;

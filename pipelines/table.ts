@@ -341,3 +341,5 @@ let pipeline: Pipeline = {
     interval: 300000
 
 }
+
+export default pipeline;
