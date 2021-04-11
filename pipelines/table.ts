@@ -93,11 +93,11 @@ let pipeline: Pipeline = {
             gradient: "humidity",
             displayName: "Hum.",
             transform: undefined,
-            unit: "",
+            unit: "%",
             perConfig: {
                 "image": <ImagePerconf>{
                     displayName: true,
-                    displayUnit: false,
+                    displayUnit: true,
                     start: ns,
                     end: ne,
                     startV: 0,
@@ -200,7 +200,7 @@ let pipeline: Pipeline = {
                     r,
                     x: squareSize*2 + dialMargin + r,
                     y: dialMargin + r,
-                    presc: 1,
+                    presc: 2,
                     transform: undefined
                 },
             },
