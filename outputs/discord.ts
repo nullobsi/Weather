@@ -1,4 +1,4 @@
-import * as Discord from "https://deno.land/x/discordeno@10.2.0/mod.ts";
+import * as Discord from "https://deno.land/x/discordeno@10.5.0/mod.ts";
 import getConfig from "../util/getConfig.ts";
 import tempToColor from "../util/tempToColor.ts";
 import DiscordRole from "../defs/DiscordRole.ts";
@@ -84,12 +84,22 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
         }
     }
     console.log("[discord] Sending message...")
+    let attachment = undefined;
+    if (options.attachment) {
+        let blob = new Blob([processed[options.attachment.fieldName]], {type: "image/png",});
+        if (blob.size >= (7500000)) {
+            msg += "\n\n<image too large to upload>";
+        } else {
+            attachment = {
+                blob: blob,
+                name: options.attachment.fileName,
+            };
+        }
+    }
+
     await Discord.sendMessage(options.channel,{
         content: msg,
-        file: options.attachment ? {
-            blob: new Blob([processed[options.attachment.fieldName]], {type: "image/png",}),
-            name: options.attachment.fileName
-        } : undefined
+        file: attachment,
     })
     console.log(`[discord] Done!`)
 }
