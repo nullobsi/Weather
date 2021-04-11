@@ -91,7 +91,7 @@ let pipeline: Pipeline = {
         {
             fieldName: "RH_Avg",
             gradient: "humidity",
-            displayName: "Hum.",
+            displayName: "RH",
             transform: undefined,
             unit: "%",
             perConfig: {
