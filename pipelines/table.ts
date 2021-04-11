@@ -9,6 +9,7 @@ import {MultiConvOpts} from "../intermediaries/multiconv.ts";
 import {FeelsLikeOpts} from "../intermediaries/feelslike.ts";
 import {ImageInterOpts} from "../intermediaries/image.ts";
 import {ImageUrlOpts} from "../inputs/imageUrl.ts";
+import {DewPointOpts} from "../intermediaries/dewpoint.ts";
 
 const config = await getConfig("pipelines", "table", {
     "url": "HERE",
@@ -314,7 +315,15 @@ let pipeline: Pipeline = {
                 windMph: "windSpeedMph",
                 tempF: "T_Avg_F",
             },
-        }
+        },
+        {
+            name: "dewpoint",
+            opts: <DewPointOpts>{
+                nFieldName: "dewPointF",
+                humidity: "RH_Avg",
+                tempF: "T_Avg_F",
+            },
+        },
     ],
     processors: [
         {
