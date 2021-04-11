@@ -2,7 +2,7 @@ import Pipeline from "../defs/Pipeline.ts";
 import getConfig from "../util/getConfig.ts";
 import {TableOpts} from "../inputs/table.ts";
 import {FileOutputOpts} from "../outputs/file.ts";
-import {DiscordOpt} from "../outputs/discord.ts";
+import {DiscordOpt, DiscordPerconf} from "../outputs/discord.ts";
 import {ImageOptions, ImagePerconf} from "../processors/image.ts";
 import {ConvOpts} from "../intermediaries/conv.ts";
 import {MultiConvOpts} from "../intermediaries/multiconv.ts";
@@ -225,6 +225,21 @@ let pipeline: Pipeline = {
                     y: squareSize + dialMargin + r,
                     transform: "wind",
                     presc: 0,
+                },
+            },
+        },
+
+        {
+            // generated field
+            fieldName: "windSpeedMph",
+            gradient: "wind",
+            displayName: "Wind speed (inst.)",
+            transform: undefined,
+            unit: "mph",
+            perConfig: {
+                "discord": <DiscordPerconf>{
+                    sendToDiscord: false,
+                    updateRoleColor: true,
                 },
             },
         },
