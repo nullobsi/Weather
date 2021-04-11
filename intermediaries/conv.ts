@@ -9,7 +9,7 @@ type ConvOpts = {
 const Conv: Intermediary = async (opts, data) => {
     const o = opts as ConvOpts;
     let v = data[o.fieldName];
-    if (v === undefined || v === null) {
+    if (v !== undefined && v !== null) {
         data[o.nFieldName] = o.func(v);
     }
 }
