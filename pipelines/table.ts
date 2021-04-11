@@ -301,7 +301,8 @@ let pipeline: Pipeline = {
         {
             name: "conv",
             opts: <ConvOpts>{
-                func: v => v *0.0295299830714,
+                // adjust for altitude
+                func: v => v *0.0295299830714 + 4.75,
                 nFieldName: "pressure_inHg",
                 fieldName: "BP_Avg",
             },
