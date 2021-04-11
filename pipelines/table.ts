@@ -59,7 +59,7 @@ let pipeline: Pipeline = {
                     r,
                     x: dialMargin + r,
                     y: dialMargin + r,
-                    presc: 1,
+                    presc: 2,
                     transform: undefined
                 },
             },
@@ -83,7 +83,7 @@ let pipeline: Pipeline = {
                     r,
                     x: dialMargin + r,
                     y: squareSize + dialMargin + r,
-                    presc: 1,
+                    presc: 2,
                     transform: undefined
                 },
             },
