@@ -333,6 +333,7 @@ let pipeline: Pipeline = {
                 // the inside should still be a square
                 height: imgH + titleSize,
                 width: imgW,
+                bgFit: "height",
                 panels: [
                     {
                         title: config.title,

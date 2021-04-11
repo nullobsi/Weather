@@ -30,6 +30,9 @@ interface renderOpt {
     }[];
     width: number;
     height: number;
+    // width: fit so the entire width of image fits
+    // height: fit to entire height of image fits
+    bgFit: "width" | "height";
 }
 
 
@@ -42,6 +45,7 @@ let process: DataProcessor = async function(options, gradients, datafields, data
         height: opt.height,
         width: opt.width,
         panels: [],
+        bgFit: opt.bgFit,
     };
     opt.panels.forEach(panel => {
         finalOpt.panels.push({
@@ -110,6 +114,7 @@ interface ImageOptions {
         fontSize: number
     }[]
     imageKey: string
+    bgFit: "width" | "height";
 }
 
 export type {ImageOptions};

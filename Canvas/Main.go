@@ -54,13 +54,20 @@ func RenderDials() (js.Func, js.Func) {
 		js.CopyBytesToGo(bgImageArr, args[3])
 
 		bgImage, _, err := image.Decode(bytes.NewReader(bgImageArr))
-		bgImage = resize.Resize(uint(width), 0, bgImage, resize.Lanczos3)
+
+		fitType := options.Get("bgFit").String()
+		if fitType == "width" {
+			bgImage = resize.Resize(uint(width), 0, bgImage, resize.Lanczos3)
+		} else {
+			bgImage = resize.Resize(0, uint(height), bgImage, resize.Lanczos3)
+		}
 
 		if err != nil {
 			fmt.Println("Error decoding image:\n", err)
 			quitCh <- true
 			return nil
 		}
+
 		dc.DrawImage(bgImage, 0, 0)
 
 		//load font
