@@ -48,19 +48,25 @@ const config = await getConfig("pipelines", "main", {
         sunset: 0,
     }
 })
+// scale factor
+const s = 2
+
 //image
-const imgWidth = 1440
-const imgHeight = 1080
+const imgWidth = 1440 * s
+const imgHeight = 1080 * s
 
-const largeHeight = 510
-const smallHeight = 333
+const largeHeight = 510 * s
+const smallHeight = 333 * s
 
-const width = 335
+const width = 335 * s
 
-const spacing = 20
-const smallSpacing = 10
+const spacing = 20 * s
+const smallSpacing = 10 * s
 
-const titleFontSize = 520 / 12
+const titleFontSize = 520 / 12 * s
+
+const r = 150 * s
+const sr = 75 * s
 
 //angles for normal dials
 const ns = Math.PI - Math.PI / 4;
@@ -85,9 +91,9 @@ let pipeline: Pipeline = {
                     startV: -58,
                     endV: 122,
                     panel: 0,
-                    r: 150,
+                    r,
                     x: Math.floor(width / 2),
-                    y: 150 + smallSpacing,
+                    y: r + smallSpacing,
                     transform: undefined,
                     presc: 1
                 },
@@ -115,9 +121,9 @@ let pipeline: Pipeline = {
                     startV: -58,
                     endV: 122,
                     panel: 0,
-                    r: 75,
+                    r: sr,
                     x: Math.floor(width / 4),
-                    y: 150 + 150 + 75,
+                    y: r*2+ sr,
                     transform: undefined,
                     presc: 1
                 },
@@ -142,9 +148,9 @@ let pipeline: Pipeline = {
                     startV: -58,
                     endV: 122,
                     panel: 0,
-                    r: 75,
+                    r: sr,
                     x: Math.floor(width / 4) * 3,
-                    y: 150 + 150 + 75,
+                    y: r*2 + sr,
                     transform: undefined,
                     presc: 1
                 },
@@ -172,9 +178,9 @@ let pipeline: Pipeline = {
                     startV: 0,
                     endV: 12,
                     panel: 1,
-                    r: 150,
+                    r: r,
                     x: Math.floor(width / 2),
-                    y: 150 + smallSpacing,
+                    y: r + smallSpacing,
                     transform: "rainrate",
                     presc: 2
                 },
@@ -202,9 +208,9 @@ let pipeline: Pipeline = {
                     startV: 0,
                     endV: 1.82,
                     panel: 1,
-                    r: 75,
+                    r: sr,
                     x: Math.floor(width / 4),
-                    y: 150 + 150 + 75,
+                    y: r*2 + sr,
                     transform: undefined,
                     presc: 2
                 }
@@ -238,9 +244,9 @@ let pipeline: Pipeline = {
                     startV: 0,
                     endV: 4.68,
                     panel: 1,
-                    r: 75,
+                    r: sr,
                     x: Math.floor(width / 4) * 3,
-                    y: 150 + 150 + 75,
+                    y: r*2 + sr,
                     transform: undefined,
                     presc: 2
                 }
@@ -263,9 +269,9 @@ let pipeline: Pipeline = {
                     startV: 0,
                     endV: 65,
                     panel: 2,
-                    r: 150,
+                    r: r,
                     x: Math.floor(width / 2),
-                    y: 150 + smallSpacing,
+                    y: r + smallSpacing,
                     transform: undefined,
                     presc: 1
                 },
@@ -293,9 +299,9 @@ let pipeline: Pipeline = {
                     startV: 0,
                     endV: 65,
                     panel: 2,
-                    r: 75,
+                    r: sr,
                     x: Math.floor(width / 4),
-                    y: 150 + 150 + 75,
+                    y: r*2 + sr,
                     transform: undefined,
                     presc: 1
                 },
@@ -320,9 +326,9 @@ let pipeline: Pipeline = {
                     startV: 0,
                     endV: 360,
                     panel: 2,
-                    r: 75,
+                    r: sr,
                     x: Math.floor(width / 4) * 3,
-                    y: 150 + 150 + 75,
+                    y: r*2 + sr,
                     transform: "wind",
                     presc: 0
                 },
@@ -345,9 +351,9 @@ let pipeline: Pipeline = {
                     startV: 32,
                     endV: 77,
                     panel: 3,
-                    r: 150,
+                    r: r,
                     x: Math.floor(width / 2),
-                    y: 150 + smallSpacing,
+                    y: r + smallSpacing,
                     transform: undefined,
                     presc: 1
                 },
@@ -372,9 +378,9 @@ let pipeline: Pipeline = {
                     startV: 23,
                     endV: 86,
                     panel: 3,
-                    r: 75,
+                    r: sr,
                     x: Math.floor(width / 4),
-                    y: 150 + 150 + 75,
+                    y: r*2 + sr,
                     transform: undefined,
                     presc: 1
                 }
@@ -395,9 +401,9 @@ let pipeline: Pipeline = {
                     startV: 0,
                     endV: 100,
                     panel: 3,
-                    r: 75,
+                    r: sr,
                     x: Math.floor(width / 4) * 3,
-                    y: 150 + 150 + 75,
+                    y: r*2 + sr,
                     transform: undefined,
                     presc: 0
                 }
@@ -420,9 +426,9 @@ let pipeline: Pipeline = {
                     startV: 0,
                     endV: 100,
                     panel: 4,
-                    r: 150,
+                    r: r,
                     x: Math.floor(width / 2),
-                    y: 150 + smallSpacing,
+                    y: r + smallSpacing,
                     transform: undefined,
                     presc: 0
                 },
@@ -452,9 +458,9 @@ let pipeline: Pipeline = {
                     startV: 0,
                     endV: 11,
                     panel: 5,
-                    r: 150,
+                    r: r,
                     x: Math.floor(width / 2),
-                    y: 150 + smallSpacing,
+                    y: r + smallSpacing,
                     transform: undefined,
                     presc: 1
                 },
@@ -481,9 +487,9 @@ let pipeline: Pipeline = {
                     startV: 0,
                     endV: 300,
                     panel: 6,
-                    r: 150,
+                    r: r,
                     x: Math.floor(width / 2),
-                    y: 150 + smallSpacing,
+                    y: r + smallSpacing,
                     transform: undefined,
                     presc: 0
                 }
@@ -506,9 +512,9 @@ let pipeline: Pipeline = {
                     startV: 28.84,
                     endV: 31.00,
                     panel: 7,
-                    r: 150,
+                    r: r,
                     x: Math.floor(width / 2),
-                    y: 150 + smallSpacing,
+                    y: r + smallSpacing,
                     transform: undefined,
                     presc: 2
                 },
@@ -542,9 +548,9 @@ let pipeline: Pipeline = {
                     startV: 0,
                     endV: 962.5,
                     panel: 8,
-                    r: 150,
+                    r: r,
                     x: Math.floor(width / 2),
-                    y: 150 + smallSpacing,
+                    y: r + smallSpacing,
                     transform: undefined,
                     presc: 2
                 },
@@ -570,9 +576,9 @@ let pipeline: Pipeline = {
                     startV: 0,
                     endV: 300,
                     panel: 9,
-                    r: 150,
+                    r: r,
                     x: Math.floor(width / 2),
-                    y: 150 + smallSpacing,
+                    y: r + smallSpacing,
                     transform: "pm25",
                     presc: 0
                 },
@@ -1318,14 +1324,14 @@ let pipeline: Pipeline = {
                         title: "UV Index",
                         x: spacing + width + spacing + width + spacing,
                         y: spacing + smallHeight + spacing,
-                        height: smallHeight + 1,
+                        height: smallHeight + 1*s,
                         width: width,
                         fontSize: titleFontSize
                     },
                     {
                         title: "AQI",
                         x: spacing + width + spacing + width + spacing,
-                        y: spacing + smallHeight + spacing + smallHeight + 1 + spacing,
+                        y: spacing + smallHeight + spacing + smallHeight + 1*s + spacing,
                         height: smallHeight,
                         width: width,
                         fontSize: titleFontSize
@@ -1342,14 +1348,14 @@ let pipeline: Pipeline = {
                         title: "Solar Radiation",
                         x: spacing + width + spacing + width + spacing + width + spacing,
                         y: spacing + smallHeight + spacing,
-                        height: smallHeight + 1,
+                        height: smallHeight + 1*s,
                         width: width,
                         fontSize: titleFontSize
                     },
                     {
                         title: "PM2.5",
                         x: spacing + width + spacing + width + spacing + width + spacing,
-                        y: spacing + smallHeight + spacing + smallHeight + 1 + spacing,
+                        y: spacing + smallHeight + spacing + smallHeight + 1*s + spacing,
                         height: smallHeight,
                         width: width,
                         fontSize: titleFontSize
