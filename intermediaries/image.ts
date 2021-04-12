@@ -122,17 +122,23 @@ async function pickImage(folder: string, subdir: string): Promise<Uint8Array> {
     }
     console.log(`Found files:`);
     console.log(images);
-    images = images.filter(v => v != seenImages[subdir] && !v.startsWith("."));
-    console.log("Filtered already seen images and hidden files...");
-    console.log(images);
-    let imageFn = images[Math.floor(Math.random() * images.length)];
-    console.log(`Picked random image: ${imageFn}`);
-    if (images.length == 0 || imageFn == undefined) {
-        console.error("No images found!");
-        console.log(imageFn);
+    images = images.filter(v => !v.startsWith("."));
+    console.log("Filtered hidden files...");
+    let imageFn: string;
+    if (images.length != 1) {
+        images = images.filter(v => v != seenImages[subdir]);
+        imageFn = images[Math.floor(Math.random() * images.length)];
+    } else if (images.length == 1) {
+        console.log("Only one image found.");
+        imageFn = images[0];
+    } else {
+        console.log("No image found!");
         console.log(images);
         Deno.exit(1);
     }
+
+    console.log(images);
+    console.log(`Picked random image: ${imageFn}`);
     let imagePath = path.join(folder, subdir, imageFn);
     pickedImages[subdir] = imageFn;
     seenImages[subdir] = imageFn;
