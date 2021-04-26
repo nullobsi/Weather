@@ -13,7 +13,6 @@ const getData: DataInput = async function(options): Promise<WeatherData> {
     let opts = options as wundergroundOpts;
     let response = await fetch(`${requestUrl}&stationId=${opts.stationId}&format=json&units=e`);
     let json = await response.text();
-    console.log(json);
     let data = JSON.parse(json);
     //await Deno.writeTextFile("./test.json", JSON.stringify(data, undefined, 4));
     data = data.observations[0];

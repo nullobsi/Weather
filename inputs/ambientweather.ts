@@ -15,7 +15,7 @@ const getData: DataInput = async function(options) {
     }
     let device = data.find(v => v.macAddress == opts.device);
     if (device === undefined) {
-        console.log(data);
+        this.console.log(data);
         throw new Error("Could not get devices from Ambient!")
     }
     return device.lastData;

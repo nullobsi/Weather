@@ -16,7 +16,7 @@ const output: DataOutput = async function output(data: WeatherData, opt, datafie
     let max = datafields
         .filter(v => v.perConfig.console !== undefined)
         .reduce((p,v) => v.displayName.length > p ? v.displayName.length : p,0)
-    console.log("Weather Report for " + getDateString(new Date(data.date)));
+    this.console.log("Weather Report for " + getDateString(new Date(data.date)));
     datafields.filter(v => v.perConfig.console !== undefined).forEach(v => {
         let exists = data[v.fieldName] !== null && data[v.fieldName] !== undefined
         let str = exists ? data[v.fieldName] : "No Data";
@@ -33,10 +33,10 @@ const output: DataOutput = async function output(data: WeatherData, opt, datafie
                     b: color[2]
                 });
             } catch (e) {
-                console.log("Strange error!\n" + e + "\n" + interpolated);
+                this.console.log("Strange error!\n" + e + "\n" + interpolated);
             }
         }
-        console.log(`${textPad(v.displayName,max)}: ${str}${Colors.reset(exists ? v.unit : "")}`);
+        this.console.log(`${textPad(v.displayName,max)}: ${str}${Colors.reset(exists ? v.unit : "")}`);
     });
 
 }

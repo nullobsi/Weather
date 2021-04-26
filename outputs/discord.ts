@@ -34,18 +34,18 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
     let options = opt as DiscordOpt;
     let msg = "Weather report for " + getDateString(new Date(data.date)) + "\n";
     //let maxlen = datafields.reduce<number>((p, c) => c.displayName.length > p ? c.displayName.length : p, 0);
-    console.log("[discord] Getting roles...")
+    this.console.log("Getting roles...")
     let roles: DiscordRole[] = [];
     let hasPerm = true;
     if (!(await Discord.botHasPermission(options.server, ["MANAGE_ROLES"]))) {
-        console.error("[discord] No permission for roles, skipping!");
+        this.console.error("No permission for roles, skipping!");
         hasPerm = false;
     } else {
         let server = Discord.cache.guilds.get(options.server);
         if (server) {
             roles = server.roles.array();
         } else {
-            console.error("[discord] Server does not exist!");
+            this.console.error("Server does not exist!");
             return;
         }
     }
@@ -64,12 +64,12 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
             let color = value ? hexToNumber(tempToColor(value, gradient)) : undefined;
             let role = roles.find(v => v.name == field.displayName);
             if (role) {
-                console.log(`[discord] Editing role ${field.displayName}...`)
+                this.console.log(`Editing role ${field.displayName}...`)
                 await Discord.editRole(options.server, role.id, {
                     color: color,
                 })
             } else {
-                console.log(`[discord] Creating role ${field.displayName}...`)
+                this.console.log(`Creating role ${field.displayName}...`)
                 await Discord.createGuildRole(options.server, {
                     color: color,
                     name: field.displayName,
@@ -79,11 +79,11 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
                 })
             }
         }} catch(e) {
-            console.error("[discord] Error, continuing...");
-            console.error(e);
+            this.console.error("Error, continuing...");
+            this.console.error(e);
         }
     }
-    console.log("[discord] Sending message...")
+    this.console.log("Sending message...")
     let attachment = undefined;
     if (options.attachment) {
         let blob = new Blob([processed[options.attachment.fieldName]], {type: "image/png",});
@@ -101,7 +101,7 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
         content: msg,
         file: attachment,
     })
-    console.log(`[discord] Done!`)
+    this.console.log(`Done!`)
 }
 
 function hexToNumber(hex: string) {

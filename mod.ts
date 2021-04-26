@@ -17,12 +17,28 @@ let transforms : Indexed<Transform> = {};
 let processors: Indexed<DataProcessor> = {};
 let pipelines: Indexed<Pipeline> = {};
 
-console.log("[init] Beginning loading...");
+let originalConsole = window.console;
 
+let nConsole = {
+    ...originalConsole,
+    prefix: "",
+    log: function (...v: unknown[]) {
+        originalConsole.log(this.prefix, ...v);
+    },
+    error: function(...v: unknown[]) {
+        originalConsole.error(this.prefix, ...v);
+    }
+}
+window.console = nConsole;
+
+nConsole.prefix = "[init]";
+console.log("Beginning loading...");
+
+nConsole.prefix = "[gradient]";
 let dirEntries = Deno.readDir("./gradients");
 for await (let gradient of dirEntries) {
     if (gradient.isFile && !gradient.name.startsWith(".")) {
-        console.log("[gradient] Loading " + gradient.name)
+        console.log("Loading " + gradient.name)
         let p = path.join("./gradients", gradient.name);
         let name = path.basename(gradient.name, ".json");
         let readJson = await Deno.readTextFile(p);
@@ -30,54 +46,58 @@ for await (let gradient of dirEntries) {
     }
 }
 
+nConsole.prefix = "[input]";
 dirEntries = Deno.readDir("./inputs");
 for await (let input of dirEntries) {
     if (input.isFile && !input.name.startsWith(".")) {
-        console.log("[input] Loading " + input.name)
+        console.log("Loading " + input.name)
         let p = path.join(".","inputs", input.name);
         p = path.resolve(p);
         let name = path.basename(input.name, ".ts");
         let readModule = await import("file://"+p);
         if (readModule.default == undefined) {
-            console.error(`[input] ${name} has no exports!`)
+            console.error(`${name} has no exports!`)
             Deno.exit(1);
         }
         inputs[name] = readModule.default;
     }
 }
 
+nConsole.prefix = "[intermediary]";
 dirEntries = Deno.readDir("./intermediaries");
 for await (let dirEntry of dirEntries) {
     if (dirEntry.isFile && !dirEntry.name.startsWith(".")) {
-        console.log("[intermediary] Loading " + dirEntry.name)
+        console.log("Loading " + dirEntry.name)
         let p = path.join(".","intermediaries", dirEntry.name);
         p = path.resolve(p);
         let name = path.basename(dirEntry.name, ".ts");
         let readModule = await import("file://"+p);
         if (readModule.default == undefined) {
-            console.error(`[intermediary] ${name} has no exports!`)
+            console.error(`${name} has no exports!`)
             Deno.exit(1);
         }
         intermediaries[name] = readModule.default;
     }
 }
 
+nConsole.prefix = "[output]";
 dirEntries = Deno.readDir("./outputs");
 for await (let dirEntry of dirEntries) {
     if (dirEntry.isFile && !dirEntry.name.startsWith(".")) {
-        console.log("[output] Loading " + dirEntry.name)
+        console.log("Loading " + dirEntry.name)
         let p = path.join(".","outputs", dirEntry.name);
         p = path.resolve(p);
         let name = path.basename(dirEntry.name, ".ts");
         let readModule = await import("file://"+p);
         if (readModule.default == undefined) {
-            console.error(`[output] ${name} has no exports!`)
+            console.error(`${name} has no exports!`)
             Deno.exit(1);
         }
         outputs[name] = readModule.default;
     }
 }
 
+nConsole.prefix = "[transform]";
 dirEntries = Deno.readDir("./transforms");
 for await (let dirEntry of dirEntries) {
     if (dirEntry.isFile && !dirEntry.name.startsWith(".")) {
@@ -87,39 +107,41 @@ for await (let dirEntry of dirEntries) {
         let name = path.basename(dirEntry.name, ".ts");
         let readModule = await import("file://"+p);
         if (readModule.default == undefined) {
-            console.error(`[transform] ${name} has no exports!`)
+            console.error(`${name} has no exports!`)
             Deno.exit(1);
         }
         transforms[name] = readModule.default;
     }
 }
 
+nConsole.prefix = "[process]";
 dirEntries = Deno.readDir("./processors");
 for await (let dirEntry of dirEntries) {
     if (dirEntry.isFile && !dirEntry.name.startsWith(".")) {
-        console.log("[process] Loading " + dirEntry.name)
+        console.log("Loading " + dirEntry.name)
         let p = path.join(".","processors", dirEntry.name);
         p = path.resolve(p);
         let name = path.basename(dirEntry.name, ".ts");
         let readModule = await import("file://"+p);
         if (readModule.default == undefined) {
-            console.error(`[process] ${name} has no exports!`)
+            console.error(`${name} has no exports!`)
             Deno.exit(1);
         }
         processors[name] = readModule.default;
     }
 }
 
+nConsole.prefix = "[pipeline]";
 dirEntries = Deno.readDir("./pipelines");
 for await (let dirEntry of dirEntries) {
     if (dirEntry.isFile && !dirEntry.name.startsWith(".")) {
-        console.log("[pipeline] Loading " + dirEntry.name)
+        console.log("Loading " + dirEntry.name)
         let p = path.join(".","pipelines", dirEntry.name);
         p = path.resolve(p);
         let name = path.basename(dirEntry.name, ".ts");
         let readModule = await import("file://"+p);
         if (readModule.default == undefined) {
-            console.error(`[pipeline] ${name} has no exports!`)
+            console.error(`${name} has no exports!`)
             Deno.exit(1);
         }
         pipelines[name] = readModule.default;
@@ -128,28 +150,29 @@ for await (let dirEntry of dirEntries) {
 
 let tabLog = (v:string) => console.log("\t" + v)
 
-console.log("[init] Loaded Gradients:")
+nConsole.prefix = "[init]";
+console.log("Loaded Gradients:")
 Object.keys(gradients).forEach(tabLog);
 
-console.log("[init] Loaded Inputs:")
+console.log("Loaded Inputs:")
 Object.keys(inputs).forEach(tabLog)
 
-console.log("[init] Loaded Intermediaries:")
+console.log("Loaded Intermediaries:")
 Object.keys(intermediaries).forEach(tabLog)
 
-console.log("[init] Loaded Outputs:")
+console.log("Loaded Outputs:")
 Object.keys(outputs).forEach(tabLog);
 
-console.log("[init] Loaded Transforms:")
+console.log("Loaded Transforms:")
 Object.keys(transforms).forEach(tabLog);
 
-console.log("[init] Loaded Processors:")
+console.log("Loaded Processors:")
 Object.keys(processors).forEach(tabLog);
 
-console.log("[init] Loaded Pipelines:")
+console.log("Loaded Pipelines:")
 Object.keys(pipelines).forEach(tabLog);
 
-console.log("[init] Initializing timers...");
+console.log("Initializing timers...");
 let timers: Indexed<number> = {};
 
 Object.keys(pipelines).forEach(async k => {
@@ -161,15 +184,26 @@ Object.keys(pipelines).forEach(async k => {
 })
 
 async function runPipeline(key: string) {
-    console.log(`[${key}] Running pipeline...`);
+    let prefix = `[${key}]`;
+    let c = {
+        ...nConsole,
+        prefix: prefix,
+    };
+    let ctx = {
+        console: c,
+        pipelineName: key,
+    }
+    c.log(`Running pipeline...`);
     let pipeline = pipelines[key];
     let data: WeatherData = {};
-    console.log(`[${key}] Getting data...`);
+    c.log(`Getting data...`);
     for (let i = 0; i < pipeline.inputs.length; i ++) {
         let p = pipeline.inputs[i];
-        console.log(`[${key}] Fetching ${p.name}...`);
+        c.log(`Fetching ${p.name}...`);
+        c.prefix = prefix + ` > [${p.name}]`;
         let input = inputs[p.name];
-        let fetched = await input(pipeline.inputs[i].opts);
+        let fetched = await (input.call(ctx, pipeline.inputs[i].opts));
+        c.prefix = prefix;
         if (p.whitelist !== undefined) {
             let whitelist = p.whitelist;
             fetched = Object.fromEntries(Object.entries(fetched).filter(v => whitelist.includes(v[0])));
@@ -180,28 +214,34 @@ async function runPipeline(key: string) {
         data = {...data, ...fetched};
     }
 
-    console.log(`[${key}] Running intermediaries...`);
+    c.log(`Running intermediaries...`);
     let tmpGrads = {...gradients};
     for (let i = 0; i < pipeline.intermediaries.length; i++) {
-        console.log(`[${key}] Running intermediate ${pipeline.intermediaries[i].name}...`);
+        c.log(`Running intermediate ${pipeline.intermediaries[i].name}...`);
         let intermediate = intermediaries[pipeline.intermediaries[i].name];
-        await intermediate(pipeline.intermediaries[i].opts, data, tmpGrads, pipeline);
+        c.prefix = prefix + ` > ${pipeline.intermediaries[i].name}`;
+        await intermediate.call(ctx, pipeline.intermediaries[i].opts, data, tmpGrads, pipeline);
+        c.prefix = prefix;
     }
 
-    console.log(`[${key}] Running processors...`);
+    c.log(`Running processors...`);
     let produced: Indexed<any> = {};
     for (let i = 0; i < pipeline.processors.length; i++) {
-        console.log(`[${key}] Running intermediate ${pipeline.processors[i].name}...`);
+        c.log(`Running intermediate ${pipeline.processors[i].name}...`);
         let process = processors[pipeline.processors[i].name];
-        await process(pipeline.processors[i].opts, tmpGrads, pipeline.datafields, data, transforms, produced);
+        c.prefix = prefix + ` > ${pipeline.processors[i].name}`;
+        await process.call(ctx, pipeline.processors[i].opts, tmpGrads, pipeline.datafields, data, transforms, produced);
+        c.prefix = prefix;
     }
 
-    console.log(`[${key}] Running outputs...`);
+    c.log(`Running outputs...`);
     for (let i = 0; i < pipeline.outputs.length; i++) {
-        console.log(`[${key}] Running output ${pipeline.outputs[i].name}...`);
+        c.log(`Running output ${pipeline.outputs[i].name}...`);
         let output = outputs[pipeline.outputs[i].name];
-        await output(data, pipeline.outputs[i].opts, pipeline.datafields, tmpGrads, produced);
+        c.prefix = prefix + ` > ${pipeline.outputs[i].name}`;
+        await output.call(ctx, data, pipeline.outputs[i].opts, pipeline.datafields, tmpGrads, produced);
+        c.prefix = prefix;
     }
 
-    console.log(`[${key}] Complete!`);
+    c.log(`Complete!`);
 }

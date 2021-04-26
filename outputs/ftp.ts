@@ -20,8 +20,8 @@ const output: DataOutput = async (data, opt, datafields, gradients, processed) =
         await c.upload(opts.uploadName, processed[opts.fieldName]);
         await c.close();
     } catch (e) {
-        console.error("[ftp] Error!");
-        console.error(e);
+        this.console.error("Error!");
+        this.console.error(e);
         await c.close();
     }
 

@@ -25,27 +25,29 @@ const FeelsLike: Intermediary = async (opts, data) => {
     let W = data[o.windMph];
     let H = data[o.humidity];
     if (T !== undefined && T !== null && W !== undefined && W !== null && H !== undefined && H !== null) {
-        if (T <= 50) {
-            // wind chill
-            data[o.nFieldName] =
-                35.74
-                + 0.6215*T
-                - 35.75*Math.pow(W, 0.16)
-                + 0.4275*T*Math.pow(W, 0.16);
-        } else if (T >= 70) {
-            // heat index
-            data[o.nFieldName] =
-                c[1]
-                + c[2]*T
-                + c[3]*H
-                + c[4]*T*H
-                + c[5]*Math.pow(T,2)
-                + c[6]*Math.pow(H,2)
-                + c[7]*Math.pow(T,2)*H
-                + c[8]*T*Math.pow(H,2)
-                + c[9]*Math.pow(T,2)*Math.pow(H,2);
+        let windChill =
+            35.74
+            + 0.6215*T
+            - 35.75*Math.pow(W, 0.16)
+            + 0.4275*T*Math.pow(W, 0.16);
+
+        let heatIndex =
+            c[1]
+            + c[2]*T
+            + c[3]*H
+            + c[4]*T*H
+            + c[5]*Math.pow(T,2)
+            + c[6]*Math.pow(H,2)
+            + c[7]*Math.pow(T,2)*H
+            + c[8]*T*Math.pow(H,2)
+            + c[9]*Math.pow(T,2)*Math.pow(H,2);
+
+        if (T >= 72.56) {
+            data[o.nFieldName] = heatIndex;
         } else {
-            data[o.nFieldName] = T;
+            if (W != 0) {
+
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 import WeatherData from "./WeatherData.ts";
 import Indexed from "./Indexed.ts";
+import WeatherCtx from "./WeatherCtx.ts";
 
-type DataInput = (opts: Indexed<any>) => Promise<WeatherData>
+type DataInput = (this: WeatherCtx, opts: Indexed<any>) => Promise<WeatherData>
 export default DataInput;
