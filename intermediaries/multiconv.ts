@@ -6,7 +6,7 @@ type MultiConvOpts = {
     func: (n: number[]) => number
 }
 
-const Conv: Intermediary = async (opts, data) => {
+const Conv: Intermediary = async function(opts, data) {
     const o = opts as MultiConvOpts;
     let v = o.fieldNames.map(k => {
         return data[k] !== undefined && data[k] !== null ? data[k] : undefined

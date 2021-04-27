@@ -6,7 +6,7 @@ type ConvOpts = {
     func: (n: number) => number
 }
 
-const Conv: Intermediary = async (opts, data) => {
+const Conv: Intermediary = async function(opts, data) {
     const o = opts as ConvOpts;
     let v = data[o.fieldName];
     if (v !== undefined && v !== null) {
