@@ -197,40 +197,58 @@ async function runPipeline(key: string) {
     let pipeline = pipelines[key];
     let data: WeatherData = {};
     c.log(`Getting data...`);
+
     for (let i = 0; i < pipeline.inputs.length; i ++) {
         let p = pipeline.inputs[i];
         c.log(`Fetching ${p.name}...`);
         c.prefix = prefix + ` > [${p.name}]`;
         let input = inputs[p.name];
-        let fetched = await (input.call(ctx, pipeline.inputs[i].opts));
-        c.prefix = prefix;
-        if (p.whitelist !== undefined) {
-            let whitelist = p.whitelist;
-            fetched = Object.fromEntries(Object.entries(fetched).filter(v => whitelist.includes(v[0])));
-        } else if (p.blacklist !== undefined) {
-            let blacklist = p.blacklist;
-            fetched = Object.fromEntries(Object.entries(fetched).filter(v => !blacklist.includes(v[0])));
+        try {
+            let fetched = await input.call(ctx, pipeline.inputs[i].opts);
+            if (p.whitelist !== undefined) {
+                let whitelist = p.whitelist;
+                fetched = Object.fromEntries(Object.entries(fetched).filter(v => whitelist.includes(v[0])));
+            } else if (p.blacklist !== undefined) {
+                let blacklist = p.blacklist;
+                fetched = Object.fromEntries(Object.entries(fetched).filter(v => !blacklist.includes(v[0])));
+            }
+            data = {...data, ...fetched};
+        } catch (e) {
+            c.log(`Failed to run!`, e);
+            c.log("Ignoring...");
         }
-        data = {...data, ...fetched};
+        c.prefix = prefix;
     }
 
     c.log(`Running intermediaries...`);
     let tmpGrads = {...gradients};
     for (let i = 0; i < pipeline.intermediaries.length; i++) {
-        c.log(`Running intermediate ${pipeline.intermediaries[i].name}...`);
-        let intermediate = intermediaries[pipeline.intermediaries[i].name];
-        c.prefix = prefix + ` > ${pipeline.intermediaries[i].name}`;
-        await intermediate.call(ctx, pipeline.intermediaries[i].opts, data, tmpGrads, pipeline);
+        let p = pipeline.intermediaries[i];
+        c.log(`Running intermediate ${p.name}...`);
+        let intermediate = intermediaries[p.name];
+        c.prefix = prefix + ` > ${p.name}`;
+        try {
+            await intermediate.call(ctx, p.opts, data, tmpGrads, pipeline);
+        } catch (e) {
+            c.log(`Failed to run!`, e);
+            c.log("Ignoring...");
+        }
         c.prefix = prefix;
     }
 
     c.log(`Running processors...`);
     let produced: Indexed<any> = {};
     for (let i = 0; i < pipeline.processors.length; i++) {
-        c.log(`Running intermediate ${pipeline.processors[i].name}...`);
-        let process = processors[pipeline.processors[i].name];
-        c.prefix = prefix + ` > ${pipeline.processors[i].name}`;
-        await process.call(ctx, pipeline.processors[i].opts, tmpGrads, pipeline.datafields, data, transforms, produced);
+        let p = pipeline.processors[i];
+        c.log(`Running processor ${p.name}...`);
+        let process = processors[p.name];
+        c.prefix = prefix + ` > ${p.name}`;
+        try {
+            await process.call(ctx, p.opts, tmpGrads, pipeline.datafields, data, transforms, produced);
+        } catch (e) {
+            c.log(`Failed to run!`, e);
+            c.log("Ignoring...");
+        }
         c.prefix = prefix;
     }
 
@@ -239,7 +257,12 @@ async function runPipeline(key: string) {
         c.log(`Running output ${pipeline.outputs[i].name}...`);
         let output = outputs[pipeline.outputs[i].name];
         c.prefix = prefix + ` > ${pipeline.outputs[i].name}`;
-        await output.call(ctx, data, pipeline.outputs[i].opts, pipeline.datafields, tmpGrads, produced);
+        try {
+            await output.call(ctx, data, pipeline.outputs[i].opts, pipeline.datafields, tmpGrads, produced);
+        } catch (e) {
+            c.log(`Failed to run!`, e);
+            c.log("Ignoring...");
+        }
         c.prefix = prefix;
     }
 
