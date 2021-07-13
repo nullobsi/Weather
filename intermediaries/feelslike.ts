@@ -25,7 +25,7 @@ const FeelsLike: Intermediary = async (opts, data) => {
     let W = data[o.windMph];
     let H = data[o.humidity];
     if (T !== undefined && T !== null && W !== undefined && W !== null && H !== undefined && H !== null) {
-        if (T <= 50) {
+        if (T <= 60) {
             // wind chill
             let windChill = 35.74
                 + 0.6215*T
