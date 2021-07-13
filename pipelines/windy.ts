@@ -356,7 +356,7 @@ let pipeline: Pipeline = {
                     sendToDiscord: true
                 }
             },
-            gradient: "radar",
+            gradient: "rainrate",
             displayName: "Radar",
             fieldName: "WeatherRadar0",
             transform: undefined,
