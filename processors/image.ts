@@ -98,7 +98,7 @@ let process: DataProcessor = async function(options, gradients, datafields, data
     let size = await go.exports?.renderDials(finalOpt, gradients, bgImg.byteLength, bgImg);
     let buffer = new Uint8Array(size);
     await go.exports?.copyDials(buffer);
-    outputs.image = buffer;
+    outputs[opt.outputKey] = buffer;
     await p;
 }
 
@@ -114,6 +114,7 @@ interface ImageOptions {
         fontSize: number
     }[]
     imageKey: string
+    outputKey: string
     bgFit: "width" | "height";
 }
 

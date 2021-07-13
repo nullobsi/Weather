@@ -1279,6 +1279,7 @@ let pipeline: Pipeline = {
                 height: imgHeight,
                 width: imgWidth,
                 imageKey: "image",
+                outputKey: "image",
                 bgFit: "width",
                 panels: [
                     {
