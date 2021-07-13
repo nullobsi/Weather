@@ -9,9 +9,9 @@ const getData: DataInput = async function(options) {
         let p = Deno.run({
             cmd: opts.runExecutable,
             cwd: opts.workingDirectory,
-            stderr: "null",
+            stderr: "piped",
             stdin: "null",
-            stdout: "null"
+            stdout: "piped"
         });
         let status = await p.status();
         if (status.code === 0) {
