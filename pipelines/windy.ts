@@ -54,7 +54,7 @@ let pipeline: Pipeline = {
         {
             perConfig: {
                 "image": <ImagePerconf>{
-                    displayName: false,
+                    displayName: true,
                     displayUnit: true,
                     start: ns,
                     end: ne,
@@ -65,7 +65,7 @@ let pipeline: Pipeline = {
                     x: Math.floor(width / 2),
                     y: r + smallSpacing,
                     transform: undefined,
-                    presc: 1
+                    presc: 0
                 },
                 "discord": <DiscordPerconf>{
                     updateRoleColor: false,
@@ -76,7 +76,7 @@ let pipeline: Pipeline = {
                 }
             },
             gradient: "wu_temp",
-            displayName: "Temperature",
+            displayName: "Temp.",
             fieldName: "Temperature0",
             transform: undefined,
             unit: "°F"
@@ -92,7 +92,7 @@ let pipeline: Pipeline = {
                     endV: 122,
                     panel: 0,
                     r,
-                    x: Math.floor(width / 2) + width,
+                    x: Math.floor(width / 2) + width + spacing*2,
                     y: r + smallSpacing,
                     transform: undefined,
                     presc: 1
@@ -122,7 +122,7 @@ let pipeline: Pipeline = {
                     x: Math.floor(width / 2),
                     y: r*3 + smallSpacing * 2,
                     transform: undefined,
-                    presc: 1
+                    presc: 0
                 },
                 "discord": <DiscordPerconf>{
                     updateRoleColor: false,
@@ -138,7 +138,7 @@ let pipeline: Pipeline = {
         {
             perConfig: {
                 "image": <ImagePerconf>{
-                    displayName: false,
+                    displayName: true,
                     displayUnit: true,
                     start: ns,
                     end: ne,
@@ -146,7 +146,7 @@ let pipeline: Pipeline = {
                     endV: 100,
                     panel: 0,
                     r,
-                    x: Math.floor(width / 2) + width,
+                    x: Math.floor(width / 2) + width + spacing*2,
                     y: r*3 + smallSpacing * 2,
                     transform: undefined,
                     presc: 0
@@ -170,7 +170,7 @@ let pipeline: Pipeline = {
         {
             perConfig: {
                 "image": <ImagePerconf>{
-                    displayName: false,
+                    displayName: true,
                     displayUnit: true,
                     start: ns,
                     end: ne,
@@ -192,7 +192,7 @@ let pipeline: Pipeline = {
                 }
             },
             gradient: "wind",
-            displayName: "Wind Speed",
+            displayName: "Speed",
             fieldName: "Wind1",
             transform: undefined,
             unit: " mph"
@@ -208,7 +208,7 @@ let pipeline: Pipeline = {
                     endV: 65,
                     panel: 1,
                     r,
-                    x: Math.floor(width / 2) + width,
+                    x: Math.floor(width / 2) + width + spacing*2,
                     y: r + smallSpacing,
                     transform: undefined,
                     presc: 1
@@ -250,7 +250,7 @@ let pipeline: Pipeline = {
         {
             perConfig: {
                 "image": <ImagePerconf>{
-                    displayName: false,
+                    displayName: true,
                     displayUnit: true,
                     start: ns,
                     end: ne,
@@ -258,7 +258,7 @@ let pipeline: Pipeline = {
                     endV: 65,
                     panel: 1,
                     r,
-                    x: Math.floor(width / 2) + width,
+                    x: Math.floor(width / 2) + width + spacing*2,
                     y: r*3 + smallSpacing * 2,
                     transform: undefined,
                     presc: 1
@@ -373,7 +373,7 @@ let pipeline: Pipeline = {
                     endV: 1.82,
                     panel: 3,
                     r,
-                    x: Math.floor(width / 2) + width,
+                    x: Math.floor(width / 2) + width + spacing*2,
                     y: r + smallSpacing,
                     transform: undefined,
                     presc: 2
@@ -427,7 +427,7 @@ let pipeline: Pipeline = {
                     endV: 15,
                     panel: 3,
                     r,
-                    x: Math.floor(width / 2) + width,
+                    x: Math.floor(width / 2) + width + spacing*2,
                     y: r*3 + smallSpacing*2,
                     transform: "rainrate",
                     presc: 2
@@ -467,7 +467,7 @@ let pipeline: Pipeline = {
                 },
             },
             gradient: "snow",
-            displayName: "Snow (12H)",
+            displayName: "12h",
             fieldName: "NewSnow0",
             transform: undefined,
             unit: " in"
@@ -494,7 +494,7 @@ let pipeline: Pipeline = {
                 },
             },
             gradient: "snow",
-            displayName: "Snow Depth",
+            displayName: "Depth",
             fieldName: "SnowDepth0",
             transform: undefined,
             unit: " in"
@@ -575,7 +575,7 @@ let pipeline: Pipeline = {
                 height: imgHeight,
                 width: imgWidth,
                 imageKey: "image",
-                bgFit: "width",
+                bgFit: "height",
                 outputKey: "windyImg",
                 panels: [
                     {
