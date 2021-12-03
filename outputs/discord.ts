@@ -1,4 +1,4 @@
-import * as Discord from "https://deno.land/x/discordeno@10.5.0/mod.ts";
+import * as Discord from "https://deno.land/x/discordeno@12.0.1/mod.ts";
 import getConfig from "../util/getConfig.ts";
 import tempToColor from "../util/tempToColor.ts";
 import DiscordRole from "../defs/DiscordRole.ts";
@@ -14,7 +14,7 @@ let readyPromise = new Promise<void>(res => {
 });
 await Discord.startBot({
     token: config.token,
-    intents: [Discord.Intents.GUILDS],
+    intents: [Discord.Intents.Guilds],
     eventHandlers: {
         ready() {
             resolve();
@@ -35,13 +35,13 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
     let msg = "Weather report for " + getDateString(new Date(data.date)) + "\n";
     //let maxlen = datafields.reduce<number>((p, c) => c.displayName.length > p ? c.displayName.length : p, 0);
     this.console.log("Getting roles...")
-    let roles: DiscordRole[] = [];
+    let roles: Discord.DiscordenoRole[] = [];
     let hasPerm = true;
-    if (!(await Discord.botHasPermission(options.server, ["MANAGE_ROLES"]))) {
+    if (!(await Discord.botHasGuildPermissions(BigInt(options.server), ["MANAGE_ROLES"]))) {
         this.console.error("No permission for roles, skipping!");
         hasPerm = false;
     } else {
-        let server = Discord.cache.guilds.get(options.server);
+        let server = Discord.cache.guilds.get(BigInt(options.server));
         if (server) {
             roles = server.roles.array();
         } else {
@@ -65,12 +65,12 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
             let role = roles.find(v => v.name == field.displayName);
             if (role) {
                 this.console.log(`Editing role ${field.displayName}...`)
-                await Discord.editRole(options.server, role.id, {
+                await Discord.editRole(BigInt(options.server), role.id, {
                     color: color,
                 })
             } else {
                 this.console.log(`Creating role ${field.displayName}...`)
-                await Discord.createGuildRole(options.server, {
+                await Discord.createRole(BigInt(options.server), {
                     color: color,
                     name: field.displayName,
                     mentionable: false,
@@ -97,7 +97,7 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
         }
     }
 
-    await Discord.sendMessage(options.channel,{
+    await Discord.sendMessage(BigInt(options.channel),{
         content: msg,
         file: attachment,
     })
