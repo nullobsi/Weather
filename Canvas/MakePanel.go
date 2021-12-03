@@ -5,6 +5,7 @@ import (
 	"github.com/golang/freetype/truetype"
 	"image/color"
 	"syscall/js"
+	"fmt"
 )
 
 var panelColor = color.RGBA{panelC, panelC, panelC, panelA}
@@ -40,6 +41,7 @@ func makePanel(c *gg.Context, panel js.Value, parsed *truetype.Font, gradients j
 	for i := 0; i < numDials; i++ {
 		dial := dials.Index(i)
 		gradient := dial.Get("gradient").String()
+		fmt.Println(gradient)
 		makeDial(c, dial, parsed, gradients.Get(gradient), y+height+height*0.1+padding*2, x)
 	}
 
