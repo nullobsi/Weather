@@ -1,5 +1,5 @@
 import DataOutput from "../defs/DataOutput.ts";
-import FTPClient from "https://deno.land/x/ftpc@v1.1.0/mod.ts";
+import {FTPClient} from "https://deno.land/x/ftpc@v1.3.0/mod.ts";
 
 const output: DataOutput = async function(data, opt, datafields, gradients, processed) {
     let opts = opt as FtpOutputOpts;
