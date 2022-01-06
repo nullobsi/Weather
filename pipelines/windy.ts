@@ -160,7 +160,7 @@ let pipeline: Pipeline = {
                 }
             },
             gradient: "humidity",
-            displayName: "Humidity",
+            displayName: "RH",
             fieldName: "Humidity0",
             transform: undefined,
             unit: "%"
@@ -192,7 +192,7 @@ let pipeline: Pipeline = {
                 }
             },
             gradient: "wind",
-            displayName: "Speed",
+            displayName: "Wind",
             fieldName: "Wind1",
             transform: undefined,
             unit: " mph"
@@ -301,7 +301,7 @@ let pipeline: Pipeline = {
                 }
             },
             gradient: "pressure",
-            displayName: "Pressure",
+            displayName: "BP",
             fieldName: "Pressure0",
             transform: undefined,
             unit: " inHg"
@@ -349,14 +349,14 @@ let pipeline: Pipeline = {
                     x: Math.floor(width / 2),
                     y: r + smallSpacing,
                     transform: undefined,
-                    presc: 2
+                    presc: 0
                 },
                 "discord": <DiscordPerconf>{
                     updateRoleColor: false,
                     sendToDiscord: true
                 }
             },
-            gradient: "rainrate",
+            gradient: "radar",
             displayName: "Radar",
             fieldName: "WeatherRadar0",
             transform: undefined,
@@ -384,7 +384,7 @@ let pipeline: Pipeline = {
                 },
             },
             gradient: "rainaccum",
-            displayName: "3 Days",
+            displayName: "3d",
             fieldName: "RainAccumulation3D0",
             transform: undefined,
             unit: " in"
@@ -438,7 +438,7 @@ let pipeline: Pipeline = {
                 },
             },
             gradient: "thunder",
-            displayName: "Thunder",
+            displayName: "Storm",
             fieldName: "Thunderstorms0",
             transform: undefined,
             unit: " L/km²"
@@ -466,7 +466,7 @@ let pipeline: Pipeline = {
                     sendToDiscord: true
                 },
             },
-            gradient: "snow",
+            gradient: "snowaccum",
             displayName: "12h",
             fieldName: "NewSnow0",
             transform: undefined,
@@ -480,7 +480,7 @@ let pipeline: Pipeline = {
                     start: ns,
                     end: ne,
                     startV: 0,
-                    endV: 12,
+                    endV: 36,
                     panel: 4,
                     r,
                     x: Math.floor(width / 2),
@@ -493,7 +493,7 @@ let pipeline: Pipeline = {
                     sendToDiscord: true
                 },
             },
-            gradient: "snow",
+            gradient: "snowaccum",
             displayName: "Depth",
             fieldName: "SnowDepth0",
             transform: undefined,
