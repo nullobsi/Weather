@@ -8,7 +8,7 @@ import {CapOptions} from "../intermediaries/cap.ts";
 import {ImageInterOpts, ImagePickerPerConf, Thresholds} from "../intermediaries/image.ts";
 import {CsvPerconf} from "../inputs/csv.ts";
 
-const config = await getConfig("pipelines", "main", {
+const config = await getConfig("pipelines", "windy", {
     discordChannelId: "HERE",
     discordServerId: "HERE",
 
