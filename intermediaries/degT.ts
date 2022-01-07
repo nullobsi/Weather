@@ -25,7 +25,6 @@ const map: {[x: string]: number} = {
 let dataTransform: Intermediary = async function (opts, data, keypoints, pipeline) {
     let o = opts as DegTOpts;
 
-    console.log("\n\n\n\n\n\n\n\n\n\n\nHERE IS THE THING: " + data[o.field]);
     data[o.nField] = map[data[o.field]];
     let found = pipeline.datafields.find(v => {
         let thing = v.perConfig?.image
