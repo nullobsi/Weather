@@ -9,6 +9,7 @@ import {ImageInterOpts, ImagePickerPerConf, Thresholds} from "../intermediaries/
 import {CsvPerconf} from "../inputs/csv.ts";
 import {CardinalOpts} from "../intermediaries/cardinal.ts";
 import {FeelsLikeOpts} from "../intermediaries/feelslike.ts";
+import {MultiConvOpts} from "../intermediaries/multiconv.ts";
 
 const config = await getConfig("pipelines", "windy", {
     discordChannelId: "HERE",
@@ -513,6 +514,14 @@ let pipeline: Pipeline = {
         }
     ],
     intermediaries: [
+        {
+            name: "multiconv",
+            opts: <MultiConvOpts>{
+                fieldNames: ["Wind1", "WindAccumulation0", "WindGusts0"],
+                from: "", to: "",
+                func: v => v* 1.1507794480235,
+            },
+        },
         {
             name: "cardinal",
             opts: <CardinalOpts>{
