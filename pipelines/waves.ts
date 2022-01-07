@@ -80,7 +80,7 @@ let pipeline: Pipeline = {
                     presc: 1
                 },
                 "discord": <DiscordPerconf>{
-                    updateRoleColor: true,
+                    updateRoleColor: false,
                     sendToDiscord: true
                 },
                 imagePicker: <ImagePickerPerConf>{
@@ -399,7 +399,7 @@ let pipeline: Pipeline = {
                     presc: 1
                 },
                 "discord": <DiscordPerconf>{
-                    updateRoleColor: true,
+                    updateRoleColor: false,
                     sendToDiscord: true
                 },
                 imagePicker: <ImagePickerPerConf>{
