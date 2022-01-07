@@ -164,7 +164,7 @@ let pipeline: Pipeline = {
                     x: Math.floor(width / 2),
                     y: r + smallSpacing,
                     transform: undefined,
-                    presc: 2
+                    presc: 1
                 },
                 "discord": <DiscordPerconf>{
                     updateRoleColor: false,
@@ -348,7 +348,7 @@ let pipeline: Pipeline = {
                     x: Math.floor(width / 4),
                     y: r*2 + sr,
                     transform: undefined,
-                    presc: 1
+                    presc: 2
                 }
             },
             gradient: "period",
@@ -509,7 +509,7 @@ let pipeline: Pipeline = {
                     x: Math.floor(width / 4),
                     y: r*2 + sr,
                     transform: undefined,
-                    presc: 1
+                    presc: 2
                 }
             },
             gradient: "period",
