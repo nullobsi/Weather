@@ -453,7 +453,7 @@ let pipeline: Pipeline = {
                     x: Math.floor(width / 4) * 3,
                     y: r*2 + sr,
                     transform: undefined,
-                    presc: 1
+                    presc: 2
                 },
                 "discord": <DiscordPerconf>{
                     updateRoleColor: false,
