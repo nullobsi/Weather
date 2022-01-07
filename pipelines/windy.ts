@@ -8,6 +8,7 @@ import {CapOptions} from "../intermediaries/cap.ts";
 import {ImageInterOpts, ImagePickerPerConf, Thresholds} from "../intermediaries/image.ts";
 import {CsvPerconf} from "../inputs/csv.ts";
 import {CardinalOpts} from "../intermediaries/cardinal.ts";
+import {FeelsLikeOpts} from "../intermediaries/feelslike.ts";
 
 const config = await getConfig("pipelines", "windy", {
     discordChannelId: "HERE",
@@ -105,7 +106,7 @@ let pipeline: Pipeline = {
             },
             gradient: "wu_temp",
             displayName: "Feels",
-            fieldName: "windChill", // TODO: calc
+            fieldName: "feelslike",
             transform: undefined,
             unit: "°F"
         },
@@ -516,6 +517,15 @@ let pipeline: Pipeline = {
             name: "cardinal",
             opts: <CardinalOpts>{
                 fieldName: "Wind0",
+            }
+        },
+        {
+            name: "feelslike",
+            opts: <FeelsLikeOpts>{
+                nFieldName: "feelslike",
+                windMph: "Wind1",
+                humidity: "Humidity0",
+                tempF: "Temperature0",
             }
         },
         {
