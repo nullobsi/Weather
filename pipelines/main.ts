@@ -12,6 +12,8 @@ import {CapOptions} from "../intermediaries/cap.ts";
 import {FtpOutputOpts} from "../outputs/ftp.ts";
 import {AmbientPerconf} from "../inputs/ambientweather.ts";
 import {ImageInterOpts, ImagePickerPerConf, Thresholds} from "../intermediaries/image.ts";
+import {PlaintextPerconf} from "../inputs/plaintext.ts";
+import {ConvOpts} from "../intermediaries/conv.ts";
 
 const config = await getConfig("pipelines", "main", {
     discordChannelId: "HERE",
@@ -20,6 +22,8 @@ const config = await getConfig("pipelines", "main", {
     wuStationId2: "HERE",
     aqiLat: 0,
     aqiLng: 0,
+
+    tableUrl: "HERE",
 
     ftpPassword: "HERE",
     ftpUsername: "HERE",
@@ -74,7 +78,7 @@ const ne = Math.PI * 2 + Math.PI / 4;
 
 //sensor numbers
 const indoor = "temp1f"
-const water = "temp2f"
+const water = "waterTemp"
 const soil = "temp8f"
 const soilHumidity = "soilhum1"
 
@@ -1196,6 +1200,14 @@ let pipeline: Pipeline = {
                 lat: config.aqiLat,
             }
 
+        },
+        {
+            name: "plaintext",
+            opts: <PlaintextPerconf>{
+                reverse: true,
+                url: config.tableUrl,
+                values: [{index:4, name: "waterTemp"}]
+            }
         }
     ],
     intermediaries: [
@@ -1225,6 +1237,14 @@ let pipeline: Pipeline = {
             opts: <ImageInterOpts>{
                 folder: config.imagesFolder,
                 thresholds: config.thresholds
+            }
+        },
+        {
+            name: "conv",
+            opts: <ConvOpts>{
+                fieldName: "waterTemp",
+                func: t => t * 1.8 + 32,
+                nFieldName: "waterTemp",
             }
         }
     ],
