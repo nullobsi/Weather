@@ -7,6 +7,7 @@ import {RainrateOpts} from "../intermediaries/rainrate.ts";
 import {CapOptions} from "../intermediaries/cap.ts";
 import {ImageInterOpts, ImagePickerPerConf, Thresholds} from "../intermediaries/image.ts";
 import {CsvPerconf} from "../inputs/csv.ts";
+import {CardinalOpts} from "../intermediaries/cardinal.ts";
 
 const config = await getConfig("pipelines", "windy", {
     discordChannelId: "HERE",
@@ -513,23 +514,8 @@ let pipeline: Pipeline = {
     intermediaries: [
         {
             name: "cardinal",
-            opts: {}
-        },
-        {
-            name: "rainrate",
-            opts: <RainrateOpts>{
-                highEnd: 37,
-                lowEnd: 32,
-                fieldName: "precipRate",
-                tempFieldName: "temp"
-            }
-        },
-        {
-            name: "cap",
-            opts: <CapOptions>{
-                fieldName: "solarradiation",
-                maxDigits: 4,
-                maxPresc: 2,
+            opts: <CardinalOpts>{
+                fieldName: "Wind0",
             }
         },
         {

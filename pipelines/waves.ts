@@ -9,6 +9,7 @@ import {MultiConvOpts} from "../intermediaries/multiconv.ts";
 import {DegTOpts} from "../intermediaries/degT.ts";
 import {HumOpts} from "../intermediaries/hum.ts";
 import {FeelsLikeOpts} from "../intermediaries/feelslike.ts";
+import {CardinalOpts} from "../intermediaries/cardinal.ts";
 
 const config = await getConfig("pipelines", "waves", {
     discordChannelId: "HERE",
@@ -191,7 +192,7 @@ let pipeline: Pipeline = {
                     x: Math.floor(width / 4),
                     y: r*2 + sr,
                     transform: undefined,
-                    presc: 2
+                    presc: 1
                 }
             },
             gradient: "period",
@@ -348,7 +349,7 @@ let pipeline: Pipeline = {
                     x: Math.floor(width / 4),
                     y: r*2 + sr,
                     transform: undefined,
-                    presc: 2
+                    presc: 1
                 }
             },
             gradient: "period",
@@ -509,7 +510,7 @@ let pipeline: Pipeline = {
                     x: Math.floor(width / 4),
                     y: r*2 + sr,
                     transform: undefined,
-                    presc: 2
+                    presc: 1
                 }
             },
             gradient: "period",
@@ -638,7 +639,15 @@ let pipeline: Pipeline = {
         },
         {
             name: "cardinal",
-            opts: {}
+            opts: <CardinalOpts>{
+                fieldName: "MWD_degT",
+            },
+        },
+        {
+            name: "cardinal",
+            opts: <CardinalOpts>{
+                fieldName: "WDIR_degT",
+            },
         },
         {
             name: "hum",
@@ -675,7 +684,7 @@ let pipeline: Pipeline = {
             name: "file",
             opts: <FileOutputOpts>{
                 archive: true,
-                name: "main",
+                name: "waves",
                 pretty: true,
                 extraFiles: [{
                     ext: ".png",

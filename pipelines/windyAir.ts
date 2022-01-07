@@ -3,14 +3,6 @@ import {FileOutputOpts} from "../outputs/file.ts";
 import {ImageOptions, ImagePerconf} from "../processors/image.ts";
 import getConfig from "../util/getConfig.ts";
 import {DiscordOpt, DiscordPerconf} from "../outputs/discord.ts";
-import {wundergroundOpts} from "../inputs/wunderground.ts";
-import {AqiOpts} from "../inputs/aqi.ts";
-import {SoilOpts} from "../intermediaries/soil.ts";
-import {ConsolePerconf} from "../outputs/console.ts";
-import {RainrateOpts} from "../intermediaries/rainrate.ts";
-import {CapOptions} from "../intermediaries/cap.ts";
-import {FtpOutputOpts} from "../outputs/ftp.ts";
-import {AmbientPerconf} from "../inputs/ambientweather.ts";
 import {ImageInterOpts, ImagePickerPerConf, Thresholds} from "../intermediaries/image.ts";
 import {CsvPerconf} from "../inputs/csv.ts";
 
@@ -516,27 +508,6 @@ let pipeline: Pipeline = {
     ],
     intermediaries: [
         {
-            name: "cardinal",
-            opts: {}
-        },
-        {
-            name: "rainrate",
-            opts: <RainrateOpts>{
-                highEnd: 37,
-                lowEnd: 32,
-                fieldName: "precipRate",
-                tempFieldName: "temp"
-            }
-        },
-        {
-            name: "cap",
-            opts: <CapOptions>{
-                fieldName: "solarradiation",
-                maxDigits: 4,
-                maxPresc: 2,
-            }
-        },
-        {
             name: "image",
             opts: <ImageInterOpts>{
                 folder: config.imagesFolder,
@@ -554,7 +525,7 @@ let pipeline: Pipeline = {
             name: "file",
             opts: <FileOutputOpts>{
                 archive: true,
-                name: "main",
+                name: "windyAir",
                 pretty: true,
                 extraFiles: [{
                     ext: ".png",
@@ -574,18 +545,6 @@ let pipeline: Pipeline = {
                 }
             }
         },
-        // {
-        //     name: "ftp",
-        //     opts: <FtpOutputOpts>{
-        //         fieldName: "image",
-        //         uploadName: "weather/temp.png",
-        //         password: config.ftpPassword,
-        //         username: config.ftpUsername,
-        //         host: config.ftpHostname,
-        //         port: config.ftpPort,
-        //         tlsHostname: config.ftpAuthname,
-        //     }
-        // }
     ],
     runInst: true,
     processors: [

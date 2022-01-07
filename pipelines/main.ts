@@ -16,6 +16,7 @@ import {PlaintextPerconf} from "../inputs/plaintext.ts";
 import {ConvOpts} from "../intermediaries/conv.ts";
 import {FeelsLikeOpts} from "../intermediaries/feelslike.ts";
 import {DewPtOpts} from "../intermediaries/dewpt.ts";
+import {CardinalOpts} from "../intermediaries/cardinal.ts";
 
 const config = await getConfig("pipelines", "main", {
     discordChannelId: "HERE",
@@ -1215,7 +1216,9 @@ let pipeline: Pipeline = {
     intermediaries: [
         {
             name: "cardinal",
-            opts: {}
+            opts: <CardinalOpts>{
+                fieldName: "winddir",
+            },
         },
         {
             name: "rainrate",
