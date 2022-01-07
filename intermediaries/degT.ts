@@ -28,7 +28,7 @@ let dataTransform: Intermediary = async function (opts, data, keypoints, pipelin
     data[o.nField] = map[data[o.field]];
     let found = pipeline.datafields.find(v => {
         let thing = v.perConfig?.image
-        return thing && v.fieldName == o.field;
+        return thing && v.fieldName == o.nField;
     })
     if (found) {
         found.displayName = data[o.field];
