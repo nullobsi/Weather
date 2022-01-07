@@ -3,39 +3,21 @@ import {FileOutputOpts} from "../outputs/file.ts";
 import {ImageOptions, ImagePerconf} from "../processors/image.ts";
 import getConfig from "../util/getConfig.ts";
 import {DiscordOpt, DiscordPerconf} from "../outputs/discord.ts";
-import {wundergroundOpts} from "../inputs/wunderground.ts";
-import {AqiOpts} from "../inputs/aqi.ts";
-import {SoilOpts} from "../intermediaries/soil.ts";
-import {ConsolePerconf} from "../outputs/console.ts";
-import {RainrateOpts} from "../intermediaries/rainrate.ts";
-import {CapOptions} from "../intermediaries/cap.ts";
-import {FtpOutputOpts} from "../outputs/ftp.ts";
-import {AmbientPerconf} from "../inputs/ambientweather.ts";
 import {ImageInterOpts, ImagePickerPerConf, Thresholds} from "../intermediaries/image.ts";
+import {PlaintextPerconf} from "../inputs/plaintext.ts";
+import {MultiConvOpts} from "../intermediaries/multiconv.ts";
+import {DegTOpts} from "../intermediaries/degT.ts";
+import {HumOpts} from "../intermediaries/hum.ts";
+import {FeelsLikeOpts} from "../intermediaries/feelslike.ts";
 
 const config = await getConfig("pipelines", "waves", {
     discordChannelId: "HERE",
     discordServerId: "HERE",
-    wundergroundStationId: "HERE",
-    wuStationId2: "HERE",
-    aqiLat: 0,
-    aqiLng: 0,
 
-    ftpPassword: "HERE",
-    ftpUsername: "HERE",
-    ftpHostname: "HERE",
-    ftpAuthname: "HERE",
-    ftpPort: 21,
+    fivedayURL: "HERE",
+    realtimeURL: "HERE",
+    altSeaTmpURL: "HERE",
 
-    ambientApiKey1: "HERE",
-    ambientAppKey1: "HERE",
-    ambientDevice1: "HERE",
-
-    ambientApiKey2: "HERE",
-    ambientAppKey2: "HERE",
-    ambientDevice2: "HERE",
-
-    backgroundUrl: "HERE",
     imagesFolder: "HERE",
 
     thresholds: <Thresholds>{
@@ -107,7 +89,7 @@ let pipeline: Pipeline = {
             },
             gradient: "wu_temp",
             displayName: "Temperature",
-            fieldName: "temp",
+            fieldName: "ATMP_degF",
             transform: undefined,
             unit: "°F"
         },
@@ -134,7 +116,7 @@ let pipeline: Pipeline = {
             },
             gradient: "wu_temp",
             displayName: "Feels",
-            fieldName: "windChill",
+            fieldName: "feelslike",
             transform: undefined,
             unit: "°F"
         },
@@ -161,7 +143,7 @@ let pipeline: Pipeline = {
             },
             gradient: "wu_temp",
             displayName: "Dew",
-            fieldName: "dewpt",
+            fieldName: "DEWP_degF",
             transform: undefined,
             unit: "°F"
         },
@@ -191,7 +173,7 @@ let pipeline: Pipeline = {
             },
             gradient: "waves",
             displayName: "Waves",
-            fieldName: "waves",
+            fieldName: "WVHT_ft",
             transform: undefined,
             unit: " ft"
         },
@@ -214,22 +196,9 @@ let pipeline: Pipeline = {
             },
             gradient: "period",
             displayName: "Per.",
-            fieldName: "precipTotal",
+            fieldName: "APD_sec",
             transform: undefined,
             unit: " s"
-        },
-        {
-            perConfig: {
-                "discord": <DiscordPerconf>{
-                    updateRoleColor: false,
-                    sendToDiscord: true
-                },
-            },
-            gradient: "rainaccum",
-            displayName: "Daily Rain",
-            fieldName: "precipTotal",
-            transform: undefined,
-            unit: " in"
         },
         {
             perConfig: {
@@ -249,8 +218,8 @@ let pipeline: Pipeline = {
                 },
             },
             gradient: "winddir",
-            displayName: "Wind Direction",
-            fieldName: "winddir",
+            displayName: "Waves Direction",
+            fieldName: "MWD_degT",
             transform: undefined,
             unit: "°"
         },
@@ -282,7 +251,7 @@ let pipeline: Pipeline = {
             },
             gradient: "wind",
             displayName: "Wind Speed",
-            fieldName: "windSpeed",
+            fieldName: "WSPD_mph",
             transform: undefined,
             unit: " mph"
         },
@@ -309,7 +278,7 @@ let pipeline: Pipeline = {
             },
             gradient: "wind",
             displayName: "Gust",
-            fieldName: "windGust",
+            fieldName: "GST_mph",
             transform: undefined,
             unit: " mph"
         },
@@ -332,7 +301,7 @@ let pipeline: Pipeline = {
             },
             gradient: "winddir",
             displayName: "Wind Direction",
-            fieldName: "winddir",
+            fieldName: "WDIR_degT",
             transform: undefined,
             unit: "°"
         },
@@ -361,7 +330,7 @@ let pipeline: Pipeline = {
             },
             gradient: "waves",
             displayName: "Swell",
-            fieldName: water,
+            fieldName: "SwH_ft",
             transform: undefined,
             unit: " ft"
         },
@@ -384,7 +353,7 @@ let pipeline: Pipeline = {
             },
             gradient: "period",
             displayName: "Per.",
-            fieldName: soil,
+            fieldName: "SwP_sec",
             transform: undefined,
             unit: " s"
         },
@@ -406,8 +375,8 @@ let pipeline: Pipeline = {
                 },
             },
             gradient: "winddir",
-            displayName: "Wind Direction",
-            fieldName: "winddir",
+            displayName: "Swell Direction",
+            fieldName: "SwD_degT",
             transform: undefined,
             unit: "°"
         },
@@ -439,7 +408,7 @@ let pipeline: Pipeline = {
             },
             gradient: "wu_temp",
             displayName: "Temperature",
-            fieldName: "temp",
+            fieldName: "WTMP_degF",
             transform: undefined,
             unit: "°F"
         },
@@ -466,7 +435,7 @@ let pipeline: Pipeline = {
             },
             gradient: "humidity",
             displayName: "Hum.",
-            fieldName: "windChill",
+            fieldName: "humidity",
             transform: undefined,
             unit: "%"
         },
@@ -493,7 +462,7 @@ let pipeline: Pipeline = {
             },
             gradient: "pressure",
             displayName: "BP",
-            fieldName: "dewpt",
+            fieldName: "PRES_inHg",
             transform: undefined,
             unit: " inHg"
         },
@@ -521,8 +490,8 @@ let pipeline: Pipeline = {
                 },
             },
             gradient: "waves",
-            displayName: "Swell",
-            fieldName: water,
+            displayName: "Wind Waves",
+            fieldName: "WWH_ft",
             transform: undefined,
             unit: " ft"
         },
@@ -545,7 +514,7 @@ let pipeline: Pipeline = {
             },
             gradient: "period",
             displayName: "Per.",
-            fieldName: soil,
+            fieldName: "WWP_sec",
             transform: undefined,
             unit: " s"
         },
@@ -567,637 +536,126 @@ let pipeline: Pipeline = {
                 },
             },
             gradient: "winddir",
-            displayName: "Wind Direction",
-            fieldName: "winddir",
+            displayName: "Wind Wave Direction",
+            fieldName: "WWD_degT",
             transform: undefined,
             unit: "°"
         },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wind",
-            displayName: "Wind Speed (WU)",
-            fieldName: "windSpeed",
-            transform: undefined,
-            unit: " mph",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wind",
-            displayName: "Wind Gust (WU)",
-            fieldName: "windGust",
-            transform: undefined,
-            unit: " mph",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wind",
-            displayName: "Daily Gust (Ambient)",
-            fieldName: "maxdailygust",
-            transform: undefined,
-            unit: " mph",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "winddir",
-            displayName: "Wind Direction",
-            fieldName: "winddir",
-            transform: undefined,
-            unit: "°",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wind",
-            displayName: "Wind Speed (Ambient)",
-            fieldName: "windspeedmph",
-            transform: undefined,
-            unit: " mph",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wind",
-            displayName: "Wind Gust (Ambient)",
-            fieldName: "windgustmph",
-            transform: undefined,
-            unit: " mph",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "rainrate",
-            displayName: "Rain Rate (WU)",
-            fieldName: "precipRate",
-            transform: undefined,
-            unit: " in/hr",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "rainaccum",
-            displayName: "Daily Rain (WU)",
-            fieldName: "precipTotal",
-            transform: undefined,
-            unit: " in",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "rainaccum",
-            displayName: "Hourly Rain (Ambient)",
-            fieldName: "hourlyrainin",
-            transform: undefined,
-            unit: " in",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "rainaccum",
-            displayName: "Daily Rain (Ambient)",
-            fieldName: "dailyrainin",
-            transform: undefined,
-            unit: " in",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "rainaccum",
-            displayName: "Weekly Rain (Ambient)",
-            fieldName: "weeklyrainin",
-            transform: undefined,
-            unit: " in",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "rainaccum",
-            displayName: "Monthly Rain (Ambient)",
-            fieldName: "monthlyrainin",
-            transform: undefined,
-            unit: " in",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "rainaccum",
-            displayName: "Yearly Rain (Ambient)",
-            fieldName: "yearlyrainin",
-            transform: undefined,
-            unit: " in",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wu_temp",
-            displayName: "Dew Point (WU)",
-            fieldName: "dewpt",
-            transform: undefined,
-            unit: "°F",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wu_temp",
-            displayName: "Temperature (WU)",
-            fieldName: "temp",
-            transform: undefined,
-            unit: "°F",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wu_temp",
-            displayName: "Heat Index (WU)",
-            fieldName: "heatIndex",
-            transform: undefined,
-            unit: "°F",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wu_temp",
-            displayName: "Wind Chill (WU)",
-            fieldName: "windChill",
-            transform: undefined,
-            unit: "°F",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wu_temp",
-            displayName: "Temperature (Ambient)",
-            fieldName: "tempf",
-            transform: undefined,
-            unit: "°F",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wu_temp",
-            displayName: "Temperature (Indoor)",
-            fieldName: "temp1f",
-            transform: undefined,
-            unit: "°F",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wu_temp",
-            displayName: "Temperature (Water)",
-            fieldName: "temp2f",
-            transform: undefined,
-            unit: "°F",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wu_temp",
-            displayName: "Temperature (Soil)",
-            fieldName: "soiltemp3",
-            transform: undefined,
-            unit: "°F",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wu_temp",
-            displayName: "Dew Point (Ambient)",
-            fieldName: "dewPoint",
-            transform: undefined,
-            unit: "°F",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wu_temp",
-            displayName: "Dew Point (Indoor)",
-            fieldName: "dewPoint1",
-            transform: undefined,
-            unit: "°F",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wu_temp",
-            displayName: "Dew Point (Soil)",
-            fieldName: "dewPoint3",
-            transform: undefined,
-            unit: "°F",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wu_temp",
-            displayName: "Feels Like (Ambient)",
-            fieldName: "feelsLike",
-            transform: undefined,
-            unit: "°F",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wu_temp",
-            displayName: "Feels Like (Indoor)",
-            fieldName: "feelsLike1",
-            transform: undefined,
-            unit: "°F",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "wu_temp",
-            displayName: "Feels Like (Soil)",
-            fieldName: "feelsLike3",
-            transform: undefined,
-            unit: "°F",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "pressure",
-            displayName: "Rel. Pressure (WU)",
-            fieldName: "pressure",
-            transform: undefined,
-            unit: " inHg",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "pressure",
-            displayName: "Rel. Pressure (Ambient)",
-            fieldName: "baromrelin",
-            transform: undefined,
-            unit: " inHg",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "pressure",
-            displayName: "Abs. Pressure (Ambient)",
-            fieldName: "baromabsin",
-            transform: undefined,
-            unit: " inHg",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "solar",
-            displayName: "Solar Radiation (WU)",
-            fieldName: "solarRadiation",
-            transform: undefined,
-            unit: "  W/m²",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "solar",
-            displayName: "Solar Radiation (Ambient)",
-            fieldName: "solarradiation",
-            transform: undefined,
-            unit: " W/m²",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "uv",
-            displayName: "UV Index",
-            fieldName: "uv",
-            transform: undefined,
-            unit: "",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "humidity",
-            displayName: "Humidity (WU)",
-            fieldName: "humidity",
-            transform: undefined,
-            unit: "%",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "humidity",
-            displayName: "Humidity (Indoor)",
-            fieldName: "humidity1",
-            transform: undefined,
-            unit: "%",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "soil",
-            displayName: "Humidity (Soil)",
-            fieldName: "soilhum3",
-            transform: undefined,
-            unit: "",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "batt",
-            displayName: "Battery (Station)",
-            fieldName: "battout",
-            transform: undefined,
-            unit: "",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "batt",
-            displayName: "Battery (Indoor)",
-            fieldName: "batt1",
-            transform: undefined,
-            unit: "",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "batt",
-            displayName: "Battery (Water)",
-            fieldName: "batt2",
-            transform: undefined,
-            unit: "",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "batt",
-            displayName: "Battery (Soil)",
-            fieldName: "batt3",
-            transform: undefined,
-            unit: "",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "aqi",
-            displayName: "AQI",
-            fieldName: "aqi",
-            transform: undefined,
-            unit: "",
-        },
-
-        {
-            perConfig: {
-                "console": <ConsolePerconf>{
-                    print: true
-                }
-            },
-            gradient: "pm25",
-            displayName: "PM2.5",
-            fieldName: "pm25",
-            transform: undefined,
-            unit: " µg/m³",
-        },
-
-        {
-            perConfig: {
-                "discord": <DiscordPerconf>{
-                    updateRoleColor: false,
-                    sendToDiscord: false
-                },
-            },
-            gradient: "windy_temp",
-            displayName: "Temperature (Windy)",
-            fieldName: "temp",
-            transform: undefined,
-            unit: "°F"
-        },
-
     ],
     inputs: [
         {
-            name: "wunderground",
-            opts: <wundergroundOpts>{
-                stationId: config.wuStationId2
-            }
-        },
-        {
-            name: "wunderground",
-            opts: <wundergroundOpts>{
-                stationId: config.wundergroundStationId
+            name: "plaintext",
+            opts: <PlaintextPerconf>{
+                url: config.fivedayURL,
+                values: [
+                    {name: "ATMP_degC", index: 13},
+                    {name: "DEWP_degC", index: 15},
+                    {name: "WSPD_m/s", index: 6},
+                    {name: "GST_m/s", index: 7},
+                    {name: "WDIR_degT", index: 5},
+                    {name: "PRES_hPa", index: 12},
+                ],
             },
-            blacklist: ["pressure"],
         },
         {
-            name: "ambientweather",
-            opts: <AmbientPerconf>{
-                apiKey: config.ambientApiKey1,
-                appKey: config.ambientAppKey1,
-                device: config.ambientDevice1,
-            },
-            blacklist: [water, "humidity"],
-        },
-        {
-            name: "ambientweather",
-            opts: <AmbientPerconf>{
-                apiKey: config.ambientApiKey2,
-                appKey: config.ambientAppKey2,
-                device: config.ambientDevice2,
-            },
-            blacklist: [
-                "humidity"
-            ]
-        },
-        {
-            name: "aqi",
-            opts: <AqiOpts>{
-                lng: config.aqiLng,
-                lat: config.aqiLat,
-            }
+            name: "plaintext",
+            opts: <PlaintextPerconf>{
+                url: config.realtimeURL,
+                values: [
+                    {name: "WVHT_m", index: 5},
+                    {name: "APD_sec", index: 13},
+                    {name: "MWD_degT", index: 14},
+                    {name: "SwH_m", index: 6},
+                    {name: "SwP_sec", index: 7},
+                    {name: "WWH_m", index: 8},
+                    {name: "WWP_sec", index: 9},
 
-        }
+                    {name: "SwD", index: 10},
+                    {name: "WWD", index: 11},
+                ],
+            },
+        },
+        {
+            name: "plaintext",
+            opts: <PlaintextPerconf>{
+                url: config.altSeaTmpURL,
+                values: [
+                    {name: "WTMP_degC", index: 14},
+                ],
+            },
+        },
     ],
     intermediaries: [
+        {
+            name: "multiconv",
+            opts: <MultiConvOpts>{
+                from: "degC",
+                to: "degF",
+                func: v => v * 9/5 + 32,
+                fieldNames: ["WTMP_degC", "ATMP_degC", "DEWP_degC"],
+            }
+        },
+        {
+            name: "multiconv",
+            opts: <MultiConvOpts>{
+                from: "m/s",
+                to: "mph",
+                func: v => v * 2.2369362920544,
+                fieldNames: ["WSPD_m/s", "GST_m/s"],
+            }
+        },
+        {
+            name: "multiconv",
+            opts: <MultiConvOpts>{
+                from: "m",
+                to: "ft",
+                func: v => v * 3.2808398950131,
+                fieldNames: ["WVHT_m", "SwH_m", "WWH_m"],
+            }
+        },
+        {
+            name: "conv",
+            opts: <MultiConvOpts>{
+                from: "hPa",
+                to: "inHg",
+                func: v => v * 0.029529983071445,
+                fieldNames: ["PRES_hPa"]
+            },
+        },
+        {
+            name: "degT",
+            opts: <DegTOpts>{
+                field: "SwD",
+                nField: "SwD_degT"
+            }
+        },
+        {
+            name: "degT",
+            opts: <DegTOpts>{
+                field: "WWD",
+                nField: "WWD_degT"
+            }
+        },
         {
             name: "cardinal",
             opts: {}
         },
         {
-            name: "rainrate",
-            opts: <RainrateOpts>{
-                highEnd: 37,
-                lowEnd: 32,
-                fieldName: "precipRate",
-                tempFieldName: "temp"
-            }
+            name: "hum",
+            opts: <HumOpts>{
+                humidityOut: "humidity",
+                dewPt: "DEWP_degF",
+                tempF: "ATMP_degF",
+            },
         },
         {
-            name: "cap",
-            opts: <CapOptions>{
-                fieldName: "solarradiation",
-                maxDigits: 4,
-                maxPresc: 2,
-            }
+            name: "feelslike",
+            opts: <FeelsLikeOpts>{
+                tempF: "ATMP_degF",
+                humidity: "humidity",
+                windMph: "WSPD_mph",
+                nFieldName: "feelslike",
+            },
         },
         {
             name: "image",
