@@ -23,9 +23,9 @@ const FeelsLike: Intermediary = async (opts, data) => {
     const o = opts as FeelsLikeOpts;
     let T = data[o.tempF];
     let W = data[o.windMph];
-    let H = data[o.humidity];
-    if (T !== undefined && T !== null && W !== undefined && W !== null && H !== undefined && H !== null) {
-        if (T <= 60) {
+    let RH = data[o.humidity];
+    if (T !== undefined && T !== null && W !== undefined && W !== null && RH !== undefined && RH !== null) {
+        if (T < 70) {
             // wind chill
             let windChill = 35.74
                 + 0.6215*T
@@ -36,18 +36,23 @@ const FeelsLike: Intermediary = async (opts, data) => {
             else
                 data[o.nFieldName] = T;
 
-        } else if (T >= 70) {
+        } else if (T > 70) {
             // heat index
-            data[o.nFieldName] =
-                c[1]
-                + c[2]*T
-                + c[3]*H
-                + c[4]*T*H
-                + c[5]*Math.pow(T,2)
-                + c[6]*Math.pow(H,2)
-                + c[7]*Math.pow(T,2)*H
-                + c[8]*T*Math.pow(H,2)
-                + c[9]*Math.pow(T,2)*Math.pow(H,2);
+            let HI = 0.5 * (T + 61.0 + ((T-68.0)*1.2) + (RH*0.094));
+            HI = (HI + T) / 2;
+
+            if (HI >= 80) {
+                HI = -42.379 + 2.04901523*T + 10.14333127*RH - .22475541*T*RH - .00683783*T*T - .05481717*RH*RH + .00122874*T*T*RH + .00085282*T*RH*RH - .00000199*T*T*RH*RH;
+
+                if (RH < 13 && 80 < T && T < 112) {
+                    HI -= ((13-RH)/4)*Math.sqrt((17-Math.abs(T-95))/17);
+                } else if (RH > 85 && 80 < T && T < 87) {
+                    HI += ((RH-85)/10) * ((87-T)/5);
+                }
+            }
+
+            if (HI < T) data[o.nFieldName] = T
+            else data[o.nFieldName] = HI;
         } else {
             data[o.nFieldName] = T;
         }

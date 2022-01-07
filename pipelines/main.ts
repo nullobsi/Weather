@@ -14,6 +14,8 @@ import {AmbientPerconf} from "../inputs/ambientweather.ts";
 import {ImageInterOpts, ImagePickerPerConf, Thresholds} from "../intermediaries/image.ts";
 import {PlaintextPerconf} from "../inputs/plaintext.ts";
 import {ConvOpts} from "../intermediaries/conv.ts";
+import {FeelsLikeOpts} from "../intermediaries/feelslike.ts";
+import {DewPtOpts} from "../intermediaries/dewpt.ts";
 
 const config = await getConfig("pipelines", "main", {
     discordChannelId: "HERE",
@@ -138,7 +140,7 @@ let pipeline: Pipeline = {
             },
             gradient: "wu_temp",
             displayName: "Feels",
-            fieldName: "windChill",
+            fieldName: "feelsLike",
             transform: undefined,
             unit: "°F"
         },
@@ -1245,6 +1247,23 @@ let pipeline: Pipeline = {
                 fieldName: "waterTemp",
                 func: t => t * 1.8 + 32,
                 nFieldName: "waterTemp",
+            }
+        },
+        {
+            name: "feelslike",
+            opts: <FeelsLikeOpts>{
+                nFieldName: "feelsLike",
+                humidity: "humidity",
+                tempF: "temp",
+                windMph: "windSpeed",
+            }
+        },
+        {
+            name: "dewpt",
+            opts: <DewPtOpts>{
+                tempF: "temp",
+                humidity: "humidity",
+                dewpt: "dewPoint"
             }
         }
     ],
