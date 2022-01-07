@@ -20,7 +20,8 @@ const getData: DataInput = async function(options) {
     opts.values.forEach(v => {
         let i = 0;
         while (i < parsed.length-1 && parsed[i][v.index] == "MM") i++;
-        data[v.name] = parseFloat(parsed[i][v.index])
+        let n = parseFloat(parsed[i][v.index]);
+        data[v.name] = isNaN(n) ? parsed[i][v.index] : n;
     });
     return data;
 }
