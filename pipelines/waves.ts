@@ -614,7 +614,7 @@ let pipeline: Pipeline = {
             }
         },
         {
-            name: "conv",
+            name: "multiconv",
             opts: <MultiConvOpts>{
                 from: "hPa",
                 to: "inHg",
