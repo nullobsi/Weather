@@ -415,7 +415,7 @@ let pipeline: Pipeline = {
                     presc: 0
                 }
             },
-            gradient: "humidity",
+            gradient: "soil",
             displayName: "Hum.",
             fieldName: soilHumidity,
             transform: undefined,
@@ -492,7 +492,7 @@ let pipeline: Pipeline = {
                     start: ns,
                     end: ne,
                     startV: 0,
-                    endV: 300,
+                    endV: 250,
                     panel: 6,
                     r: r,
                     x: Math.floor(width / 2),
@@ -581,7 +581,7 @@ let pipeline: Pipeline = {
                     start: ns,
                     end: ne,
                     startV: 0,
-                    endV: 300,
+                    endV: 250,
                     panel: 9,
                     r: r,
                     x: Math.floor(width / 2),
