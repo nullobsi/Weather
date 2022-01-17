@@ -1195,7 +1195,7 @@ let pipeline: Pipeline = {
                 device: config.ambientDevice2,
             },
             blacklist: [
-                "humidity", "baromabsin"
+                "humidity", "baromabsin", "tempf"
             ]
         },
         {
@@ -1276,7 +1276,7 @@ let pipeline: Pipeline = {
             opts: <RelPressureOpts>{
                 absPressure: "baromabsin",
                 elevation: "483",
-                tempF: "temp",
+                tempF: "tempf",
                 nFieldName: "baromabsin",
             }
         }
