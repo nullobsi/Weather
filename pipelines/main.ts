@@ -17,6 +17,7 @@ import {ConvOpts} from "../intermediaries/conv.ts";
 import {FeelsLikeOpts} from "../intermediaries/feelslike.ts";
 import {DewPtOpts} from "../intermediaries/dewpt.ts";
 import {CardinalOpts} from "../intermediaries/cardinal.ts";
+import {RelPressureOpts} from "../intermediaries/relpressure.ts";
 
 const config = await getConfig("pipelines", "main", {
     discordChannelId: "HERE",
@@ -535,7 +536,7 @@ let pipeline: Pipeline = {
             },
             gradient: "pressure",
             displayName: "Pressure",
-            fieldName: "pressure",
+            fieldName: "baromabsin",
             transform: undefined,
             unit: " inHg"
         },
@@ -1167,7 +1168,8 @@ let pipeline: Pipeline = {
             name: "wunderground",
             opts: <wundergroundOpts>{
                 stationId: config.wuStationId2
-            }
+            },
+            blacklist: ["pressure"],
         },
         {
             name: "wunderground",
@@ -1193,7 +1195,7 @@ let pipeline: Pipeline = {
                 device: config.ambientDevice2,
             },
             blacklist: [
-                "humidity"
+                "humidity", "baromabsin"
             ]
         },
         {
@@ -1267,6 +1269,15 @@ let pipeline: Pipeline = {
                 tempF: "temp",
                 humidity: "humidity",
                 dewpt: "dewPoint"
+            }
+        },
+        {
+            name: "relpressure",
+            opts: <RelPressureOpts>{
+                absPressure: "baromabsin",
+                elevation: "483",
+                tempF: "temp",
+                nFieldName: "baromabsin",
             }
         }
     ],
