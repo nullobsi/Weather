@@ -1275,7 +1275,7 @@ let pipeline: Pipeline = {
             name: "relpressure",
             opts: <RelPressureOpts>{
                 absPressure: "baromabsin",
-                elevation: "483",
+                elevationM: 483,
                 tempF: "tempf",
                 nFieldName: "baromabsin",
             }
