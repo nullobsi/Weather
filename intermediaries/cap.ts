@@ -1,15 +1,15 @@
 import Intermediary from "../defs/Intermediary.ts";
 
-type CapOptions = {
+type CapIOpts = {
     maxDigits: number,
     maxPresc: number
     fieldName: string,
 }
 
-export type { CapOptions }
+export type { CapIOpts }
 let regex = /.+\.(.+)/
 let inter: Intermediary = async function (opts, data, gradients, pipeline) {
-    let opt = opts as CapOptions;
+    let opt = opts as CapIOpts;
     let d = data[opt.fieldName] as number;
     if (d === undefined) return;
     let res = cap(d, opt.maxDigits, opt.maxPresc);

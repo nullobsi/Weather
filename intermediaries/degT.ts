@@ -1,6 +1,6 @@
 import Intermediary from "../defs/Intermediary.ts";
 
-type DegTOpts = {
+type DegTIOpts = {
     field: string,
     nField: string,
 }
@@ -23,7 +23,7 @@ const map: {[x: string]: number} = {
     "NNW": 337.5,
 }
 let dataTransform: Intermediary = async function (opts, data, keypoints, pipeline) {
-    let o = opts as DegTOpts;
+    let o = opts as DegTIOpts;
 
     data[o.nField] = map[data[o.field]];
     let found = pipeline.datafields.find(v => {
@@ -36,4 +36,4 @@ let dataTransform: Intermediary = async function (opts, data, keypoints, pipelin
 }
 
 export default dataTransform;
-export type {DegTOpts};
+export type {DegTIOpts};

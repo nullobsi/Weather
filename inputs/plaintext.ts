@@ -4,7 +4,7 @@ import WeatherData from "../defs/WeatherData.ts";
 
 
 const getData: DataInput = async function(options) {
-    let opts = options as PlaintextPerconf;
+    let opts = options as PlaintextOpts;
     let response = await fetch(opts.url);
     let text = await response.text();
 
@@ -26,12 +26,12 @@ const getData: DataInput = async function(options) {
     return data;
 }
 
-type PlaintextPerconf = {
+type PlaintextOpts = {
     reverse: boolean,
     url: string,
     values: {name: string, index: number}[]
 }
 
 
-export type {PlaintextPerconf}
+export type {PlaintextOpts}
 export default getData;

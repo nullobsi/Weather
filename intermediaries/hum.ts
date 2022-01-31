@@ -1,14 +1,14 @@
 import Intermediary from "../defs/Intermediary.ts";
 import file from "../outputs/file.ts";
 
-type HumOpts = {
+type HumIOpts = {
     dewPt: string,
     tempF: string,
 
     humidityOut: string,
 }
 let dataTransform: Intermediary = async function (opts, data, keypoints, pipeline) {
-    let o = opts as HumOpts;
+    let o = opts as HumIOpts;
     // Creds to NOAA
     var a=data[o.tempF];//Air Temperature
     var b=data[o.dewPt];//Dew Point
@@ -20,4 +20,4 @@ let dataTransform: Intermediary = async function (opts, data, keypoints, pipelin
 }
 
 export default dataTransform;
-export type {HumOpts};
+export type {HumIOpts};

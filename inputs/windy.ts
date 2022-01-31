@@ -67,3 +67,4 @@ let getData: DataInput = async function (opts) {
 }
 
 export default getData;
+export type {WindyOpts};

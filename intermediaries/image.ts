@@ -23,7 +23,7 @@ type Thresholds = {
     sunset: number; // Sunset threshold (solar <)
     windy: number; // windy threshold (wind >)
 }
-type ImageInterOpts = {
+type ImageIOpts = {
     folder: string;
     thresholds: Thresholds;
 
@@ -32,13 +32,13 @@ type ImageInterOpts = {
 type ImagePickerPerConf = {
     useFor: "solar" | "temp" | "humidity" | "pressure" | "precip" | "wind";
 }
-export type {ImageInterOpts, ImagePickerPerConf, Thresholds};
+export type {ImageIOpts, ImagePickerPerConf, Thresholds};
 
 let lastDate = new Date().getDay();
 
 
 const getImg: Intermediary = async function(options, data, gradients, pipeline){
-    let opts = options as ImageInterOpts;
+    let opts = options as ImageIOpts;
     let t = opts.thresholds
 
     let month = new Date().getMonth();

@@ -1,13 +1,13 @@
 import Intermediary from "../defs/Intermediary.ts";
 
-type RelPressureOpts = {
+type RelPressureIOpts = {
     absPressure: string,
     elevationM: number,
     tempF: string,
     nFieldName: string,
 }
 const RelPressure: Intermediary = async (opts, data) => {
-    const o = opts as RelPressureOpts;
+    const o = opts as RelPressureIOpts;
     let AP = data[o.absPressure];
     let E = o.elevationM; // in meters for now
     let T = data[o.tempF];
@@ -17,5 +17,5 @@ const RelPressure: Intermediary = async (opts, data) => {
     }
 }
 
-export type {RelPressureOpts}
+export type {RelPressureIOpts}
 export default RelPressure;

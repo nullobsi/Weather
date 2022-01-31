@@ -4,7 +4,7 @@ import * as fs from "https://deno.land/std@0.76.0/fs/mod.ts"
 import * as path from "https://deno.land/std@0.76.0/path/mod.ts"
 
 const output: DataOutput = async function(data, opt, datafields, gradients, processed) {
-    let options: FileOutputOpts = <FileOutputOpts>opt;
+    let options: FileOOpts = <FileOOpts>opt;
     let date = new Date(data.date);
     let archiveFolder = path.join(Deno.cwd(), "archive");
 
@@ -53,7 +53,7 @@ const output: DataOutput = async function(data, opt, datafields, gradients, proc
 
 export default output;
 
-export type FileOutputOpts = {
+export type FileOOpts = {
     pretty: boolean,
     archive: boolean,
     name: string,

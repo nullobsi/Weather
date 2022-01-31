@@ -4,7 +4,7 @@ import WeatherData from "../defs/WeatherData.ts";
 
 
 const getData: DataInput = async function(options) {
-    let opts = options as CsvPerconf;
+    let opts = options as CsvOpts;
     if (opts.runExecutable !== undefined) {
         let p = Deno.run({
             cmd: opts.runExecutable,
@@ -32,11 +32,11 @@ const getData: DataInput = async function(options) {
     return data;
 }
 
-type CsvPerconf = {
+type CsvOpts = {
     runExecutable?: string[],
     filePath: string,
     workingDirectory?: string
 }
 
-export type {CsvPerconf}
+export type {CsvOpts}
 export default getData;

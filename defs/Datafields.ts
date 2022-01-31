@@ -1,4 +1,6 @@
 import Indexed from "./Indexed.ts";
+import {PerconfRegistry} from "../registry.ts";
+import {Opts} from "./Opts.ts";
 
 type Datafields = {
     displayName: string,
@@ -6,7 +8,9 @@ type Datafields = {
     gradient: string,
     unit: string,
     transform: string | undefined,
-    perConfig: Indexed<Indexed<any> | undefined>,
+    perConfig: {
+        [S in keyof PerconfRegistry]?: PerconfRegistry[S]
+    },
 }[]
 
 export default Datafields;

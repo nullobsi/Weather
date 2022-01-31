@@ -3,7 +3,7 @@ import Indexed from "../defs/Indexed.ts";
 
 
 const getData: DataInput = async function(options) {
-    let opts = options as AmbientPerconf;
+    let opts = options as AmbientOpts;
     const requestUrl = `https://api.ambientweather.net/v1/devices?apiKey=${opts.apiKey}&applicationKey=${opts.appKey}`;
     let response = await fetch(requestUrl);
     let json = await response.text();
@@ -21,7 +21,7 @@ const getData: DataInput = async function(options) {
     return device.lastData;
 }
 
-type AmbientPerconf = {
+type AmbientOpts = {
     apiKey: string,
     appKey: string,
     device: string,
@@ -33,5 +33,5 @@ type AmbientData = {
     lastData: Indexed<any>,
 }[];
 
-export type {AmbientPerconf}
+export type {AmbientOpts}
 export default getData;

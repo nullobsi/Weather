@@ -1,10 +1,10 @@
 import Intermediary from "../defs/Intermediary.ts";
-type CardinalOpts = {
+type CardinalIOpts = {
     fieldName: string;
 };
 
 let dataTransform: Intermediary = async function (opts, data, keypoints, pipeline) {
-    let o = opts as CardinalOpts;
+    let o = opts as CardinalIOpts;
     let found = pipeline.datafields.find(v => {
         let thing = v.perConfig?.image
         return thing && v.fieldName == o.fieldName;
@@ -34,4 +34,4 @@ let dataTransform: Intermediary = async function (opts, data, keypoints, pipelin
 }
 
 export default dataTransform;
-export type {CardinalOpts};
+export type {CardinalIOpts};

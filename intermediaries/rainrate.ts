@@ -1,16 +1,16 @@
 import Intermediary from "../defs/Intermediary.ts";
 
-type RainrateOpts = {
+type RainRateIOpts = {
     fieldName: string,
     tempFieldName: string,
     lowEnd: number,
     highEnd: number
 }
 
-export type {RainrateOpts}
+export type {RainRateIOpts}
 
 let dataTransform: Intermediary = async function (opts, data, keypoints, pipeline) {
-    let opt = opts as RainrateOpts
+    let opt = opts as RainRateIOpts
     let rainrate = pipeline.datafields.filter(val => val.fieldName == opt.fieldName)
     rainrate.forEach(val => {
         let dat = data[opt.tempFieldName];

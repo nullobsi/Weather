@@ -1,11 +1,13 @@
 import Indexed from "./Indexed.ts";
 import Datafields from "./Datafields.ts";
+import {Opts} from "./Opts.ts";
+import {InputRegistry, IntermediaryRegistry, OutputRegistry, ProcessorRegistry} from "../registry.ts";
 
 interface Pipeline {
-    inputs: {name: string, opts: Indexed<any>, whitelist?: string[], blacklist?: string[] }[],
-    intermediaries: {name: string, opts: Indexed<any>}[],
-    processors: {name: string, opts: Indexed<any>}[],
-    outputs: {name: string, opts: Indexed<any>}[],
+    inputs: Array<{whitelist?: string[], blacklist?: string[] } & Opts<InputRegistry>>,
+    intermediaries: Opts<IntermediaryRegistry>[],
+    processors: Opts<ProcessorRegistry>[],
+    outputs: Opts<OutputRegistry>[],
     datafields: Datafields,
     interval: number,
     runInst: boolean

@@ -5,12 +5,12 @@ const config = await getConfig("inputs", "wunderground", {
     "apiKey": "HERE"
 });
 const requestUrl = `https://api.weather.com/v2/pws/observations/current?apiKey=${config.apiKey}&numericPrecision=decimal`;
-type wundergroundOpts = {
+type WundergroundOpts = {
     stationId: string
 }
-export type {wundergroundOpts}
+export type {WundergroundOpts}
 const getData: DataInput = async function(options): Promise<WeatherData> {
-    let opts = options as wundergroundOpts;
+    let opts = options as WundergroundOpts;
     let response = await fetch(`${requestUrl}&stationId=${opts.stationId}&format=json&units=e`);
     let json = await response.text();
     let data = JSON.parse(json);

@@ -1,6 +1,6 @@
 import Intermediary from "../defs/Intermediary.ts";
 
-type FeelsLikeOpts = {
+type FeelsLikeIOpts = {
     tempF: string,
     windMph: string,
     humidity: string,
@@ -20,7 +20,7 @@ const c = [
 
 ]
 const FeelsLike: Intermediary = async (opts, data) => {
-    const o = opts as FeelsLikeOpts;
+    const o = opts as FeelsLikeIOpts;
     let T = data[o.tempF];
     let W = data[o.windMph];
     let RH = data[o.humidity];
@@ -59,5 +59,5 @@ const FeelsLike: Intermediary = async (opts, data) => {
     }
 }
 
-export type {FeelsLikeOpts}
+export type {FeelsLikeIOpts}
 export default FeelsLike;

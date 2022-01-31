@@ -2,7 +2,22 @@ import * as fs from "https://deno.land/std@0.76.0/fs/mod.ts"
 import * as path from "https://deno.land/std@0.76.0/path/mod.ts"
 import * as Colors from "https://deno.land/std@0.76.0/fmt/colors.ts"
 
+let locked = false;
+function lock() {
+    return new Promise<void>((res) => {
+        const check = setInterval(() => {
+            if (locked) return;
+            clearInterval(check);
+            locked = true;
+            res();
+        }, 100);
+    });
+}
+
+
 async function getConfig<T>(subdir: string, moduleName: string, def: T): Promise<T> {
+    await lock();
+
     let configPath = path.join(Deno.cwd(), subdir, "config", moduleName + ".json");
     let configFolder = path.join(Deno.cwd(), subdir, "config")
     let pathExists = await fs.exists(configFolder);
@@ -26,6 +41,7 @@ async function getConfig<T>(subdir: string, moduleName: string, def: T): Promise
                     Deno.exit(1);
                 }
             }
+            locked = false;
             return parsed;
         } catch (e) {
             console.error("Could not read config for " + moduleName + "!")
@@ -42,6 +58,7 @@ async function getConfig<T>(subdir: string, moduleName: string, def: T): Promise
         console.error(Colors.red(Colors.bold(`No config for module ${subdir}/${moduleName}, please check the default config written to disk!`)))
         Deno.exit(1);
     }
+    locked = false;
 }
 
 export default getConfig;

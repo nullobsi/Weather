@@ -26,12 +26,12 @@ type DiscordPerconf = {
     sendToDiscord: boolean,
     updateRoleColor: boolean,
 };
-type DiscordOpt = {channel: string, server: string, attachment: {fieldName: string, fileName: string} | undefined}
-export type {DiscordPerconf,DiscordOpt}
+type DiscordOOpts = {channel: string, server: string, attachment: {fieldName: string, fileName: string} | undefined}
+export type {DiscordPerconf,DiscordOOpts}
 
 const output: DataOutput = async function output(data, opt, datafields, gradients, processed) {
     await readyPromise;
-    let options = opt as DiscordOpt;
+    let options = opt as DiscordOOpts;
     let msg = "Weather report for " + getDateString(new Date(data.date)) + "\n";
     //let maxlen = datafields.reduce<number>((p, c) => c.displayName.length > p ? c.displayName.length : p, 0);
     this.console.log("Getting roles...")

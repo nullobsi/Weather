@@ -1,10 +1,6 @@
 import Pipeline from "../defs/Pipeline.ts";
-import {FileOutputOpts} from "../outputs/file.ts";
-import {ImageOptions, ImagePerconf} from "../processors/image.ts";
 import getConfig from "../util/getConfig.ts";
-import {DiscordOpt, DiscordPerconf} from "../outputs/discord.ts";
-import {ImageInterOpts, ImagePickerPerConf, Thresholds} from "../intermediaries/image.ts";
-import {CsvPerconf} from "../inputs/csv.ts";
+import {Thresholds} from "../intermediaries/image.ts";
 
 const config = await getConfig("pipelines", "windyAir", {
     discordChannelId: "HERE",
@@ -16,7 +12,7 @@ const config = await getConfig("pipelines", "windyAir", {
     execWorkingDir: "HERE",
     execResultFile: "HERE",
 
-    thresholds: <Thresholds>{
+    thresholds: {
         stormy: [0,0],
         bright: [0,0,0,0,0,0,0,0,0,0,0,0],
         humid: 0,
@@ -55,7 +51,7 @@ let pipeline: Pipeline = {
         //Temperature
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -69,11 +65,11 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 0
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                imagePicker: <ImagePickerPerConf>{
+                imagePicker: {
                     useFor: "temp"
                 }
             },
@@ -85,7 +81,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -99,7 +95,7 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 0
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
@@ -112,7 +108,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -126,11 +122,11 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 0
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                imagePicker: <ImagePickerPerConf>{
+                imagePicker: {
                     useFor: "wind"
                 }
             },
@@ -142,7 +138,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -156,7 +152,7 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 0
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
@@ -169,7 +165,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -183,7 +179,7 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 0
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
@@ -196,7 +192,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -210,11 +206,11 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 0
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                imagePicker: <ImagePickerPerConf>{
+                imagePicker: {
                     useFor: "humidity"
                 },
             },
@@ -226,7 +222,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -249,7 +245,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -263,7 +259,7 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 0
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
@@ -278,7 +274,7 @@ let pipeline: Pipeline = {
         // Air Quality
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -292,11 +288,11 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 0
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                imagePicker: <ImagePickerPerConf>{
+                imagePicker: {
                     useFor: "pressure"
                 }
             },
@@ -308,7 +304,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -322,7 +318,7 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 2
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 }
@@ -335,7 +331,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -349,7 +345,7 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 2
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
@@ -362,7 +358,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -376,7 +372,7 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 0
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
@@ -389,7 +385,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -403,7 +399,7 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 0
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 }
@@ -416,7 +412,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -430,7 +426,7 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 2
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
@@ -443,7 +439,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -457,7 +453,7 @@ let pipeline: Pipeline = {
                     transform: "rainrate",
                     presc: 3
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
@@ -470,7 +466,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -484,7 +480,7 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 1
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
@@ -499,7 +495,7 @@ let pipeline: Pipeline = {
     inputs: [
         {
             name: "csv",
-            opts: <CsvPerconf>{
+            opts: {
                 workingDirectory: config.execWorkingDir,
                 runExecutable: config.execFile,
                 filePath: config.execResultFile,
@@ -509,9 +505,9 @@ let pipeline: Pipeline = {
     intermediaries: [
         {
             name: "image",
-            opts: <ImageInterOpts>{
+            opts: {
                 folder: config.imagesFolder,
-                thresholds: config.thresholds
+                thresholds: config.thresholds as Thresholds
             }
         }
     ],
@@ -519,11 +515,11 @@ let pipeline: Pipeline = {
     outputs: [
         {
             name: "console",
-            opts: {}
+            opts: undefined,
         },
         {
             name: "file",
-            opts: <FileOutputOpts>{
+            opts: {
                 archive: true,
                 name: "windyAir",
                 pretty: true,
@@ -536,7 +532,7 @@ let pipeline: Pipeline = {
         },
         {
             name: "discord",
-            opts: <DiscordOpt>{
+            opts: {
                 channel: config.discordChannelId,
                 server: config.discordServerId,
                 attachment: {
@@ -550,7 +546,7 @@ let pipeline: Pipeline = {
     processors: [
         {
             name: "image",
-            opts: <ImageOptions>{
+            opts: {
                 height: imgHeight,
                 width: imgWidth,
                 imageKey: "image",

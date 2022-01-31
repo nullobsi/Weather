@@ -2,7 +2,7 @@ import DataOutput from "../defs/DataOutput.ts";
 import {FTPClient} from "https://deno.land/x/ftpc@v1.3.0/mod.ts";
 
 const output: DataOutput = async function(data, opt, datafields, gradients, processed) {
-    let opts = opt as FtpOutputOpts;
+    let opts = opt as FtpOOpts;
     if (processed[opts.fieldName] === undefined) return;
     let c = new FTPClient(opts.host, {
         port: opts.port,
@@ -29,7 +29,7 @@ const output: DataOutput = async function(data, opt, datafields, gradients, proc
 
 export default output;
 
-export type FtpOutputOpts = {
+export type FtpOOpts = {
     uploadName: string,
     fieldName: string,
 

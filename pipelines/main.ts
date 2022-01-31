@@ -1,23 +1,5 @@
 import Pipeline from "../defs/Pipeline.ts";
-import {FileOutputOpts} from "../outputs/file.ts";
-import {ImageOptions, ImagePerconf} from "../processors/image.ts";
 import getConfig from "../util/getConfig.ts";
-import {DiscordOpt, DiscordPerconf} from "../outputs/discord.ts";
-import {wundergroundOpts} from "../inputs/wunderground.ts";
-import {AqiOpts} from "../inputs/aqi.ts";
-import {SoilOpts} from "../intermediaries/soil.ts";
-import {ConsolePerconf} from "../outputs/console.ts";
-import {RainrateOpts} from "../intermediaries/rainrate.ts";
-import {CapOptions} from "../intermediaries/cap.ts";
-import {FtpOutputOpts} from "../outputs/ftp.ts";
-import {AmbientPerconf} from "../inputs/ambientweather.ts";
-import {ImageInterOpts, ImagePickerPerConf, Thresholds} from "../intermediaries/image.ts";
-import {PlaintextPerconf} from "../inputs/plaintext.ts";
-import {ConvOpts} from "../intermediaries/conv.ts";
-import {FeelsLikeOpts} from "../intermediaries/feelslike.ts";
-import {DewPtOpts} from "../intermediaries/dewpt.ts";
-import {CardinalOpts} from "../intermediaries/cardinal.ts";
-import {RelPressureOpts} from "../intermediaries/relpressure.ts";
 
 const config = await getConfig("pipelines", "main", {
     discordChannelId: "HERE",
@@ -46,7 +28,7 @@ const config = await getConfig("pipelines", "main", {
     backgroundUrl: "HERE",
     imagesFolder: "HERE",
 
-    thresholds: <Thresholds>{
+    thresholds: {
         stormy: [0,0],
         bright: [0,0,0,0,0,0,0,0,0,0,0,0],
         humid: 0,
@@ -86,12 +68,14 @@ const water = "waterTemp"
 const soil = "temp8f"
 const soilHumidity = "soilhum1"
 
+// @ts-ignore
+// @ts-ignore
 let pipeline: Pipeline = {
     datafields: [
         //Temperature
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -105,11 +89,11 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 1
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: true,
                     sendToDiscord: true
                 },
-                imagePicker: <ImagePickerPerConf>{
+                imagePicker: {
                     useFor: "temp"
                 }
             },
@@ -121,7 +105,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -135,7 +119,7 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 1
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
@@ -148,7 +132,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -162,7 +146,7 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 1
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
@@ -178,7 +162,7 @@ let pipeline: Pipeline = {
         // Rain
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -192,11 +176,11 @@ let pipeline: Pipeline = {
                     transform: "rainrate",
                     presc: 2
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                imagePicker: <ImagePickerPerConf>{
+                imagePicker: {
                     useFor: "precip"
                 }
             },
@@ -208,7 +192,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -231,7 +215,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
@@ -244,7 +228,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -269,7 +253,7 @@ let pipeline: Pipeline = {
         // Wind
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -283,11 +267,11 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 1
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                imagePicker: <ImagePickerPerConf>{
+                imagePicker: {
                     useFor: "wind"
                 }
             },
@@ -299,7 +283,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -313,7 +297,7 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 1
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
@@ -326,7 +310,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: -Math.PI / 2,
@@ -351,7 +335,7 @@ let pipeline: Pipeline = {
         // Water & Soil
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -365,7 +349,7 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 1
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
@@ -378,7 +362,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -401,7 +385,7 @@ let pipeline: Pipeline = {
         },
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: true,
                     displayUnit: true,
                     start: ns,
@@ -426,7 +410,7 @@ let pipeline: Pipeline = {
         //Humidity
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -440,11 +424,11 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 0
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                imagePicker: <ImagePickerPerConf>{
+                imagePicker: {
                     useFor: "humidity"
                 }
             },
@@ -458,7 +442,7 @@ let pipeline: Pipeline = {
         //UV
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -472,7 +456,7 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 1
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
@@ -487,7 +471,7 @@ let pipeline: Pipeline = {
         //AQI
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -512,7 +496,7 @@ let pipeline: Pipeline = {
         //Pressure
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -526,11 +510,11 @@ let pipeline: Pipeline = {
                     transform: undefined,
                     presc: 2
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                imagePicker: <ImagePickerPerConf>{
+                imagePicker: {
                     useFor: "pressure"
                 }
             },
@@ -544,11 +528,11 @@ let pipeline: Pipeline = {
         //Solar Radiation
         {
             perConfig: {
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -576,7 +560,7 @@ let pipeline: Pipeline = {
         //PM2.5
         {
             perConfig: {
-                "image": <ImagePerconf>{
+                "image": {
                     displayName: false,
                     displayUnit: true,
                     start: ns,
@@ -590,7 +574,7 @@ let pipeline: Pipeline = {
                     transform: "pm25",
                     presc: 0
                 },
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
@@ -604,7 +588,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -617,7 +601,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -630,7 +614,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -643,7 +627,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -656,7 +640,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -669,7 +653,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -682,7 +666,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -695,7 +679,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -708,7 +692,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -721,7 +705,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -734,7 +718,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -747,7 +731,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -760,7 +744,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -773,7 +757,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -786,7 +770,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -799,7 +783,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -812,7 +796,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -825,7 +809,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -838,7 +822,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -851,7 +835,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -864,7 +848,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -877,7 +861,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -890,7 +874,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -903,7 +887,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -916,7 +900,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -929,7 +913,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -942,7 +926,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -955,7 +939,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -968,7 +952,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -981,7 +965,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -994,7 +978,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -1007,7 +991,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -1020,7 +1004,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -1033,7 +1017,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -1046,7 +1030,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -1059,7 +1043,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -1072,7 +1056,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -1085,7 +1069,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -1098,7 +1082,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -1111,7 +1095,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -1124,7 +1108,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -1137,7 +1121,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "console": <ConsolePerconf>{
+                "console": {
                     print: true
                 }
             },
@@ -1150,7 +1134,7 @@ let pipeline: Pipeline = {
 
         {
             perConfig: {
-                "discord": <DiscordPerconf>{
+                "discord": {
                     updateRoleColor: false,
                     sendToDiscord: false
                 },
@@ -1166,21 +1150,21 @@ let pipeline: Pipeline = {
     inputs: [
         {
             name: "wunderground",
-            opts: <wundergroundOpts>{
+            opts: {
                 stationId: config.wuStationId2
             },
             blacklist: ["pressure"],
         },
         {
             name: "wunderground",
-            opts: <wundergroundOpts>{
+            opts: {
                 stationId: config.wundergroundStationId
             },
             blacklist: ["pressure"],
         },
         {
             name: "ambientweather",
-            opts: <AmbientPerconf>{
+            opts: {
                 apiKey: config.ambientApiKey1,
                 appKey: config.ambientAppKey1,
                 device: config.ambientDevice1,
@@ -1189,7 +1173,7 @@ let pipeline: Pipeline = {
         },
         {
             name: "ambientweather",
-            opts: <AmbientPerconf>{
+            opts: {
                 apiKey: config.ambientApiKey2,
                 appKey: config.ambientAppKey2,
                 device: config.ambientDevice2,
@@ -1200,7 +1184,7 @@ let pipeline: Pipeline = {
         },
         {
             name: "aqi",
-            opts: <AqiOpts>{
+            opts: {
                 lng: config.aqiLng,
                 lat: config.aqiLat,
             }
@@ -1208,7 +1192,7 @@ let pipeline: Pipeline = {
         },
         {
             name: "plaintext",
-            opts: <PlaintextPerconf>{
+            opts: {
                 reverse: true,
                 url: config.tableUrl,
                 values: [{index:4, name: "waterTemp"}]
@@ -1218,13 +1202,13 @@ let pipeline: Pipeline = {
     intermediaries: [
         {
             name: "cardinal",
-            opts: <CardinalOpts>{
+            opts: {
                 fieldName: "winddir",
             },
         },
         {
             name: "rainrate",
-            opts: <RainrateOpts>{
+            opts: {
                 highEnd: 37,
                 lowEnd: 32,
                 fieldName: "precipRate",
@@ -1233,7 +1217,7 @@ let pipeline: Pipeline = {
         },
         {
             name: "cap",
-            opts: <CapOptions>{
+            opts: {
                 fieldName: "solarradiation",
                 maxDigits: 4,
                 maxPresc: 2,
@@ -1241,14 +1225,15 @@ let pipeline: Pipeline = {
         },
         {
             name: "image",
-            opts: <ImageInterOpts>{
+            opts: {
                 folder: config.imagesFolder,
+                // @ts-ignore
                 thresholds: config.thresholds
             }
         },
         {
             name: "conv",
-            opts: <ConvOpts>{
+            opts: {
                 fieldName: "waterTemp",
                 func: t => t * 1.8 + 32,
                 nFieldName: "waterTemp",
@@ -1256,7 +1241,7 @@ let pipeline: Pipeline = {
         },
         {
             name: "feelslike",
-            opts: <FeelsLikeOpts>{
+            opts: {
                 nFieldName: "feelsLike",
                 humidity: "humidity",
                 tempF: "temp",
@@ -1264,8 +1249,8 @@ let pipeline: Pipeline = {
             }
         },
         {
-            name: "dewpt",
-            opts: <DewPtOpts>{
+            name: "fixdewpt",
+            opts: {
                 tempF: "temp",
                 humidity: "humidity",
                 dewpt: "dewPoint"
@@ -1273,7 +1258,7 @@ let pipeline: Pipeline = {
         },
         {
             name: "relpressure",
-            opts: <RelPressureOpts>{
+            opts: {
                 absPressure: "baromabsin",
                 elevationM: 483,
                 tempF: "tempf",
@@ -1285,11 +1270,11 @@ let pipeline: Pipeline = {
     outputs: [
         {
             name: "console",
-            opts: {}
+            opts: undefined,
         },
         {
             name: "file",
-            opts: <FileOutputOpts>{
+            opts: {
                 archive: true,
                 name: "main",
                 pretty: true,
@@ -1302,7 +1287,7 @@ let pipeline: Pipeline = {
         },
         {
             name: "discord",
-            opts: <DiscordOpt>{
+            opts: {
                 channel: config.discordChannelId,
                 server: config.discordServerId,
                 attachment: {
@@ -1313,7 +1298,7 @@ let pipeline: Pipeline = {
         },
         // {
         //     name: "ftp",
-        //     opts: <FtpOutputOpts>{
+        //     opts: {
         //         fieldName: "image",
         //         uploadName: "weather/temp.png",
         //         password: config.ftpPassword,
@@ -1328,7 +1313,7 @@ let pipeline: Pipeline = {
     processors: [
         {
             name: "image",
-            opts: <ImageOptions>{
+            opts: {
                 height: imgHeight,
                 width: imgWidth,
                 imageKey: "image",

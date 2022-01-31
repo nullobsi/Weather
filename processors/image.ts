@@ -40,7 +40,7 @@ let wasmFile = await Deno.readFile("util/Canvas/go_build_WeatherCanvas_js");
 
 let process: DataProcessor = async function(options, gradients, datafields, data, transforms, outputs) {
 
-    let opt = <ImageOptions>options;
+    let opt = <ImagePOpts>options;
     let finalOpt: renderOpt = {
         height: opt.height,
         width: opt.width,
@@ -102,7 +102,7 @@ let process: DataProcessor = async function(options, gradients, datafields, data
     await p;
 }
 
-interface ImageOptions {
+interface ImagePOpts {
     width: number
     height: number
     panels: {
@@ -118,7 +118,7 @@ interface ImageOptions {
     bgFit: "width" | "height";
 }
 
-export type {ImageOptions};
+export type {ImagePOpts};
 
 interface ImagePerconf {
     transform: string | undefined

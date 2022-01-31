@@ -1,6 +1,6 @@
 import Intermediary from "../defs/Intermediary.ts";
 
-type DewPointOpts = {
+type DewPointIOpts = {
     tempF: string,
     humidity: string,
     nFieldName: string,
@@ -15,7 +15,7 @@ function lm(T: number, RH: number): number {
 }
 
 const DewPoint: Intermediary = async (opts, data) => {
-    const o = opts as DewPointOpts;
+    const o = opts as DewPointIOpts;
     let Tf = data[o.tempF];
     let RH = data[o.humidity];
     if (Tf !== undefined && Tf !== null && RH !== undefined && RH !== null) {
@@ -25,5 +25,5 @@ const DewPoint: Intermediary = async (opts, data) => {
     }
 }
 
-export type {DewPointOpts}
+export type {DewPointIOpts}
 export default DewPoint;

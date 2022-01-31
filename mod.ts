@@ -1,22 +1,16 @@
 import * as path from "https://deno.land/std@0.76.0/path/mod.ts"
 import Gradients from "./defs/Gradients.ts";
-import DataInput from "./defs/DataInput.ts";
 import Indexed from "./defs/Indexed.ts";
-import Intermediary from "./defs/Intermediary.ts";
-import DataOutput from "./defs/DataOutput.ts";
-import Transform from "./defs/Transform.ts";
-import DataProcessor from "./defs/DataProcessor.ts";
-import Pipeline from "./defs/Pipeline.ts";
 import WeatherData from "./defs/WeatherData.ts";
 
-let gradients: Gradients = {};
-let inputs: Indexed<DataInput> = {};
-let intermediaries: Indexed<Intermediary> = {};
-let outputs: Indexed<DataOutput> = {};
-let transforms : Indexed<Transform> = {};
-let processors: Indexed<DataProcessor> = {};
-let pipelines: Indexed<Pipeline> = {};
+import {inputs} from "./inputs.ts";
+import {intermediaries} from "./intermediaries.ts";
+import {outputs} from "./outputs.ts";
+import {transforms} from "./transforms.ts";
+import {processors} from "./processors.ts";
+import {pipelines} from "./pipelines.ts";
 
+let gradients: Gradients = {};
 let originalConsole = window.console;
 
 let nConsole = {
@@ -43,108 +37,6 @@ for await (let gradient of dirEntries) {
         let name = path.basename(gradient.name, ".json");
         let readJson = await Deno.readTextFile(p);
         gradients[name] = JSON.parse(readJson);
-    }
-}
-
-nConsole.prefix = "[input]";
-dirEntries = Deno.readDir("./inputs");
-for await (let input of dirEntries) {
-    if (input.isFile && !input.name.startsWith(".")) {
-        console.log("Loading " + input.name)
-        let p = path.join(".","inputs", input.name);
-        p = path.resolve(p);
-        let name = path.basename(input.name, ".ts");
-        let readModule = await import("file://"+p);
-        if (readModule.default == undefined) {
-            console.error(`${name} has no exports!`)
-            Deno.exit(1);
-        }
-        inputs[name] = readModule.default;
-    }
-}
-
-nConsole.prefix = "[intermediary]";
-dirEntries = Deno.readDir("./intermediaries");
-for await (let dirEntry of dirEntries) {
-    if (dirEntry.isFile && !dirEntry.name.startsWith(".")) {
-        console.log("Loading " + dirEntry.name)
-        let p = path.join(".","intermediaries", dirEntry.name);
-        p = path.resolve(p);
-        let name = path.basename(dirEntry.name, ".ts");
-        let readModule = await import("file://"+p);
-        if (readModule.default == undefined) {
-            console.error(`${name} has no exports!`)
-            Deno.exit(1);
-        }
-        intermediaries[name] = readModule.default;
-    }
-}
-
-nConsole.prefix = "[output]";
-dirEntries = Deno.readDir("./outputs");
-for await (let dirEntry of dirEntries) {
-    if (dirEntry.isFile && !dirEntry.name.startsWith(".")) {
-        console.log("Loading " + dirEntry.name)
-        let p = path.join(".","outputs", dirEntry.name);
-        p = path.resolve(p);
-        let name = path.basename(dirEntry.name, ".ts");
-        let readModule = await import("file://"+p);
-        if (readModule.default == undefined) {
-            console.error(`${name} has no exports!`)
-            Deno.exit(1);
-        }
-        outputs[name] = readModule.default;
-    }
-}
-
-nConsole.prefix = "[transform]";
-dirEntries = Deno.readDir("./transforms");
-for await (let dirEntry of dirEntries) {
-    if (dirEntry.isFile && !dirEntry.name.startsWith(".")) {
-        console.log("[transform] Loading " + dirEntry.name)
-        let p = path.join(".","transforms", dirEntry.name);
-        p = path.resolve(p);
-        let name = path.basename(dirEntry.name, ".ts");
-        let readModule = await import("file://"+p);
-        if (readModule.default == undefined) {
-            console.error(`${name} has no exports!`)
-            Deno.exit(1);
-        }
-        transforms[name] = readModule.default;
-    }
-}
-
-nConsole.prefix = "[process]";
-dirEntries = Deno.readDir("./processors");
-for await (let dirEntry of dirEntries) {
-    if (dirEntry.isFile && !dirEntry.name.startsWith(".")) {
-        console.log("Loading " + dirEntry.name)
-        let p = path.join(".","processors", dirEntry.name);
-        p = path.resolve(p);
-        let name = path.basename(dirEntry.name, ".ts");
-        let readModule = await import("file://"+p);
-        if (readModule.default == undefined) {
-            console.error(`${name} has no exports!`)
-            Deno.exit(1);
-        }
-        processors[name] = readModule.default;
-    }
-}
-
-nConsole.prefix = "[pipeline]";
-dirEntries = Deno.readDir("./pipelines");
-for await (let dirEntry of dirEntries) {
-    if (dirEntry.isFile && !dirEntry.name.startsWith(".")) {
-        console.log("Loading " + dirEntry.name)
-        let p = path.join(".","pipelines", dirEntry.name);
-        p = path.resolve(p);
-        let name = path.basename(dirEntry.name, ".ts");
-        let readModule = await import("file://"+p);
-        if (readModule.default == undefined) {
-            console.error(`${name} has no exports!`)
-            Deno.exit(1);
-        }
-        pipelines[name] = readModule.default;
     }
 }
 
