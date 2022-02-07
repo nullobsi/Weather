@@ -6,6 +6,7 @@ import WeatherCtx from "./WeatherCtx.ts";
 import {OutputRegistry} from "../registry.ts";
 import {Union} from "./Opts.ts";
 
-type DataOutput = (this: WeatherCtx, data: WeatherData, options: Union<OutputRegistry>, datafields: Datafields, gradients: Gradients, processed: Indexed<any>) => Promise<void>
+type DataOutput = (this: WeatherCtx, data: WeatherData, options: any, datafields: Datafields, gradients: Gradients, processed: Indexed<any>) => Promise<void>
+
 
 export default DataOutput;
