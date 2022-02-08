@@ -8,5 +8,5 @@ func Interpolate(color1, color2 color.Color, w1 float64) color.Color {
     c2, _ := colorful.MakeColor(color2)
 
 
-    return c1.BlendHcl(c2, w1).Clamped()
+    return c1.BlendHcl(c2, 1 - w1).Clamped()
 }
