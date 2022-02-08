@@ -1,7 +1,7 @@
 package util
 
 import "image/color"
-import "github.com/lucasb-eyer/go-colorful"
+import "github.com/nullobsi/go-colorful"
 
 func Interpolate(color1, color2 color.Color, w1 float64) color.Color {
     c1, _ := colorful.MakeColor(color1)
