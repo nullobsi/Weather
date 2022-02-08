@@ -1,6 +1,6 @@
 import DataProcessor from "../defs/DataProcessor.ts";
 
-import Go from "https://deno.land/x/godeno@v0.6.0/mod.ts"
+import Go from "https://deno.land/x/godeno@v0.6.1/mod.ts"
 
 interface renderOpt {
     panels: {
