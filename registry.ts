@@ -54,6 +54,7 @@ import ftp from "./outputs/ftp.ts";
 
 // Processors
 import image from "./processors/image.ts";
+import records, {RecordsOOpts, RecordsPerconf} from "./outputs/records.ts";
 
 // Pipelines
 import main from "./pipelines/main.ts";
@@ -95,6 +96,7 @@ type OutputRegistry = {
     discord: DiscordOOpts,
     file: FileOOpts,
     ftp: FtpOOpts,
+    records: RecordsOOpts,
 };
 
 type PerconfRegistry = {
@@ -104,6 +106,7 @@ type PerconfRegistry = {
     ftp: never,
     image: ImagePerconf,
     imagePicker: ImagePickerPerConf,
+    records: RecordsPerconf,
 };
 
 type ProcessorRegistry = {

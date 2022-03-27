@@ -48,5 +48,5 @@ export type FileOOpts = {
     archive: boolean,
     name: string,
     extraFiles: {fieldName: string, ext: string}[],
-    removeKeys: string[] | undefined
+    removeKeys: string[] | undefined,
 }

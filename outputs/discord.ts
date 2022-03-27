@@ -26,7 +26,12 @@ type DiscordPerconf = {
     sendToDiscord: boolean,
     updateRoleColor: boolean,
 };
-type DiscordOOpts = {channel: string, server: string, attachment: {fieldName: string, fileName: string} | undefined}
+type DiscordOOpts = {
+    channel: string;
+    server: string;
+    attachment: {fieldName: string, fileName: string} | undefined;
+    recordsChannel: string | undefined;
+};
 export type {DiscordPerconf,DiscordOOpts}
 
 const output: DataOutput = async function output(data, opt, datafields, gradients, processed) {
@@ -100,7 +105,23 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
     await Discord.sendMessage(BigInt(options.channel),{
         content: msg,
         file: attachment,
-    })
+    });
+
+    if (options.recordsChannel) {
+        this.console.log("Sending records message...");
+        if (data.newRecords && data.newRecords.length > 0) {
+            let msg = "New Records!\n";
+            data.newRecords.forEach((fieldName:string) => {
+                let field = datafields.find(f => f.fieldName == fieldName);
+                if (field === undefined) return this.console.log("Could not find any records for " + fieldName + "!");
+                msg += `**${field.displayName}** has reached **${data[fieldName]}${field.unit}**!\n`;
+            });
+
+            await Discord.sendMessage(BigInt(options.recordsChannel), {
+                content: msg,
+            });
+        }
+    }
     this.console.log(`Done!`)
 }
 
