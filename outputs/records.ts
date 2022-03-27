@@ -4,21 +4,44 @@ import getDateString from "../util/getDateString.ts";
 import * as fs from "https://deno.land/std@0.76.0/fs/mod.ts"
 import * as path from "https://deno.land/std@0.76.0/path/mod.ts"
 
+type Record = {value: number, at: Date};
+type Records = {
+    [x: string]: Record,
+};
+export type {Record}
+
 const output: DataOutput = async function(data, options: RecordsOOpts, datafields, gradients, processed) {
-    let recordsFile = path.join(Deno.cwd(), "records", options.name + ".json");
+    let highRecordsPath = path.join(Deno.cwd(), "records", options.name + "-high.json");
+    let lowRecordsPath = path.join(Deno.cwd(), "records", options.name + "-low.json");
 
     await Deno.mkdir(path.join(Deno.cwd(), "records"), {
         recursive: true,
     });
 
-    let records: any = {
+    let highRecords: Records = {};
+    let lowRecords: Records = {};
+
+    let newRecords: {fieldName: string, last: Record}[] = [];
+    const newRecord = (fieldName: string, last: Record) => {
+        newRecords.push({
+            fieldName,
+            last,
+        });
+        this.console.log(`New Record! ${fieldName} has reached ${data[fieldName]}!`);
     };
 
-    let newRecords: string[] = [];
+    try {
+        let fileContents = await Deno.readTextFile(highRecordsPath);
+        highRecords = JSON.parse(fileContents);
+    } catch (e) {
+        if (!(e instanceof Deno.errors.NotFound)) {
+            throw e;
+        }
+    }
 
     try {
-        let fileContents = await Deno.readTextFile(recordsFile);
-        records = JSON.stringify(fileContents);
+        let fileContents = await Deno.readTextFile(lowRecordsPath);
+        lowRecords = JSON.parse(fileContents);
     } catch (e) {
         if (!(e instanceof Deno.errors.NotFound)) {
             throw e;
@@ -29,32 +52,44 @@ const output: DataOutput = async function(data, options: RecordsOOpts, datafield
         let o = field.perConfig["records"];
         if (o == undefined) return;
 
-        if (records[field.fieldName] === undefined) {
-            records[field.fieldName] = data[field.fieldName];
+        if (highRecords[field.fieldName] === undefined) {
+            highRecords[field.fieldName] = {
+                value: data[field.fieldName],
+                at: new Date(),
+            };
+        }
+        if (lowRecords[field.fieldName] === undefined) {
+            lowRecords[field.fieldName] = {
+                value: data[field.fieldName],
+                at: new Date(),
+            };
         }
 
-        let nrecord = false;
-
-        if ((o.type == "low" || o.type == "both") && records[field.fieldName + "Lowest"] > data[field.fieldName]) {
-            records[field.fieldName + "Lowest"] = data[field.fieldName];
-            nrecord = true;
+        if ((o.type == "low" || o.type == "both") && lowRecords[field.fieldName].value > data[field.fieldName]) {
+            newRecord(field.fieldName, lowRecords[field.fieldName]);
+            lowRecords[field.fieldName] = {
+                value: data[field.fieldName],
+                at: new Date(),
+            };
         }
 
-        if ((o.type == "high" || o.type == "both") && records[field.fieldName + "Highest"] < data[field.fieldName]) {
-            records[field.fieldName + "Highest"] = data[field.fieldName];
-            nrecord = true;
-        }
-
-        if (nrecord) {
-            newRecords.push(field.fieldName);
-            this.console.log(`New Record! ${field.fieldName} has reached ${data[field.fieldName]}!`);
+        if ((o.type == "high" || o.type == "both") && highRecords[field.fieldName].value < data[field.fieldName]) {
+            newRecord(field.fieldName, highRecords[field.fieldName]);
+            highRecords[field.fieldName] = {
+                value: data[field.fieldName],
+                at: new Date(),
+            };
         }
     });
 
-    data.records = records;
+    data.highRecords = highRecords;
+    data.lowRecords = lowRecords;
     data.newRecords = newRecords;
 
-    await Deno.writeTextFile(recordsFile, JSON.stringify(records, null, 4));
+    await Deno.writeTextFile(highRecordsPath, JSON.stringify(highRecords, null, 4));
+    await Deno.writeTextFile(lowRecordsPath, JSON.stringify(lowRecords, null, 4));
+
+
 }
 
 interface RecordsPerconf {

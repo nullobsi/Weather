@@ -4,6 +4,7 @@ import tempToColor from "../util/tempToColor.ts";
 import DiscordRole from "../defs/DiscordRole.ts";
 import {getDateString} from "../util/getDateString.ts";
 import DataOutput from "../defs/DataOutput.ts";
+import {Record} from "./records.ts";
 
 const config = await getConfig("outputs", "discord", {
     "token": "HERE"
@@ -111,10 +112,10 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
         this.console.log("Sending records message...");
         if (data.newRecords && data.newRecords.length > 0) {
             let msg = "New Records!\n";
-            data.newRecords.forEach((fieldName:string) => {
-                let field = datafields.find(f => f.fieldName == fieldName);
-                if (field === undefined) return this.console.log("Could not find any records for " + fieldName + "!");
-                msg += `**${field.displayName}** has reached **${data[fieldName]}${field.unit}**!\n`;
+            data.newRecords.forEach((record: {fieldName: string, last: Record}) => {
+                let field = datafields.find(f => f.fieldName == record.fieldName);
+                if (field === undefined) return this.console.log("Could not find any definition for " + record.fieldName + "!");
+                msg += `**${field.displayName}** has reached **${data[record.fieldName]}${field.unit}** from ${record.last.value}${field.unit} on ${record.last.at.toDateString()}!\n`;
             });
 
             await Discord.sendMessage(BigInt(options.recordsChannel), {
