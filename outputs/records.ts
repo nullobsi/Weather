@@ -48,6 +48,10 @@ const output: DataOutput = async function(data, options: RecordsOOpts, datafield
         }
     }
 
+    [highRecords,lowRecords].forEach(o => {for (let k in o) {
+        o[k].at = new Date(o[k].at);
+    }});
+
     datafields.forEach(field => {
         let o = field.perConfig["records"];
         if (o == undefined) return;
