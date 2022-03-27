@@ -4,6 +4,7 @@ import getConfig from "../util/getConfig.ts";
 const config = await getConfig("pipelines", "main", {
     discordChannelId: "HERE",
     discordServerId: "HERE",
+    discordRecordsChannelId: "HERE",
     wundergroundStationId: "HERE",
     wuStationId2: "HERE",
     aqiLat: 0,
@@ -93,6 +94,9 @@ let pipeline: Pipeline = {
                     updateRoleColor: true,
                     sendToDiscord: true
                 },
+                records: {
+                    type: "both",
+                },
                 imagePicker: {
                     useFor: "temp"
                 }
@@ -123,6 +127,9 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
+                records: {
+                    type: "both",
+                },
             },
             gradient: "wu_temp",
             displayName: "Feels",
@@ -149,6 +156,9 @@ let pipeline: Pipeline = {
                 "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
+                },
+                records: {
+                    type: "both",
                 },
             },
             gradient: "wu_temp",
@@ -182,7 +192,10 @@ let pipeline: Pipeline = {
                 },
                 imagePicker: {
                     useFor: "precip"
-                }
+                },
+                records: {
+                    type: "high",
+                },
             },
             gradient: "rainrate",
             displayName: "Rain Rate",
@@ -205,7 +218,10 @@ let pipeline: Pipeline = {
                     y: r*2 + sr,
                     transform: undefined,
                     presc: 2
-                }
+                },
+                records: {
+                    type: "both",
+                },
             },
             gradient: "rainaccum",
             displayName: "Day",
@@ -241,7 +257,10 @@ let pipeline: Pipeline = {
                     y: r*2 + sr,
                     transform: undefined,
                     presc: 2
-                }
+                },
+                records: {
+                    type: "both",
+                },
             },
             gradient: "rainaccum",
             displayName: "Week",
@@ -273,7 +292,10 @@ let pipeline: Pipeline = {
                 },
                 imagePicker: {
                     useFor: "wind"
-                }
+                },
+                records: {
+                    type: "high",
+                },
             },
             gradient: "wind",
             displayName: "Wind Speed",
@@ -300,6 +322,9 @@ let pipeline: Pipeline = {
                 "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
+                },
+                records: {
+                    type: "high",
                 },
             },
             gradient: "wind",
@@ -353,6 +378,9 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
+                records: {
+                    type: "both",
+                },
             },
             gradient: "wu_temp",
             displayName: "Water Temp.",
@@ -375,7 +403,10 @@ let pipeline: Pipeline = {
                     y: r*2 + sr,
                     transform: undefined,
                     presc: 1
-                }
+                },
+                records: {
+                    type: "both",
+                },
             },
             gradient: "wu_temp",
             displayName: "Soil",
@@ -398,7 +429,10 @@ let pipeline: Pipeline = {
                     y: r*2 + sr,
                     transform: undefined,
                     presc: 0
-                }
+                },
+                records: {
+                    type: "both",
+                },
             },
             gradient: "soil",
             displayName: "Hum.",
@@ -430,7 +464,10 @@ let pipeline: Pipeline = {
                 },
                 imagePicker: {
                     useFor: "humidity"
-                }
+                },
+                records: {
+                    type: "both",
+                },
             },
             gradient: "humidity",
             displayName: "Humidity",
@@ -460,6 +497,9 @@ let pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
+                records: {
+                    type: "high",
+                },
             },
             gradient: "uv",
             displayName: "UV Index",
@@ -484,7 +524,11 @@ let pipeline: Pipeline = {
                     y: r + smallSpacing,
                     transform: undefined,
                     presc: 0
-                }
+                },
+
+                records: {
+                    type: "both",
+                },
             },
             gradient: "aqi",
             displayName: "AQI",
@@ -516,7 +560,11 @@ let pipeline: Pipeline = {
                 },
                 imagePicker: {
                     useFor: "pressure"
-                }
+                },
+
+                records: {
+                    type: "both",
+                },
             },
             gradient: "pressure",
             displayName: "Pressure",
@@ -548,7 +596,10 @@ let pipeline: Pipeline = {
                 },
                 imagePicker: {
                     useFor: "solar"
-                }
+                },
+                records: {
+                    type: "high",
+                },
             },
             gradient: "solar",
             displayName: "Solar Radiation",
@@ -577,6 +628,9 @@ let pipeline: Pipeline = {
                 "discord": {
                     updateRoleColor: false,
                     sendToDiscord: true
+                },
+                records: {
+                    type: "both",
                 },
             },
             gradient: "pm25",
@@ -1286,6 +1340,12 @@ let pipeline: Pipeline = {
             }
         },
         {
+            name: "records",
+            opts: {
+                name: "main",
+            },
+        },
+        {
             name: "discord",
             opts: {
                 channel: config.discordChannelId,
@@ -1293,8 +1353,9 @@ let pipeline: Pipeline = {
                 attachment: {
                     fieldName: "image",
                     fileName: "weather.png"
-                }
-            }
+                },
+                recordsChannel: config.discordRecordsChannelId,
+            },
         },
         // {
         //     name: "ftp",
