@@ -29,8 +29,8 @@ type DiscordPerconf = {
 type DiscordOOpts = {
     channel: string;
     server: string;
-    attachment: {fieldName: string, fileName: string} | undefined;
-    recordsChannel: string | undefined;
+    attachment?: {fieldName: string, fileName: string};
+    recordsChannel?: string;
 };
 export type {DiscordPerconf,DiscordOOpts}
 

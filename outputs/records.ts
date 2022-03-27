@@ -27,14 +27,25 @@ const output: DataOutput = async function(data, options: RecordsOOpts, datafield
 
     datafields.forEach(field => {
         let o = field.perConfig["records"];
-        if (o == undefined || !o.record) return;
+        if (o == undefined) return;
 
         if (records[field.fieldName] === undefined) {
             records[field.fieldName] = data[field.fieldName];
         }
 
-        if (records[field.fieldName] < data[field.fieldName]) {
-            records[field.fieldName] = data[field.fieldName];
+        let nrecord = false;
+
+        if ((o.type == "low" || o.type == "both") && records[field.fieldName + "Lowest"] > data[field.fieldName]) {
+            records[field.fieldName + "Lowest"] = data[field.fieldName];
+            nrecord = true;
+        }
+
+        if ((o.type == "high" || o.type == "both") && records[field.fieldName + "Highest"] < data[field.fieldName]) {
+            records[field.fieldName + "Highest"] = data[field.fieldName];
+            nrecord = true;
+        }
+
+        if (nrecord) {
             newRecords.push(field.fieldName);
             this.console.log(`New Record! ${field.fieldName} has reached ${data[field.fieldName]}!`);
         }
@@ -47,7 +58,7 @@ const output: DataOutput = async function(data, options: RecordsOOpts, datafield
 }
 
 interface RecordsPerconf {
-    record: boolean,
+    type: "low" | "high" | "both",
 }
 
 interface RecordsOOpts {
