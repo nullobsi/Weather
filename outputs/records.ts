@@ -56,13 +56,13 @@ const output: DataOutput = async function(data, options: RecordsOOpts, datafield
         let o = field.perConfig["records"];
         if (o == undefined) return;
 
-        if (highRecords[field.fieldName] === undefined) {
+        if (highRecords[field.fieldName] === undefined || highRecords[field.fieldName].value === undefined) {
             highRecords[field.fieldName] = {
                 value: data[field.fieldName],
                 at: new Date(),
             };
         }
-        if (lowRecords[field.fieldName] === undefined) {
+        if (lowRecords[field.fieldName] === undefined || lowRecords[field.fieldName].value === undefined) {
             lowRecords[field.fieldName] = {
                 value: data[field.fieldName],
                 at: new Date(),
