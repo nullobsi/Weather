@@ -115,7 +115,7 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
             data.newRecords.forEach((record: {fieldName: string, last: Record}) => {
                 let field = datafields.find(f => f.fieldName == record.fieldName);
                 if (field === undefined) return this.console.log("Could not find any definition for " + record.fieldName + "!");
-                msg += `**${field.displayName}** has reached **${data[record.fieldName]}${field.unit}** from ${record.last.value}${field.unit} on ${record.last.at.toDateString()}!\n`;
+                msg += `**${field.displayName}** has reached **${data[record.fieldName]}${field.unit}** from ${record.last.value}${field.unit} on ${getDateString(record.last.at)}!\n`;
             });
 
             await Discord.sendMessage(BigInt(options.recordsChannel), {
