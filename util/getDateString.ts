@@ -4,6 +4,6 @@ function zeroPad(s: string) {
 }
 
 export function getDateString(d: Date, fileCompat=false) {
-    return `${d.getFullYear()}-${zeroPad((d.getMonth() + 1).toString())}-${zeroPad(String(d.getDate()))}${fileCompat ? "-" : " "}${zeroPad(String(d.getHours()))}${fileCompat ? "-" : ":"}${zeroPad(d.getMinutes().toString())}${fileCompat ? "-" : ":"}${zeroPad(d.getSeconds().toString())}`;
+    return `${d.getFullYear()}-${zeroPad((d.getMonth()).toString())}-${zeroPad(String(d.getDate()))}${fileCompat ? "-" : " "}${zeroPad(String(d.getHours()))}${fileCompat ? "-" : ":"}${zeroPad(d.getMinutes().toString())}${fileCompat ? "-" : ":"}${zeroPad(d.getSeconds().toString())}`;
 }
 export default getDateString;
