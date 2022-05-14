@@ -18,6 +18,11 @@ const getData: DataInput = async function(options) {
         this.console.log(data);
         throw new Error("Could not get devices from Ambient!")
     }
+    // wrong month???
+    if (device.lastData.date) {
+        device.lastData.date = new Date(device.lastData.date);
+        device.lastData.date.setMonth(device.lastData.date.getMonth() + 1);
+    }
     return device.lastData;
 }
 
