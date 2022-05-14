@@ -1278,11 +1278,12 @@ let pipeline: Pipeline = {
             }
         },
         {
-            name: "image",
+            name: "relpressure",
             opts: {
-                folder: config.imagesFolder,
-                // @ts-ignore
-                thresholds: config.thresholds
+                absPressure: "baromabsin",
+                elevationM: 483,
+                tempF: "tempf",
+                nFieldName: "baromabsin",
             }
         },
         {
@@ -1311,14 +1312,13 @@ let pipeline: Pipeline = {
             }
         },
         {
-            name: "relpressure",
+            name: "image",
             opts: {
-                absPressure: "baromabsin",
-                elevationM: 483,
-                tempF: "tempf",
-                nFieldName: "baromabsin",
+                folder: config.imagesFolder,
+                // @ts-ignore
+                thresholds: config.thresholds
             }
-        }
+        },
     ],
     interval: 300000,
     outputs: [
