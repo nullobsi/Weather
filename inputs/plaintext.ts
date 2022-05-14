@@ -23,13 +23,20 @@ const getData: DataInput = async function(options) {
         let n = parseFloat(parsed[i][v.index]);
         data[v.name] = isNaN(n) ? parsed[i][v.index] : n;
     });
+
+    if (opts.getDate) {
+        data["date"] = opts.getDate(parsed, text);
+    } else if (opts.getDate !== false) {
+        data["date"] = new Date();
+    }
     return data;
 }
 
 type PlaintextOpts = {
     reverse: boolean,
     url: string,
-    values: {name: string, index: number}[]
+    values: {name: string, index: number}[],
+    getDate?: ((parsed: string[][], raw: string) => Date) | false,
 }
 
 

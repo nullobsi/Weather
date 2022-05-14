@@ -549,6 +549,15 @@ let pipeline: Pipeline = {
                     {name: "PRES_hPa", index: 12},
                 ],
                 reverse: false,
+                getDate: (parsed) => {
+                    let r = parsed[0];
+                    let yr = parseInt(r[0]);
+                    let mo = parseInt(r[1]);
+                    let dy = parseInt(r[2]);
+                    let hr = parseInt(r[3]);
+                    let mn = parseInt(r[4]);
+                    return new Date(yr, mo, dy, hr, mn);
+                }
             },
         },
         {
@@ -568,6 +577,7 @@ let pipeline: Pipeline = {
                     {name: "WWD", index: 11},
                 ],
                 reverse: false,
+                getDate: false,
             },
         },
         {
@@ -578,6 +588,7 @@ let pipeline: Pipeline = {
                     {name: "WTMP_degC", index: 14},
                 ],
                 reverse: false,
+                getDate: false,
             },
         },
     ],

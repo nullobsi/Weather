@@ -1249,7 +1249,8 @@ let pipeline: Pipeline = {
             opts: {
                 reverse: true,
                 url: config.tableUrl,
-                values: [{index:4, name: "waterTemp"}]
+                values: [{index:4, name: "waterTemp"}],
+                getDate: false,
             }
         }
     ],
