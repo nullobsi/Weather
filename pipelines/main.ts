@@ -1308,7 +1308,8 @@ let pipeline: Pipeline = {
             opts: {
                 tempF: "temp",
                 humidity: "humidity",
-                dewpt: "dewPoint"
+                dewpt: "dewPoint",
+                presc: 1,
             }
         },
         {
