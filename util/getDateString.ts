@@ -3,7 +3,11 @@ function zeroPad(s: string) {
     return s;
 }
 
-export function getDateString(d: Date, fileCompat=false) {
-    return `${d.getFullYear()}-${zeroPad((d.getMonth()).toString())}-${zeroPad(String(d.getDate()))}${fileCompat ? "-" : " "}${zeroPad(String(d.getHours()))}${fileCompat ? "-" : ":"}${zeroPad(d.getMinutes().toString())}${fileCompat ? "-" : ":"}${zeroPad(d.getSeconds().toString())}`;
+export function getDateString(d: Date, fileCompat=false, seconds = true) {
+    let str = `${d.getFullYear()}-${zeroPad((d.getMonth()).toString())}-${zeroPad(String(d.getDate()))}${fileCompat ? "-" : " "}${zeroPad(String(d.getHours()))}${fileCompat ? "-" : ":"}${zeroPad(d.getMinutes().toString())}`;
+    if (seconds) {
+        str += `${fileCompat ? "-" : ":"}${zeroPad(d.getSeconds().toString())}`;
+    }
+    return str;
 }
 export default getDateString;

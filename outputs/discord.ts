@@ -40,7 +40,7 @@ export type {DiscordPerconf,DiscordOOpts}
 const output: DataOutput = async function output(data, opt, datafields, gradients, processed) {
     await readyPromise;
     let options = opt as DiscordOOpts;
-    let msg = "Weather report for " + getDateString(new Date(data.date)) + "\n";
+    let msg = "Weather report for " + getDateString(new Date(data.date), false, false) + "\n";
     //let maxlen = datafields.reduce<number>((p, c) => c.displayName.length > p ? c.displayName.length : p, 0);
     this.console.log("Getting roles...")
     let roles: Discord.DiscordenoRole[] = [];
@@ -119,7 +119,7 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
                 let value = makeString(data[record.fieldName], field);
                 let lastValue = makeString(record.last.value, field);
 
-                msg += `**${field.displayName}** has reached **${value}${field.unit}** from ${lastValue}${field.unit} on ${getDateString(record.last.at)}!\n`;
+                msg += `**${field.displayName}** has reached **${value}${field.unit}** from ${lastValue}${field.unit} on ${getDateString(record.last.at, false, false)}!\n`;
             });
 
             await Discord.sendMessage(BigInt(options.recordsChannel), {
