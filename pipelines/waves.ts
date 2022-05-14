@@ -556,7 +556,7 @@ let pipeline: Pipeline = {
                     let dy = parseInt(r[2]);
                     let hr = parseInt(r[3]);
                     let mn = parseInt(r[4]);
-                    console.log(r, yr, mo, dy ,hr ,mn);
+                    console.log("THIS IS THE DATE THINGY!!!!!!!!!!!!", r, yr, mo, dy ,hr ,mn);
                     return new Date(yr, mo, dy, hr, mn);
                 }
             },
