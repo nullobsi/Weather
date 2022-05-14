@@ -5,6 +5,8 @@ import DiscordRole from "../defs/DiscordRole.ts";
 import {getDateString} from "../util/getDateString.ts";
 import DataOutput from "../defs/DataOutput.ts";
 import {Record} from "./records.ts";
+import datafields from "../defs/Datafields.ts";
+import Datafields from "../defs/Datafields.ts";
 
 const config = await getConfig("outputs", "discord", {
     "token": "HERE"
@@ -62,8 +64,7 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
         let perconf = field.perConfig["discord"] as DiscordPerconf;
         let value = data[field.fieldName];
         if (perconf.sendToDiscord) {
-            let str = value !== undefined && value !== null ? value : "No Data";
-            msg += field.displayName + ": " + str + field.unit + "\n";
+            msg += field.displayName + ": " + makeString(value, field) + field.unit + "\n";
         }
         if (perconf.updateRoleColor && hasPerm) {
 
@@ -115,7 +116,10 @@ const output: DataOutput = async function output(data, opt, datafields, gradient
             data.newRecords.forEach((record: {fieldName: string, last: Record}) => {
                 let field = datafields.find(f => f.fieldName == record.fieldName);
                 if (field === undefined) return this.console.log("Could not find any definition for " + record.fieldName + "!");
-                msg += `**${field.displayName}** has reached **${data[record.fieldName]}${field.unit}** from ${record.last.value}${field.unit} on ${getDateString(record.last.at)}!\n`;
+                let value = makeString(data[record.fieldName], field);
+                let lastValue = makeString(record.last.value, field);
+
+                msg += `**${field.displayName}** has reached **${value}${field.unit}** from ${lastValue}${field.unit} on ${getDateString(record.last.at)}!\n`;
             });
 
             await Discord.sendMessage(BigInt(options.recordsChannel), {
@@ -144,6 +148,21 @@ function hexToNumber(hex: string) {
     let G = Math.abs(RGB[1]);
     let B = Math.abs(RGB[2]);
     return (R << 16) | (G << 8) | B;
+}
+
+function makeString(value: number, field: Datafields[0]) {
+    let str: string;
+    if (value !== undefined && value !== null) {
+        const imagePerconf = field.perConfig["image"];
+        if (imagePerconf) {
+            str = (value as number).toFixed(imagePerconf.presc);
+        } else {
+            str = value.toString();
+        }
+    } else {
+        str = "No Data";
+    }
+    return str;
 }
 
 export default output;
