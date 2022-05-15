@@ -505,7 +505,7 @@ let pipeline: Pipeline = {
         {
             name: "multiconv",
             opts: {
-                fieldNames: ["Wind1", "WindAccumulation0", "WindGusts0"],
+                fieldNames: ["Wind1", "WindAccumulation", "WindGusts"],
                 from: "", to: "",
                 func: v => v* 1.1507794480235,
             },
@@ -521,8 +521,8 @@ let pipeline: Pipeline = {
             opts: {
                 nFieldName: "feelslike",
                 windMph: "Wind1",
-                humidity: "Humidity0",
-                tempF: "Temperature0",
+                humidity: "Humidity",
+                tempF: "Temperature",
             }
         },
         {
