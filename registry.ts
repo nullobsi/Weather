@@ -3,6 +3,7 @@ import {AqiOpts} from "./inputs/aqi.ts";
 import {CsvOpts} from "./inputs/csv.ts";
 import {ImageUrlOpts} from "./inputs/imageUrl.ts";
 import {PlaintextOpts} from "./inputs/plaintext.ts";
+import {JsonOpts} from "./inputs/json.ts";
 import {TableOpts} from "./inputs/table.ts";
 import {WindyOpts} from "./inputs/windy.ts";
 import {WundergroundOpts} from "./inputs/wunderground.ts";
@@ -28,6 +29,7 @@ import {ImagePerconf, ImagePOpts} from "./processors/image.ts";
 import DataInput from "./defs/DataInput.ts";
 import DataOutput from "./defs/DataOutput.ts";
 import DataProcessor from "./defs/DataProcessor.ts";
+import Intermediary from "./defs/Intermediary.ts";
 
 
 
@@ -61,7 +63,6 @@ import main from "./pipelines/main.ts";
 import waves from "./pipelines/waves.ts";
 import windyPipeline from "./pipelines/windy.ts";
 import windyAir from "./pipelines/windyAir.ts";
-import Intermediary from "./defs/Intermediary.ts";
 
 
 type InputRegistry = {
@@ -73,6 +74,7 @@ type InputRegistry = {
     table: TableOpts,
     windy: WindyOpts,
     wunderground: WundergroundOpts,
+    json: JsonOpts,
 };
 
 type IntermediaryRegistry = {

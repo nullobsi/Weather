@@ -8,6 +8,7 @@ import plaintext from "./inputs/plaintext.ts";
 import table from "./inputs/table.ts";
 import windy from "./inputs/windy.ts";
 import wunderground from "./inputs/wunderground.ts";
+import json from "./inputs/json.ts";
 
 export const inputs: Inputs = {
     aqi,
@@ -18,4 +19,5 @@ export const inputs: Inputs = {
     imageUrl,
     wunderground,
     ambientweather,
+    json,
 };
