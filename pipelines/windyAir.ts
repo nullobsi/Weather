@@ -8,9 +8,7 @@ const config = await getConfig("pipelines", "windyAir", {
 
     imagesFolder: "HERE",
 
-    execFile: ["HERE"],
-    execWorkingDir: "HERE",
-    execResultFile: "HERE",
+    jsonUrl: "HERE",
 
     thresholds: {
         stormy: [0,0],
@@ -75,7 +73,7 @@ let pipeline: Pipeline = {
             },
             gradient: "clouds",
             displayName: "Cover",
-            fieldName: "Clouds0",
+            fieldName: "Clouds",
             transform: undefined,
             unit: "%"
         },
@@ -102,7 +100,7 @@ let pipeline: Pipeline = {
             },
             gradient: "lclouds",
             displayName: "Low",
-            fieldName: "LowClouds0",
+            fieldName: "LowClouds",
             transform: undefined,
             unit: "%"
         },
@@ -132,7 +130,7 @@ let pipeline: Pipeline = {
             },
             gradient: "mclouds",
             displayName: "Med",
-            fieldName: "MediumClouds0",
+            fieldName: "MediumClouds",
             transform: undefined,
             unit: "%"
         },
@@ -159,7 +157,7 @@ let pipeline: Pipeline = {
             },
             gradient: "hclouds",
             displayName: "High",
-            fieldName: "HighClouds0",
+            fieldName: "HighClouds",
             transform: undefined,
             unit: "%"
         },
@@ -186,7 +184,7 @@ let pipeline: Pipeline = {
             },
             gradient: "cbase",
             displayName: "Base",
-            fieldName: "CloudBase0",
+            fieldName: "CloudBase",
             transform: undefined,
             unit: " ft"
         },
@@ -216,7 +214,7 @@ let pipeline: Pipeline = {
             },
             gradient: "cloudtop",
             displayName: "Tops",
-            fieldName: "CloudTops0",
+            fieldName: "CloudTops",
             transform: undefined,
             unit: " ft"
         },
@@ -239,7 +237,7 @@ let pipeline: Pipeline = {
             },
             gradient: "freezing",
             displayName: "0°C",
-            fieldName: "FreezingAltitude0",
+            fieldName: "FreezingAltitude",
             transform: undefined,
             unit: " ft"
         },
@@ -266,7 +264,7 @@ let pipeline: Pipeline = {
             },
             gradient: "thermals",
             displayName: "Thermals",
-            fieldName: "Thermals0",
+            fieldName: "Thermals",
             transform: undefined,
             unit: " ft"
         },
@@ -298,7 +296,7 @@ let pipeline: Pipeline = {
             },
             gradient: "pm25",
             displayName: "PM2.5",
-            fieldName: "PM2.50",
+            fieldName: "PM25",
             transform: undefined,
             unit: " µg/m³"
         },
@@ -325,7 +323,7 @@ let pipeline: Pipeline = {
             },
             gradient: "so2",
             displayName: "SO₂",
-            fieldName: "SO20",
+            fieldName: "SO2",
             transform: undefined,
             unit: " mg/m²"
         },
@@ -352,7 +350,7 @@ let pipeline: Pipeline = {
             },
             gradient: "no2",
             displayName: "NO₂",
-            fieldName: "NO20",
+            fieldName: "NO2",
             transform: undefined,
             unit: " µg/m³"
         },
@@ -379,7 +377,7 @@ let pipeline: Pipeline = {
             },
             gradient: "co",
             displayName: "CO",
-            fieldName: "COConcentration0",
+            fieldName: "COConcentration",
             transform: undefined,
             unit: " ppbv"
         },
@@ -406,7 +404,7 @@ let pipeline: Pipeline = {
             },
             gradient: "ozonelayer",
             displayName: "O₃",
-            fieldName: "OzoneLayer0",
+            fieldName: "OzoneLayer",
             transform: undefined,
             unit: " DU"
         },
@@ -433,7 +431,7 @@ let pipeline: Pipeline = {
             },
             gradient: "ozone",
             displayName: "Ozone",
-            fieldName: "SurfaceOzone0",
+            fieldName: "SurfaceOzone",
             transform: undefined,
             unit: " µg/m³"
         },
@@ -460,7 +458,7 @@ let pipeline: Pipeline = {
             },
             gradient: "aerosol",
             displayName: "Aerosol",
-            fieldName: "Aerosol0",
+            fieldName: "Aerosol",
             transform: undefined,
             unit: " AOD"
         },
@@ -487,19 +485,18 @@ let pipeline: Pipeline = {
             },
             gradient: "dust",
             displayName: "Dust",
-            fieldName: "DustMass0",
+            fieldName: "DustMass",
             transform: undefined,
             unit: " µg/m³"
         },
     ],
     inputs: [
         {
-            name: "csv",
+            name: "json",
             opts: {
-                workingDirectory: config.execWorkingDir,
-                runExecutable: config.execFile,
-                filePath: config.execResultFile,
-            }
+                url: config.jsonUrl,
+                getDate: data => new Date(data.Time * 1000),
+            },
         },
     ],
     intermediaries: [
