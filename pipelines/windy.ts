@@ -8,9 +8,7 @@ const config = await getConfig("pipelines", "windy", {
 
     imagesFolder: "HERE",
 
-    execFile: ["HERE"],
-    execWorkingDir: "HERE",
-    execResultFile: "HERE",
+    jsonUrl: "HERE",
 
     thresholds: {
         stormy: [0,0],
@@ -71,7 +69,7 @@ let pipeline: Pipeline = {
             },
             gradient: "wu_temp",
             displayName: "Temp.",
-            fieldName: "Temperature0",
+            fieldName: "Temperature",
             transform: undefined,
             unit: "°F"
         },
@@ -125,7 +123,7 @@ let pipeline: Pipeline = {
             },
             gradient: "wu_temp",
             displayName: "Dew",
-            fieldName: "DewPoint0",
+            fieldName: "DewPoint",
             transform: undefined,
             unit: "°F"
         },
@@ -155,7 +153,7 @@ let pipeline: Pipeline = {
             },
             gradient: "humidity",
             displayName: "RH",
-            fieldName: "Humidity0",
+            fieldName: "Humidity",
             transform: undefined,
             unit: "%"
         },
@@ -214,7 +212,7 @@ let pipeline: Pipeline = {
             },
             gradient: "wind",
             displayName: "Gust",
-            fieldName: "WindGusts0",
+            fieldName: "WindGusts",
             transform: undefined,
             unit: " mph"
         },
@@ -264,7 +262,7 @@ let pipeline: Pipeline = {
             },
             gradient: "wind",
             displayName: "Accu.",
-            fieldName: "WindAccumulation0",
+            fieldName: "WindAccumulation",
             transform: undefined,
             unit: " mph"
         },
@@ -296,7 +294,7 @@ let pipeline: Pipeline = {
             },
             gradient: "pressure",
             displayName: "BP",
-            fieldName: "Pressure0",
+            fieldName: "Pressure",
             transform: undefined,
             unit: " inHg"
         },
@@ -323,7 +321,7 @@ let pipeline: Pipeline = {
             },
             gradient: "visibility",
             displayName: "Visi.",
-            fieldName: "Visibility0",
+            fieldName: "Visibility",
             transform: undefined,
             unit: " mi²"
         },
@@ -352,7 +350,7 @@ let pipeline: Pipeline = {
             },
             gradient: "radar",
             displayName: "Radar",
-            fieldName: "WeatherRadar0",
+            fieldName: "WeatherRadar",
             transform: undefined,
             unit: " dBZ"
         },
@@ -379,7 +377,7 @@ let pipeline: Pipeline = {
             },
             gradient: "rainaccum",
             displayName: "3d",
-            fieldName: "RainAccumulation3D0",
+            fieldName: "RainAccumulation3D",
             transform: undefined,
             unit: " in"
         },
@@ -406,7 +404,7 @@ let pipeline: Pipeline = {
             },
             gradient: "cape",
             displayName: "CAPE",
-            fieldName: "CAPEIndex0",
+            fieldName: "CAPEIndex",
             transform: undefined,
             unit: " j/kg"
         },
@@ -433,7 +431,7 @@ let pipeline: Pipeline = {
             },
             gradient: "thunder",
             displayName: "Storm",
-            fieldName: "Thunderstorms0",
+            fieldName: "Thunderstorms",
             transform: undefined,
             unit: " L/km²"
         },
@@ -462,7 +460,7 @@ let pipeline: Pipeline = {
             },
             gradient: "snowaccum",
             displayName: "12h",
-            fieldName: "NewSnow0",
+            fieldName: "NewSnow",
             transform: undefined,
             unit: " in"
         },
@@ -496,13 +494,12 @@ let pipeline: Pipeline = {
     ],
     inputs: [
         {
-            name: "csv",
+            name: "json",
             opts: {
-                workingDirectory: config.execWorkingDir,
-                runExecutable: config.execFile,
-                filePath: config.execResultFile,
-            }
-        }
+                url: config.jsonUrl,
+                getDate: data => new Date(data.Time * 1000),
+            },
+        },
     ],
     intermediaries: [
         {
