@@ -508,7 +508,7 @@ let pipeline: Pipeline = {
             }
         }
     ],
-    interval: 300000,
+    interval: 3600000,
     outputs: [
         {
             name: "console",
