@@ -79,7 +79,7 @@ const pipeline: Pipeline = {
             },
             gradient: "wu_temp",
             displayName: "Indoor",
-            fieldName: "temp",
+            fieldName: "tempinf",
             transform: undefined,
             unit: "°F"
         },
