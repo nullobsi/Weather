@@ -70,12 +70,9 @@ const pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                imagePicker: {
-                    useFor: "temp"
+                records: {
+                    type: "both",
                 },
-                //records: {
-                    //type: "both",
-                //},
             },
             gradient: "wu_temp",
             displayName: "Indoor",
@@ -106,7 +103,7 @@ const pipeline: Pipeline = {
                     sendToDiscord: true
                 },
                 records: {
-                    type: "high",
+                    type: "both",
                 },
             },
             gradient: "wu_temp",
@@ -133,7 +130,6 @@ const pipeline: Pipeline = {
                     transform: undefined,
                     presc: 1
                 },
-
                 records: {
                     type: "both",
                 },
@@ -166,12 +162,9 @@ const pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                imagePicker: {
-                    useFor: "temp"
+                records: {
+                    type: "both",
                 },
-                //records: {
-                    //type: "both",
-                //},
             },
             gradient: "wu_temp",
             displayName: "Sensor 1",
@@ -202,7 +195,7 @@ const pipeline: Pipeline = {
                     sendToDiscord: true
                 },
                 records: {
-                    type: "high",
+                    type: "both",
                 },
             },
             gradient: "wu_temp",
@@ -229,7 +222,6 @@ const pipeline: Pipeline = {
                     transform: undefined,
                     presc: 1
                 },
-
                 records: {
                     type: "both",
                 },
@@ -262,10 +254,6 @@ const pipeline: Pipeline = {
                     updateRoleColor: false,
                     sendToDiscord: true
                 },
-                imagePicker: {
-                    useFor: "temp"
-                },
-
                 records: {
                     type: "both",
                 },
@@ -298,11 +286,8 @@ const pipeline: Pipeline = {
                     transform: undefined,
                     presc: 1
                 },
-                imagePicker: {
-                    useFor: "temp"
-                },
                 records: {
-                    type: "high",
+                    type: "both",
                 },
             },
             gradient: "wu_temp",
