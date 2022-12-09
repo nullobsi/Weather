@@ -47,7 +47,7 @@ const getImg: Intermediary = async function(options, data, gradients, pipeline){
     const values = Object
         .fromEntries(pipeline.datafields
             .filter(v => v.perConfig.imagePicker !== undefined)
-            .map(v => [(v.perConfig.imagePicker as ImagePickerPerConf).useFor, data[v.fieldName]])) as
+            .map(v => [v.perConfig.imagePicker?.useFor, data[v.fieldName]])) as
         {[K in ImagePickerPerConf["useFor"]]: number};
 
     // use thresholds n jazz to pickImage on the right folder

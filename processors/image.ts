@@ -94,6 +94,9 @@ let process: DataProcessor = async function(options, gradients, datafields, data
     let p = go.run(wa.instance);
 
     let bgImg: Uint8Array = data[opt.imageKey];
+    if (bgImg === undefined) {
+        bgImg = new Uint8Array();
+    }
 
     let size = await go.exports?.renderDials(finalOpt, gradients, bgImg.byteLength, bgImg);
     let buffer = new Uint8Array(size);
