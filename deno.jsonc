@@ -1,0 +1,42 @@
+{
+    "lint": {
+      "files": {
+        "include": [
+          "defs/", "inputs/", "intermediaries/", "outputs/", "processors/", "transforms/", "util/",
+          "inputs.ts",
+          "intermediaries.ts",
+          "mod.ts",
+          "outputs.ts",
+          "pipelines.ts",
+          "processors.ts",
+          "registry.ts",
+          "transforms.ts"
+        ]
+      },
+      "rules": {
+        "tags": ["recommended"]
+      }
+    },
+  "fmt": {
+    "files": {
+      "include": [
+        "defs/", "inputs/", "intermediaries/", "outputs/", "processors/", "transforms/", "util/",
+        "inputs.ts",
+        "intermediaries.ts",
+        "mod.ts",
+        "outputs.ts",
+        "pipelines.ts",
+        "processors.ts",
+        "registry.ts",
+        "transforms.ts"
+      ]
+    },
+    "options": {
+      "useTabs": true,
+      "lineWidth": 80,
+      "indentWidth": 4,
+      "singleQuote": false,
+      "proseWrap": "always"
+    }
+  }
+}
