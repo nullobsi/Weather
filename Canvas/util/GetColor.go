@@ -29,7 +29,10 @@ func GetColor(v float64, g func(int) (float64, color.Color), l int) color.Color 
 	} else {
 		lowI := FindLoIndex(v, nOnly, l)
 		// Sanity check
-		if lowI == l-1 {
+		if lowI >= l-1 {
+		    return hiCol
+		}
+		if lowI == -1 {
 		    return loCol
 		}
 		nColor := InterpolateValue(lowI, lowI+1, g, v)
