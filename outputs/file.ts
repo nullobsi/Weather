@@ -21,6 +21,10 @@ const output: DataOutput = async function(data, options: FileOOpts, datafields, 
         let file = options.extraFiles[i];
         let toSave = processed[file.fieldName];
         let fileName = path.join(archiveFolder, getFileName(file.fieldName, file.ext));
+        if (toSave === undefined) {
+            this.console.warn("File " + file.fieldName + " was undefined.");
+            continue;
+        }
         await Deno.writeFile(fileName, toSave);
     }
 

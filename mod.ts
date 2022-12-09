@@ -21,6 +21,9 @@ let nConsole = {
     },
     error: function(...v: unknown[]) {
         originalConsole.error(this.prefix, ...v);
+    },
+    warn: function(...v: unknown[]) {
+        originalConsole.warn(this.prefix, ...v);
     }
 }
 window.console = nConsole;
