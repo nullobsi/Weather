@@ -1,4 +1,4 @@
 import Indexed from "./Indexed.ts";
 
-type WeatherData = Indexed<any>;
+type WeatherData = Indexed<unknown>;
 export default WeatherData;

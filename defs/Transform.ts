@@ -1,3 +1,3 @@
-type Transform = (a: number) => number
+type Transform = (a: number) => number;
 
 export default Transform;

@@ -1,165 +1,196 @@
-import * as path from "https://deno.land/std@0.76.0/path/mod.ts"
+import * as path from "https://deno.land/std@0.167.0/path/mod.ts";
 import Gradients from "./defs/Gradients.ts";
 import Indexed from "./defs/Indexed.ts";
 import WeatherData from "./defs/WeatherData.ts";
 
-import {inputs} from "./inputs.ts";
-import {intermediaries} from "./intermediaries.ts";
-import {outputs} from "./outputs.ts";
-import {transforms} from "./transforms.ts";
-import {processors} from "./processors.ts";
-import {pipelines} from "./pipelines.ts";
+import { inputs } from "./inputs.ts";
+import { intermediaries } from "./intermediaries.ts";
+import { outputs } from "./outputs.ts";
+import { transforms } from "./transforms.ts";
+import { processors } from "./processors.ts";
+import { pipelines } from "./pipelines.ts";
+import WeatherCtx from "./defs/WeatherCtx.ts";
 
-let gradients: Gradients = {};
-let originalConsole = window.console;
+const gradients: Gradients = {};
+const originalConsole = self.console;
 
-let nConsole = {
-    ...originalConsole,
-    prefix: "",
-    log: function (...v: unknown[]) {
-        originalConsole.log(this.prefix, ...v);
-    },
-    error: function(...v: unknown[]) {
-        originalConsole.error(this.prefix, ...v);
-    },
-    warn: function(...v: unknown[]) {
-        originalConsole.warn(this.prefix, ...v);
-    }
-}
-window.console = nConsole;
+const nConsole = {
+	...originalConsole,
+	prefix: "",
+	log: function (...v: unknown[]) {
+		originalConsole.log(this.prefix, ...v);
+	},
+	error: function (...v: unknown[]) {
+		originalConsole.error(this.prefix, ...v);
+	},
+	warn: function (...v: unknown[]) {
+		originalConsole.warn(this.prefix, ...v);
+	},
+};
+globalThis.console = nConsole;
 
 nConsole.prefix = "[init]";
 console.log("Beginning loading...");
 
 nConsole.prefix = "[gradient]";
-let dirEntries = Deno.readDir("./gradients");
-for await (let gradient of dirEntries) {
-    if (gradient.isFile && !gradient.name.startsWith(".")) {
-        console.log("Loading " + gradient.name)
-        let p = path.join("./gradients", gradient.name);
-        let name = path.basename(gradient.name, ".json");
-        let readJson = await Deno.readTextFile(p);
-        gradients[name] = JSON.parse(readJson);
-    }
+const dirEntries = Deno.readDir("./gradients");
+for await (const gradient of dirEntries) {
+	if (gradient.isFile && !gradient.name.startsWith(".")) {
+		console.log("Loading " + gradient.name);
+		const p = path.join("./gradients", gradient.name);
+		const name = path.basename(gradient.name, ".json");
+		const readJson = await Deno.readTextFile(p);
+		gradients[name] = JSON.parse(readJson);
+	}
 }
 
-let tabLog = (v:string) => console.log("\t" + v)
+const tabLog = (v: string) => console.log("\t" + v);
 
 nConsole.prefix = "[init]";
-console.log("Loaded Gradients:")
+console.log("Loaded Gradients:");
 Object.keys(gradients).forEach(tabLog);
 
-console.log("Loaded Inputs:")
-Object.keys(inputs).forEach(tabLog)
+console.log("Loaded Inputs:");
+Object.keys(inputs).forEach(tabLog);
 
-console.log("Loaded Intermediaries:")
-Object.keys(intermediaries).forEach(tabLog)
+console.log("Loaded Intermediaries:");
+Object.keys(intermediaries).forEach(tabLog);
 
-console.log("Loaded Outputs:")
+console.log("Loaded Outputs:");
 Object.keys(outputs).forEach(tabLog);
 
-console.log("Loaded Transforms:")
+console.log("Loaded Transforms:");
 Object.keys(transforms).forEach(tabLog);
 
-console.log("Loaded Processors:")
+console.log("Loaded Processors:");
 Object.keys(processors).forEach(tabLog);
 
-console.log("Loaded Pipelines:")
+console.log("Loaded Pipelines:");
 Object.keys(pipelines).forEach(tabLog);
 
 console.log("Initializing timers...");
-let timers: Indexed<number> = {};
+const timers: Indexed<number> = {};
 
-Object.keys(pipelines).forEach(async k => {
-    let pipeline = pipelines[k];
-    if (pipeline.runInst) {
-        await runPipeline(k);
-    }
-    timers[k] = setInterval(() => runPipeline(k), pipeline.interval);
-})
+Object.keys(pipelines).forEach(async (k) => {
+	const pipeline = pipelines[k];
+	if (pipeline.runInst) {
+		await runPipeline(k);
+	}
+	timers[k] = setInterval(() => runPipeline(k), pipeline.interval);
+});
 
 async function runPipeline(key: string) {
-    let prefix = `[${key}]`;
-    let c = {
-        ...nConsole,
-        prefix: prefix,
-    };
-    let ctx = {
-        console: c,
-        pipelineName: key,
-    }
-    c.log(`Running pipeline...`);
-    let pipeline = pipelines[key];
-    let data: WeatherData = {};
-    c.log(`Getting data...`);
+	const prefix = `[${key}]`;
+	// Update console prefix
+	const c = {
+		...nConsole,
+		prefix: prefix,
+	};
+	// Get `this` object ready
+	const newThis: WeatherCtx = {
+		console: c,
+		pipelineName: key,
+	};
+	// Log
+	c.log(`Running pipeline...`);
+	const pipeline = pipelines[key];
+	// Data object
+	let data: WeatherData = {};
+	c.log(`Getting data...`);
 
-    for (let i = 0; i < pipeline.inputs.length; i ++) {
-        let p = pipeline.inputs[i];
-        c.log(`Fetching ${p.name}...`);
-        c.prefix = prefix + ` > [${p.name}]`;
-        let input = inputs[p.name];
-        try {
-            let fetched = await input.call(ctx, pipeline.inputs[i].opts);
-            if (p.whitelist !== undefined) {
-                let whitelist = p.whitelist;
-                fetched = Object.fromEntries(Object.entries(fetched).filter(v => whitelist.includes(v[0])));
-            } else if (p.blacklist !== undefined) {
-                let blacklist = p.blacklist;
-                fetched = Object.fromEntries(Object.entries(fetched).filter(v => !blacklist.includes(v[0])));
-            }
-            data = {...data, ...fetched};
-        } catch (e) {
-            c.log(`Failed to run!`, e);
-            c.log("Ignoring...");
-        }
-        c.prefix = prefix;
-    }
+	for (let i = 0; i < pipeline.inputs.length; i++) {
+		const input = pipeline.inputs[i];
+		c.log(`Fetching ${input.name}...`);
+		c.prefix = prefix + ` > [${input.name}]`;
+		const inputFn = inputs[input.name];
+		try {
+			// @ts-ignore TypeScript doesn't know what it's doing.
+			let fetched = await inputFn.call(newThis, input.opts);
+			if (input.whitelist !== undefined) {
+				const whitelist = input.whitelist;
+				fetched = Object.fromEntries(
+					Object.entries(fetched).filter((v) =>
+						whitelist.includes(v[0])
+					),
+				);
+			} else if (input.blacklist !== undefined) {
+				const blacklist = input.blacklist;
+				fetched = Object.fromEntries(
+					Object.entries(fetched).filter((v) =>
+						!blacklist.includes(v[0])
+					),
+				);
+			}
+			data = { ...data, ...fetched };
+		} catch (e) {
+			c.log(`Failed to run!`, e);
+			c.log("Ignoring...");
+		}
+		c.prefix = prefix;
+	}
 
-    c.log(`Running intermediaries...`);
-    let tmpGrads = {...gradients};
-    for (let i = 0; i < pipeline.intermediaries.length; i++) {
-        let p = pipeline.intermediaries[i];
-        c.log(`Running intermediate ${p.name}...`);
-        let intermediate = intermediaries[p.name];
-        c.prefix = prefix + ` > ${p.name}`;
-        try {
-            await intermediate.call(ctx, p.opts, data, tmpGrads, pipeline);
-        } catch (e) {
-            c.log(`Failed to run!`, e);
-            c.log("Ignoring...");
-        }
-        c.prefix = prefix;
-    }
+	c.log(`Running intermediaries...`);
+	const tmpGrads = { ...gradients };
+	for (let i = 0; i < pipeline.intermediaries.length; i++) {
+		const p = pipeline.intermediaries[i];
+		c.log(`Running intermediate ${p.name}...`);
+		const intermediate = intermediaries[p.name];
+		c.prefix = prefix + ` > ${p.name}`;
+		try {
+			// @ts-ignore TypeScript doesn't know what it's doing.
+			await intermediate.call(newThis, p.opts, data, tmpGrads, pipeline);
+		} catch (e) {
+			c.log(`Failed to run!`, e);
+			c.log("Ignoring...");
+		}
+		c.prefix = prefix;
+	}
 
-    c.log(`Running processors...`);
-    let produced: Indexed<any> = {};
-    for (let i = 0; i < pipeline.processors.length; i++) {
-        let p = pipeline.processors[i];
-        c.log(`Running processor ${p.name}...`);
-        let process = processors[p.name];
-        c.prefix = prefix + ` > ${p.name}`;
-        try {
-            await process.call(ctx, p.opts, tmpGrads, pipeline.datafields, data, transforms, produced);
-        } catch (e) {
-            c.log(`Failed to run!`, e);
-            c.log("Ignoring...");
-        }
-        c.prefix = prefix;
-    }
+	c.log(`Running processors...`);
+	const produced: Indexed<unknown> = {};
+	for (let i = 0; i < pipeline.processors.length; i++) {
+		const p = pipeline.processors[i];
+		c.log(`Running processor ${p.name}...`);
+		const process = processors[p.name];
+		c.prefix = prefix + ` > ${p.name}`;
+		try {
+			await process.call(
+				newThis,
+				p.opts,
+				tmpGrads,
+				pipeline.datafields,
+				data,
+				transforms,
+				produced,
+			);
+		} catch (e) {
+			c.log(`Failed to run!`, e);
+			c.log("Ignoring...");
+		}
+		c.prefix = prefix;
+	}
 
-    c.log(`Running outputs...`);
-    for (let i = 0; i < pipeline.outputs.length; i++) {
-        c.log(`Running output ${pipeline.outputs[i].name}...`);
-        let output = outputs[pipeline.outputs[i].name];
-        c.prefix = prefix + ` > ${pipeline.outputs[i].name}`;
-        try {
-            await output.call(ctx, data, pipeline.outputs[i].opts, pipeline.datafields, tmpGrads, produced);
-        } catch (e) {
-            c.log(`Failed to run!`, e);
-            c.log("Ignoring...");
-        }
-        c.prefix = prefix;
-    }
+	c.log(`Running outputs...`);
+	for (let i = 0; i < pipeline.outputs.length; i++) {
+		c.log(`Running output ${pipeline.outputs[i].name}...`);
+		const output = outputs[pipeline.outputs[i].name];
+		c.prefix = prefix + ` > ${pipeline.outputs[i].name}`;
+		try {
+			// @ts-ignore TypeScript doesn't know what it's doing.
+			await output.call(
+				newThis,
+				data,
+				pipeline.outputs[i].opts,
+				pipeline.datafields,
+				tmpGrads,
+				produced,
+			);
+		} catch (e) {
+			c.log(`Failed to run!`, e);
+			c.log("Ignoring...");
+		}
+		c.prefix = prefix;
+	}
 
-    c.log(`Complete!`);
+	c.log(`Complete!`);
 }

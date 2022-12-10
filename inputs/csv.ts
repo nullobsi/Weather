@@ -1,42 +1,46 @@
 import DataInput from "../defs/DataInput.ts";
-import Indexed from "../defs/Indexed.ts";
 import WeatherData from "../defs/WeatherData.ts";
 
+const getData: DataInput<CsvOpts> = async function (opts) {
+	// Executable
+	if (opts.runExecutable !== undefined) {
+		// Run
+		const process = Deno.run({
+			cmd: opts.runExecutable,
+			cwd: opts.workingDirectory,
+			stdin: "null",
+		});
 
-const getData: DataInput = async function(options) {
-    let opts = options as CsvOpts;
-    if (opts.runExecutable !== undefined) {
-        let p = Deno.run({
-            cmd: opts.runExecutable,
-            cwd: opts.workingDirectory,
-            stdin: "null",
-        });
-        let status = await p.status();
-        if (status.code === 0) {
-            this.console.log("Subprocess completed with code 0");
-        } else {
-            throw new Error("Subprocess failed with code " + status.code);
-        }
-    }
-    let text = await Deno.readTextFile(opts.filePath);
-    let data: WeatherData = {};
+		// Wait for finish
+		const status = await process.status();
+		if (status.code === 0) {
+			this.console.log("Subprocess completed with code 0");
+		} else {
+			throw new Error("Subprocess failed with code " + status.code);
+		}
+	}
 
-    for (let row of text.split("\n")) {
-        let rowSplit = row.trim().split(",");
-        let title = rowSplit.shift();
-        for (let i = 0; i < rowSplit.length; i++) {
-            data[`${title}${i}`] = parseFloat(rowSplit[i]);
-        }
-    }
+	// Read CSV file
+	const text = await Deno.readTextFile(opts.filePath);
+	const data: WeatherData = {};
 
-    return data;
-}
+	// Parse CSV
+	for (const row of text.split("\n")) {
+		const rowSplit = row.trim().split(",");
+		const title = rowSplit.shift();
+		for (let i = 0; i < rowSplit.length; i++) {
+			data[`${title}${i}`] = parseFloat(rowSplit[i]);
+		}
+	}
+
+	return data;
+};
 
 type CsvOpts = {
-    runExecutable?: string[],
-    filePath: string,
-    workingDirectory?: string
-}
+	runExecutable?: string[];
+	filePath: string;
+	workingDirectory?: string;
+};
 
-export type {CsvOpts}
+export type { CsvOpts };
 export default getData;

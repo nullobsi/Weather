@@ -1,6 +1,6 @@
 type WeatherCtx = {
-    console: Console,
-    pipelineName: string,
+	console: Console;
+	pipelineName: string;
 };
 
 export default WeatherCtx;

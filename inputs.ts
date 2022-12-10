@@ -1,4 +1,4 @@
-import {Inputs} from "./registry.ts";
+import { Inputs } from "./registry.ts";
 
 import aqi from "./inputs/aqi.ts";
 import ambientweather from "./inputs/ambientweather.ts";
@@ -11,13 +11,13 @@ import wunderground from "./inputs/wunderground.ts";
 import json from "./inputs/json.ts";
 
 export const inputs: Inputs = {
-    aqi,
-    csv,
-    windy,
-    table,
-    plaintext,
-    imageUrl,
-    wunderground,
-    ambientweather,
-    json,
+	aqi,
+	csv,
+	windy,
+	table,
+	plaintext,
+	imageUrl,
+	wunderground,
+	ambientweather,
+	json,
 };
