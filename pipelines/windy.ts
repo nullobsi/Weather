@@ -538,7 +538,7 @@ let pipeline: Pipeline = {
         {
             name: "file",
             opts: {
-                archive: true,
+                archive: false,
                 name: "windy",
                 pretty: true,
                 extraFiles: [{
