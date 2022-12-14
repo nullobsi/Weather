@@ -1,56 +1,82 @@
 import DataOutput from "../defs/DataOutput.ts";
 import getDateString from "../util/getDateString.ts";
-import * as fs from "https://deno.land/std@0.76.0/fs/mod.ts"
-import * as path from "https://deno.land/std@0.76.0/path/mod.ts"
+import * as path from "https://deno.land/std@0.167.0/path/mod.ts";
 
-const output: DataOutput = async function(data, options: FileOOpts, datafields, gradients, processed) {
-    let date = new Date(data.date);
-    let archiveFolder = path.join(Deno.cwd(), "archive", options.name);
-    await Deno.mkdir(archiveFolder, {
-        recursive: true,
-    });
+const output: DataOutput<FileOOpts> = async function (
+	data,
+	options,
+	_datafields,
+	_gradients,
+	processed,
+) {
+	const date = new Date(data.date as string);
+	// Create archive folder
+	const archiveFolder = path.join(Deno.cwd(), "archive", options.name);
+	await Deno.mkdir(archiveFolder, {
+		recursive: true,
+	});
 
-    let ndat = {...data};
-    if (options.removeKeys !== undefined) {
-        options.removeKeys.forEach(k => {
-            delete ndat[k];
-        })
-    }
+	// Shallow copy data to remove unneeded data
+	const filteredData = { ...data };
+	if (options.removeKeys !== undefined) {
+		options.removeKeys.forEach((k) => {
+			delete filteredData[k];
+		});
+	}
+	delete filteredData["highRecords"];
+	delete filteredData["lowRecords"];
 
-    for (let i = 0; i < options.extraFiles.length; i++) {
-        let file = options.extraFiles[i];
-        let toSave = processed[file.fieldName];
-        let fileName = path.join(archiveFolder, getFileName(file.fieldName, file.ext));
-        if (toSave === undefined) {
-            this.console.warn("File " + file.fieldName + " was undefined.");
-            continue;
-        }
-        await Deno.writeFile(fileName, toSave);
-    }
+	// Loop through extraFiles, write files to archive
+	for (let i = 0; i < options.extraFiles.length; i++) {
+		const fileDef = options.extraFiles[i];
 
+		const saveData = processed[fileDef.fieldName] as Uint8Array;
+		const filePath = await getFileName(fileDef.fieldName, fileDef.ext);
 
+		if (saveData === undefined) {
+			this.console.warn("File " + fileDef.fieldName + " was undefined.");
+			continue;
+		}
+		await Deno.writeFile(filePath, saveData);
+	}
 
-    let fileName = path.join(archiveFolder, getFileName(options.name, ".json"));
-    let json = JSON.stringify(ndat, undefined, options.pretty ? 4 : undefined);
-    await Deno.writeTextFile(fileName, json);
+	// Write JSON file
+	const filePath = await getFileName(options.name, ".json");
+	const jsonString = JSON.stringify(
+		filteredData,
+		undefined,
+		options.pretty ? 4 : undefined,
+	);
+	await Deno.writeTextFile(filePath, jsonString);
 
-
-
-    function getFileName(file: string, ext: string) {
-        if (options.archive) {
-            return `${file}-${getDateString(date, true)}${ext}`;
-        } else {
-            return `${file}${ext}`;
-        }
-    }
-}
-
-export default output;
+	// Helper function
+	async function getFileName(file: string, ext: string) {
+		if (options.archive) {
+			const folder = path.join(
+				archiveFolder,
+				date.getFullYear().toString(),
+				(date.getMonth() + 1).toString(),
+				date.getDate().toString(),
+			);
+			await Deno.mkdir(folder, {
+				recursive: true,
+			});
+			return path.join(
+				folder,
+				`${file}-${getDateString(date, true)}${ext}`,
+			);
+		} else {
+			return path.join(archiveFolder, `${file}${ext}`);
+		}
+	}
+};
 
 export type FileOOpts = {
-    pretty: boolean,
-    archive: boolean,
-    name: string,
-    extraFiles: {fieldName: string, ext: string}[],
-    removeKeys: string[] | undefined,
-}
+	pretty: boolean;
+	archive: boolean;
+	name: string;
+	extraFiles: { fieldName: string; ext: string }[];
+	removeKeys: string[] | undefined;
+};
+
+export default output;

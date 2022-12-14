@@ -1,8 +1,11 @@
 import WeatherData from "./WeatherData.ts";
-import Indexed from "./Indexed.ts";
 import WeatherCtx from "./WeatherCtx.ts";
-import {InputRegistry} from "../registry.ts";
-import {Union} from "./Opts.ts";
+import { InputRegistry } from "../registry.ts";
+import { Union } from "./Opts.ts";
 
-type DataInput = (this: WeatherCtx, opts: Union<InputRegistry>) => Promise<WeatherData>
+type DataInput<T extends Union<InputRegistry>> = (
+	this: WeatherCtx,
+	opts: T,
+) => Promise<WeatherData> | WeatherData;
+
 export default DataInput;

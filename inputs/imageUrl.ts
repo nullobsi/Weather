@@ -1,15 +1,14 @@
 import DataInput from "../defs/DataInput.ts";
 
+const getData: DataInput<ImageUrlOpts> = async function (opt) {
+	const response = await fetch(opt.url);
+	const data = await response.arrayBuffer();
+	return { image: new Uint8Array(data) };
+};
+
 type ImageUrlOpts = {
-    url: string
-}
-export type {ImageUrlOpts}
+	url: string;
+};
 
-const getData: DataInput = async function(options) {
-    let opt = options as ImageUrlOpts;
-    let response = await fetch(opt.url);
-    let data = await response.arrayBuffer();
-    return {image: new Uint8Array(data)};
-}
-
+export type { ImageUrlOpts };
 export default getData;

@@ -1,9 +1,6 @@
 import DataInput from "../defs/DataInput.ts";
 import WeatherData from "../defs/WeatherData.ts";
 
-type TableOpts = {
-    url: string
-}
 /*
  *
  * table
@@ -13,29 +10,37 @@ type TableOpts = {
  *              td Value
  */
 
+const getData: DataInput<TableOpts> = async function (opt) {
+	// Fetch
+	const response = await fetch(opt.url);
+	const txt = await response.text();
+	// Parse
+	const data: WeatherData = {};
+	// Find date, store if found
+	const dateRecordString =
+		/<b>Record Date: <\/b>(?<datStr>[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{2})<br>/gim;
+	const res = dateRecordString.exec(txt);
+	if (res && res.groups) {
+		data["date"] = new Date(res.groups.datStr);
+	}
 
+	// Loop on regex until no more matches
+	const regex = /<tr><th>(?<title>.+)<\/th><td>(?<value>.+)<\/td><\/tr>/gim;
+	let match;
+	do {
+		match = regex.exec(txt);
+		// Use title & value
+		if (match && match.groups) {
+			data[match.groups.title] = parseFloat(match.groups.value);
+		}
+	} while (match);
 
-const getData: DataInput = async function(options) {
-    let opt = options as TableOpts;
-    let response = await fetch(opt.url);
-    let txt = await response.text();
-    let dat:WeatherData = {};
-    let dateR = /<b>Record Date: <\/b>(?<datStr>[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{2})<br>/gim;
-    let res = dateR.exec(txt);
-    if (res && res.groups) {
-        dat["date"] = new Date(res.groups.datStr);
-    }
+	return data;
+};
 
-    let r = /<tr><th>(?<title>.+)<\/th><td>(?<value>.+)<\/td><\/tr>/gim;
-    let m;
-    do {
-        m = r.exec(txt);
-        if (m && m.groups) {
-            dat[m.groups.title] = parseFloat(m.groups.value);
-        }
-    } while (m)
+type TableOpts = {
+	url: string;
+};
 
-    return dat;
-}
-export type {TableOpts}
+export type { TableOpts };
 export default getData;

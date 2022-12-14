@@ -495,7 +495,7 @@ let pipeline: Pipeline = {
             name: "json",
             opts: {
                 url: config.jsonUrl,
-                getDate: data => new Date(data.Time * 1000),
+                getDate: data => new Date((data.Time as number) * 1000),
             },
         },
     ],

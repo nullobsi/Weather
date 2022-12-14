@@ -1,2 +1,2 @@
-type Indexed<T> = {[x:string]: T};
+type Indexed<T> = { [x: string]: T };
 export default Indexed;

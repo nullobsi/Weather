@@ -8,9 +8,9 @@ import waves from "./pipelines/waves.ts";
 import indoors from "./pipelines/indoors.ts";
 
 export const pipelines: Indexed<Pipeline> = {
-    main,
-    windy,
-    windyAir,
-    waves,
-    indoors,
+	main,
+	windy,
+	windyAir,
+	waves,
+	indoors,
 };
