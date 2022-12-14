@@ -1,5 +1,5 @@
 import DataProcessor from "../defs/DataProcessor.ts";
-import Go from "https://deno.land/x/godeno@v0.6.2/mod.ts";
+import Go from "https://deno.land/x/godeno@v0.6.3/mod.ts";
 
 const wasmFile = await Deno.readFile("util/Canvas/go_build_WeatherCanvas_js");
 
