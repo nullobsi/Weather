@@ -1,4 +1,5 @@
 import * as path from "https://deno.land/std@0.167.0/path/mod.ts";
+import * as flags from "https://deno.land/std@0.167.0/flags/mod.ts";
 import Gradients from "./defs/Gradients.ts";
 import Indexed from "./defs/Indexed.ts";
 import WeatherData from "./defs/WeatherData.ts";
@@ -68,6 +69,32 @@ Object.keys(processors).forEach(tabLog);
 console.log("Loaded Pipelines:");
 Object.keys(pipelines).forEach(tabLog);
 
+const parsed = flags.parse<{
+	data?: string,
+	runPipeline?: string,
+}>(Deno.args);
+
+const dataFile = parsed.data;
+const pipelineName = parsed.runPipeline;
+
+if (pipelineName !== undefined) {
+		const pipeline = pipelines[pipelineName];
+		if (pipeline === undefined) {
+			console.error("That pipeline does not exist.");
+			Deno.exit(1);
+		}
+		if (dataFile === undefined) {
+			await runPipeline(pipelineName);
+		} else {
+			console.log("Reading data JSON...");
+			const dataJson = await Deno.readTextFile(dataFile);
+			const data = JSON.parse(dataJson);
+			await runPipeline(pipelineName, data);
+		}
+
+		Deno.exit(0);
+}
+
 console.log("Initializing timers...");
 const timers: Indexed<number> = {};
 
@@ -79,7 +106,7 @@ Object.keys(pipelines).forEach(async (k) => {
 	timers[k] = setInterval(() => runPipeline(k), pipeline.interval);
 });
 
-async function runPipeline(key: string) {
+async function runPipeline(key: string, givenData?: WeatherData) {
 	const prefix = `[${key}]`;
 	// Update console prefix
 	const c = {
@@ -95,38 +122,43 @@ async function runPipeline(key: string) {
 	c.log(`Running pipeline...`);
 	const pipeline = pipelines[key];
 	// Data object
-	let data: WeatherData = {};
-	c.log(`Getting data...`);
+	let data: WeatherData;
+	if (givenData === undefined) {
+		data = {};
+		c.log(`Getting data...`);
 
-	for (let i = 0; i < pipeline.inputs.length; i++) {
-		const input = pipeline.inputs[i];
-		c.log(`Fetching ${input.name}...`);
-		c.prefix = prefix + ` > [${input.name}]`;
-		const inputFn = inputs[input.name];
-		try {
-			// @ts-ignore TypeScript doesn't know what it's doing.
-			let fetched = await inputFn.call(newThis, input.opts);
-			if (input.whitelist !== undefined) {
-				const whitelist = input.whitelist;
-				fetched = Object.fromEntries(
-					Object.entries(fetched).filter((v) =>
-						whitelist.includes(v[0])
-					),
-				);
-			} else if (input.blacklist !== undefined) {
-				const blacklist = input.blacklist;
-				fetched = Object.fromEntries(
-					Object.entries(fetched).filter((v) =>
-						!blacklist.includes(v[0])
-					),
-				);
+		for (let i = 0; i < pipeline.inputs.length; i++) {
+			const input = pipeline.inputs[i];
+			c.log(`Fetching ${input.name}...`);
+			c.prefix = prefix + ` > [${input.name}]`;
+			const inputFn = inputs[input.name];
+			try {
+				// @ts-ignore TypeScript doesn't know what it's doing.
+				let fetched = await inputFn.call(newThis, input.opts);
+				if (input.whitelist !== undefined) {
+					const whitelist = input.whitelist;
+					fetched = Object.fromEntries(
+						Object.entries(fetched).filter((v) =>
+							whitelist.includes(v[0])
+						),
+					);
+				} else if (input.blacklist !== undefined) {
+					const blacklist = input.blacklist;
+					fetched = Object.fromEntries(
+						Object.entries(fetched).filter((v) =>
+							!blacklist.includes(v[0])
+						),
+					);
+				}
+				data = { ...data, ...fetched };
+			} catch (e) {
+				c.log(`Failed to run!`, e);
+				c.log("Ignoring...");
 			}
-			data = { ...data, ...fetched };
-		} catch (e) {
-			c.log(`Failed to run!`, e);
-			c.log("Ignoring...");
+			c.prefix = prefix;
 		}
-		c.prefix = prefix;
+	} else {
+		data = givenData;
 	}
 
 	c.log(`Running intermediaries...`);
