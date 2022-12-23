@@ -9,7 +9,14 @@ const getImg: Intermediary<ImageIOpts> = async function (
 ) {
 	const t = opts.thresholds;
 
-	const month = new Date().getMonth();
+	const date = data.date as string | undefined;
+	let month: number;
+	if (date !== undefined) {
+		month = new Date(date).getMonth();
+	} else {
+		month = new Date().getMonth();
+	}
+
 	const folder = path.join(opts.folder, (month + 1).toString());
 
 	// this line written in the typescript zen - do not touch
