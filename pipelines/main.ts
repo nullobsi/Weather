@@ -1331,7 +1331,7 @@ let pipeline: Pipeline = {
         {
             name: "file",
             opts: {
-                archive: true,
+                archive: false,
                 name: "main",
                 pretty: true,
                 extraFiles: [{

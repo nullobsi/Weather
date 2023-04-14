@@ -358,7 +358,7 @@ const pipeline: Pipeline = {
         {
             name: "file",
             opts: {
-                archive: true,
+                archive: false,
                 name: "indoors",
                 pretty: true,
                 extraFiles: [{

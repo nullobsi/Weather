@@ -689,7 +689,7 @@ let pipeline: Pipeline = {
         {
             name: "file",
             opts: {
-                archive: true,
+                archive: false,
                 name: "waves",
                 pretty: true,
                 extraFiles: [{
