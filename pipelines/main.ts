@@ -1252,7 +1252,13 @@ let pipeline: Pipeline = {
                 values: [{index:4, name: "waterTemp"}],
                 getDate: false,
             }
-        }
+        },
+        {
+            name: "imageUrl",
+            opts: {
+                url: config.backgroundUrl,
+            },
+        },
     ],
     intermediaries: [
         {
@@ -1313,14 +1319,14 @@ let pipeline: Pipeline = {
                 presc: 1,
             }
         },
-        {
-            name: "image",
-            opts: {
-                folder: config.imagesFolder,
-                // @ts-ignore
-                thresholds: config.thresholds
-            }
-        },
+        // {
+        //     name: "image",
+        //     opts: {
+        //         folder: config.imagesFolder,
+        //         // @ts-ignore
+        //         thresholds: config.thresholds
+        //     }
+        // },
     ],
     interval: 300000,
     outputs: [
