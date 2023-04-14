@@ -1387,7 +1387,7 @@ let pipeline: Pipeline = {
                 width: imgWidth,
                 imageKey: "image",
                 outputKey: "image",
-                bgFit: "width",
+                bgFit: "height",
                 panels: [
                     {
                         title: "Temperature",
